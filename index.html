@@ -205,6 +205,53 @@
 <!-- Hidden printable version, always kept in sync -->
 <div id="report-print"></div>
 
+<!-- Player de música para oração -->
+<div class="meditation-player" id="meditation-player">
+
+    <div class="meditation-now-playing">
+        <span class="music-icon">♪</span>
+
+        <div class="meditation-info">
+            <span class="meditation-caption">Música para oração</span>
+            <strong id="meditation-title">Miserere — Canto Gregoriano</strong>
+        </div>
+    </div>
+
+    <div class="meditation-controls">
+
+        <button
+            id="meditation-prev"
+            type="button"
+            aria-label="Música anterior"
+            title="Anterior"
+        >
+            ⏮
+        </button>
+
+        <button
+            id="meditation-toggle"
+            type="button"
+            aria-label="Reproduzir música"
+            title="Reproduzir"
+        >
+            ▶
+        </button>
+
+        <button
+            id="meditation-next"
+            type="button"
+            aria-label="Próxima música"
+            title="Próxima"
+        >
+            ⏭
+        </button>
+
+    </div>
+
+    <audio id="meditation-audio" preload="none"></audio>
+
+</div>
+
 <script src="assets/js/app.js" defer></script>
 </body>
 </html>

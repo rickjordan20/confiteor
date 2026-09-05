@@ -1,0 +1,24 @@
+[
+  {
+    "titulo": "Miserere",
+    "subtitulo": "Schola Gregoriana Mediolanensis, Giovanni Vianini, & Gian Nicola Vessia; ",
+    "tipo": "Canto Gregoriano",
+    "arquivo": "assets/audio/Missa orbis factor - Kyrie.mp3",
+    "ativo": true
+  },
+    {
+    "titulo": "Adoro te devote",
+    "subtitulo": "The Cathedral Singers",
+    "tipo": "Canto Gregoriano",
+    "arquivo": "assets/audio/Adoro te devote.mp3",
+    "ativo": true
+  },
+    {
+    "titulo": "Miserere",
+    "subtitulo": "Coro de Monges de Silos",
+    "tipo": "Canto Gregoriano",
+    "arquivo": "assets/audio/Kyrie Fons Bonitatis - Tropo (Modo III) (1999 Remastered Version).mp3",
+    "ativo": true
+  }
+ 
+]

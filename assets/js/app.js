@@ -892,3 +892,269 @@ function resetAll(){
 updateSelectionSummary();
 buildRail([{ step:0, char:'•', title:'Início' }]);
 updateRail();
+
+
+/* =====================================================
+   PLAYER DE MÚSICA PARA ORAÇÃO
+   Playlist carregada de assets/data/musicas.json
+===================================================== */
+
+let meditationPlaylist = [];
+let meditationCurrentTrack = 0;
+
+const meditationAudio = document.getElementById("meditation-audio");
+const meditationToggle = document.getElementById("meditation-toggle");
+const meditationPrev = document.getElementById("meditation-prev");
+const meditationNext = document.getElementById("meditation-next");
+const meditationTitle = document.getElementById("meditation-title");
+
+
+/* -----------------------------------------------------
+   CARREGAR PLAYLIST DO JSON
+----------------------------------------------------- */
+
+async function carregarMusicas() {
+
+    try {
+
+        const resposta = await fetch("data/musicas.json");
+
+        if (!resposta.ok) {
+            throw new Error(
+                `Erro ao carregar playlist: ${resposta.status}`
+            );
+        }
+
+        const dados = await resposta.json();
+
+        /*
+         * Se futuramente você usar "ativo": false
+         * no JSON, a música não aparecerá no player.
+         *
+         * Se não existir a propriedade "ativo",
+         * a música será considerada ativa.
+         */
+        meditationPlaylist = dados.filter(
+            musica => musica.ativo !== false
+        );
+
+        if (meditationPlaylist.length === 0) {
+            meditationTitle.textContent = "Nenhuma música disponível";
+            meditationToggle.disabled = true;
+            meditationPrev.disabled = true;
+            meditationNext.disabled = true;
+            return;
+        }
+
+        loadMeditationTrack(0);
+
+    } catch (erro) {
+
+        console.error("Erro ao carregar as músicas:", erro);
+
+        meditationTitle.textContent =
+            "Não foi possível carregar as músicas";
+
+        meditationToggle.disabled = true;
+        meditationPrev.disabled = true;
+        meditationNext.disabled = true;
+    }
+}
+
+
+/* -----------------------------------------------------
+   CARREGAR UMA MÚSICA
+----------------------------------------------------- */
+
+function loadMeditationTrack(index) {
+
+    const musica = meditationPlaylist[index];
+
+    if (!musica) return;
+
+    meditationAudio.src = musica.arquivo;
+
+    /*
+     * Mostra título + subtítulo.
+     * Exemplo:
+     * Miserere — Salmo 50 (51)
+     */
+
+    if (musica.subtitulo) {
+
+        meditationTitle.textContent =
+            `${musica.titulo} — ${musica.subtitulo}`;
+
+    } else {
+
+        meditationTitle.textContent =
+            musica.titulo;
+
+    }
+}
+
+
+/* -----------------------------------------------------
+   REPRODUZIR
+----------------------------------------------------- */
+
+async function playMeditation() {
+
+    if (meditationPlaylist.length === 0) return;
+
+    try {
+
+        await meditationAudio.play();
+
+        meditationToggle.textContent = "⏸";
+        meditationToggle.title = "Pausar";
+
+        meditationToggle.setAttribute(
+            "aria-label",
+            "Pausar música para oração"
+        );
+
+    } catch (erro) {
+
+        console.error(
+            "Não foi possível reproduzir o áudio:",
+            erro
+        );
+
+    }
+}
+
+
+/* -----------------------------------------------------
+   PAUSAR
+----------------------------------------------------- */
+
+function pauseMeditation() {
+
+    meditationAudio.pause();
+
+    meditationToggle.textContent = "▶";
+    meditationToggle.title = "Reproduzir";
+
+    meditationToggle.setAttribute(
+        "aria-label",
+        "Reproduzir música para oração"
+    );
+}
+
+
+/* -----------------------------------------------------
+   PLAY / PAUSE
+----------------------------------------------------- */
+
+meditationToggle.addEventListener("click", () => {
+
+    if (meditationAudio.paused) {
+
+        playMeditation();
+
+    } else {
+
+        pauseMeditation();
+
+    }
+
+});
+
+
+/* -----------------------------------------------------
+   PRÓXIMA MÚSICA
+----------------------------------------------------- */
+
+meditationNext.addEventListener("click", () => {
+
+    if (meditationPlaylist.length === 0) return;
+
+    meditationCurrentTrack++;
+
+    if (
+        meditationCurrentTrack >=
+        meditationPlaylist.length
+    ) {
+
+        meditationCurrentTrack = 0;
+
+    }
+
+    loadMeditationTrack(
+        meditationCurrentTrack
+    );
+
+    playMeditation();
+
+});
+
+
+/* -----------------------------------------------------
+   MÚSICA ANTERIOR
+----------------------------------------------------- */
+
+meditationPrev.addEventListener("click", () => {
+
+    if (meditationPlaylist.length === 0) return;
+
+    meditationCurrentTrack--;
+
+    if (meditationCurrentTrack < 0) {
+
+        meditationCurrentTrack =
+            meditationPlaylist.length - 1;
+
+    }
+
+    loadMeditationTrack(
+        meditationCurrentTrack
+    );
+
+    playMeditation();
+
+});
+
+
+/* -----------------------------------------------------
+   QUANDO A MÚSICA TERMINAR,
+   TOCAR A PRÓXIMA AUTOMATICAMENTE
+----------------------------------------------------- */
+
+meditationAudio.addEventListener("ended", () => {
+
+    if (meditationPlaylist.length === 0) return;
+
+    meditationCurrentTrack++;
+
+    if (
+        meditationCurrentTrack >=
+        meditationPlaylist.length
+    ) {
+
+        meditationCurrentTrack = 0;
+
+    }
+
+    loadMeditationTrack(
+        meditationCurrentTrack
+    );
+
+    playMeditation();
+
+});
+
+
+/* -----------------------------------------------------
+   VOLUME INICIAL
+   0.25 = 25%
+----------------------------------------------------- */
+
+meditationAudio.volume = 0.25;
+
+
+/* -----------------------------------------------------
+   INICIAR PLAYER
+----------------------------------------------------- */
+
+carregarMusicas();

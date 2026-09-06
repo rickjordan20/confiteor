@@ -14,15 +14,28 @@
 <div class="app">
 
   <header class="top no-print">
-    <div class="brand">Exame de Consciência</div>
-    <div class="place">Preparação para a Confissão</div>
+    <div>
+      <div class="brand">Exame de Consciência</div>
+      <div class="place">Preparação para a Confissão</div>
+    </div>
+    <div class="header-actions">
+      <button class="icon-btn" id="theme-toggle" type="button" aria-label="Alternar tema" title="Alternar tema">🌙</button>
+      <button class="privacy-clear-btn" id="clear-data-btn" type="button">🔒 Limpar meus dados e sair</button>
+    </div>
   </header>
 
   <div class="rail-wrap no-print">
     <div class="rail" id="rail"></div>
   </div>
-  <div class="progress-track no-print" title="Progresso geral do exame">
-    <div class="fill" id="progress-fill"></div>
+  <div class="progress-shell no-print" aria-live="polite">
+    <div class="progress-meta">
+      <span id="progress-percent">0%</span>
+      <span id="progress-label">Início</span>
+      <span id="progress-remaining">Preparação</span>
+    </div>
+    <div class="progress-track" title="Progresso geral do exame" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+      <div class="fill" id="progress-fill"></div>
+    </div>
   </div>
 
   <!-- ================= STEP 0: COVER ================= -->
@@ -33,33 +46,105 @@
       “Se confessarmos os nossos pecados, Ele é fiel e justo para nos perdoar.”
       <cite>1 Jo 1,9</cite>
     </div>
-    <p class="lead">Este roteiro pode percorrer os dez mandamentos, os sete pecados capitais e os cinco mandamentos da Igreja para ajudar você a se preparar para a confissão.
-    Vá respondendo com sinceridade; ao final, uma lista reúne apenas os itens de consciência que você marcou, pronta para imprimir ou levar ao confessionário. O exame é um auxílio e não substitui o discernimento com o sacerdote.</p>
+    <p class="lead">Este exame ajuda você a revisar sua vida com sinceridade e preparar, de forma simples, aquilo que deseja levar à Confissão.</p>
 
-    <h3 style="font-size:15px; margin-top:34px;">Passo a passo da confissão</h3>
-    <ol class="steps-list">
-      <li><span class="num">1</span><div class="body"><div class="t">Exame de consciência</div><div class="d">Reflita com sinceridade sobre sua vida e reconheça seus pecados.</div></div></li>
-      <li><span class="num">2</span><div class="body"><div class="t">Arrependimento (contrição)</div><div class="d">Arrependa-se sinceramente dos pecados, rejeitando-os e voltando o coração para Deus.</div></div></li>
-      <li><span class="num">3</span><div class="body"><div class="t">Propósito de emenda</div><div class="d">Decida, com a graça de Deus, não voltar a pecar.</div></div></li>
-      <li><span class="num">4</span><div class="body"><div class="t">Confissão</div><div class="d">Confesse ao sacerdote todos os pecados graves de que tiver consciência após diligente exame, indicando sua espécie e número, na medida do possível. A confissão dos pecados veniais também é vivamente recomendada. (CIC 1456–1458)</div></div></li>
-      <li><span class="num">5</span><div class="body"><div class="t">Penitência (satisfação)</div><div class="d">Cumpra a penitência indicada e, quando necessário, procure reparar o dano causado. (CIC 1459–1460)</div></div></li>
-      <li><span class="num">6</span><div class="body"><div class="t">Absolvição</div><div class="d">Receba, pela ação de Cristo, o perdão de Deus e a paz, pela absolvição do sacerdote. (CIC 1449; 1461)</div></div></li>
-    </ol>
-
-    <div class="mortal-box">
-      <h3>Quando um pecado é mortal?</h3>
-      <p style="margin:0 0 6px;">Para que um pecado seja mortal, devem estar presentes ao mesmo tempo:</p>
-      <ol>
-        <li>Matéria grave</li>
-        <li>Pleno conhecimento</li>
-        <li>Consentimento deliberado</li>
-      </ol>
-      <p style="margin:0;">A ignorância, o medo, a coação, os hábitos, as paixões e outros fatores podem diminuir a responsabilidade moral. Se tiver dúvida sobre a gravidade ou sua responsabilidade numa situação, converse com o sacerdote.</p>
-      <div class="cic">CIC 1857–1860</div>
+    <div class="privacy-note">
+      <strong>🔒 Privacidade</strong>
+      <span>Suas respostas ficam somente neste navegador durante a sessão e não são enviadas para um servidor por este código.</span>
     </div>
 
-    <h3 style="font-size:15px; margin-top:34px;">O que você quer examinar hoje?</h3>
-    <p style="color:var(--muted); font-size:13px; margin:4px 0 0;">Escolha um ou mais blocos. A sequência de perguntas será montada só com o que você selecionar.</p>
+    <div class="intro-actions">
+      <button class="btn primary" type="button" onclick="document.getElementById('picker').scrollIntoView({behavior:'smooth'})">🙏 Iniciar exame de consciência</button>
+    </div>
+
+    <div class="accordion-stack intro-accordions">
+
+      <div class="accordion">
+        <button class="accordion-trigger" type="button" aria-expanded="false" aria-controls="intro-confession-steps">
+          <span>🙏 Como funciona a Confissão?</span>
+          <span class="accordion-chevron">⌄</span>
+        </button>
+        <div class="accordion-panel" id="intro-confession-steps" hidden>
+          <ol class="steps-list compact-steps">
+            <li><span class="num">1</span><div class="body"><div class="t">Exame de consciência</div><div class="d">Reflita com sinceridade sobre sua vida e reconheça seus pecados.</div></div></li>
+            <li><span class="num">2</span><div class="body"><div class="t">Arrependimento (contrição)</div><div class="d">Arrependa-se sinceramente dos pecados e volte o coração para Deus.</div></div></li>
+            <li><span class="num">3</span><div class="body"><div class="t">Propósito de emenda</div><div class="d">Decida, com a graça de Deus, evitar o pecado e buscar mudança de vida.</div></div></li>
+            <li><span class="num">4</span><div class="body"><div class="t">Confissão</div><div class="d">Confesse ao sacerdote os pecados graves de que se recordar, indicando espécie e número, na medida do possível. A confissão dos pecados veniais também é vivamente recomendada. (CIC 1456–1458)</div></div></li>
+            <li><span class="num">5</span><div class="body"><div class="t">Penitência (satisfação)</div><div class="d">Cumpra a penitência recebida e, quando necessário, procure reparar o dano causado. (CIC 1459–1460)</div></div></li>
+            <li><span class="num">6</span><div class="body"><div class="t">Absolvição</div><div class="d">Receba com fé o perdão e a paz de Deus pela absolvição do sacerdote. (CIC 1449; 1461)</div></div></li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="accordion-trigger" type="button" aria-expanded="false" aria-controls="intro-platform">
+          <span>🧭 Como usar esta plataforma?</span>
+          <span class="accordion-chevron">⌄</span>
+        </button>
+        <div class="accordion-panel" id="intro-platform" hidden>
+          <p class="helper-copy">O Confiteor foi pensado para ajudar você a preparar sua Confissão de forma simples, privada e no seu próprio ritmo.</p>
+          <ol class="steps-list compact-steps">
+            <li><span class="num">1</span><div class="body"><div class="t">Escolha o que deseja examinar</div><div class="d">Selecione os Dez Mandamentos, os 7 Pecados Capitais e/ou os 5 Mandamentos da Igreja.</div></div></li>
+            <li><span class="num">2</span><div class="body"><div class="t">Responda às perguntas</div><div class="d">Em cada item, escolha <strong>Sim</strong>, <strong>Não</strong> ou <strong>Tenho dúvida</strong>.</div></div></li>
+            <li><span class="num">3</span><div class="body"><div class="t">Inclua o que deseja levar à Confissão</div><div class="d">Responder à pergunta e incluir o item na Confissão são decisões separadas.</div></div></li>
+            <li><span class="num">4</span><div class="body"><div class="t">Informe a frequência, se conseguir</div><div class="d">Você pode indicar uma frequência ou número aproximado. Não invente uma precisão que não possui.</div></div></li>
+            <li><span class="num">5</span><div class="body"><div class="t">Use as ajudas quando precisar</div><div class="d">Explicações, referências do Catecismo e observações são opcionais e ficam recolhidas até você decidir abri-las.</div></div></li>
+            <li><span class="num">6</span><div class="body"><div class="t">Revise antes de concluir</div><div class="d">Ao final, você poderá revisar dúvidas e conferir somente os itens que decidiu incluir.</div></div></li>
+            <li><span class="num">7</span><div class="body"><div class="t">Leve sua preparação com você</div><div class="d">Gere PDF ou TXT para usar apenas como auxílio de memória durante a Confissão.</div></div></li>
+          </ol>
+          <p class="helper-copy" style="margin-top:10px;">Se você já conhece o processo, não precisa abrir todas as explicações: basta responder às perguntas e avançar.</p>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="accordion-trigger" type="button" aria-expanded="false" aria-controls="intro-mortal-sin">
+          <span>❓ Quando um pecado é mortal?</span>
+          <span class="accordion-chevron">⌄</span>
+        </button>
+        <div class="accordion-panel" id="intro-mortal-sin" hidden>
+          <p>Para que um pecado seja mortal, devem estar presentes ao mesmo tempo:</p>
+          <ol>
+            <li><strong>Matéria grave</strong></li>
+            <li><strong>Pleno conhecimento</strong></li>
+            <li><strong>Consentimento deliberado</strong></li>
+          </ol>
+          <div class="catechism-box">
+            <div class="catechism-kicker">Catecismo da Igreja Católica</div>
+            <p>A ignorância, o medo, a coação, os hábitos, as paixões e outros fatores podem diminuir a responsabilidade moral. Se tiver dúvida sobre a gravidade ou sobre sua responsabilidade numa situação, converse com o sacerdote.</p>
+            <div class="catechism-ref">CIC 1857–1860</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="accordion-trigger" type="button" aria-expanded="false" aria-controls="intro-first-confession">
+          <span>❓ Primeira Confissão ou faz muito tempo?</span>
+          <span class="accordion-chevron">⌄</span>
+        </button>
+        <div class="accordion-panel" id="intro-first-confession" hidden>
+          <p><strong>O que é a Confissão?</strong> É o Sacramento da Reconciliação, no qual o fiel confessa seus pecados ao sacerdote e recebe, pela absolvição, o perdão de Deus.</p>
+          <p><strong>Como fazer o exame?</strong> Leia as perguntas com sinceridade, sem buscar uma contagem obsessiva. Reconheça os atos e omissões de que se recorda.</p>
+          <p><strong>Como falar na Confissão?</strong> Fale com simplicidade. Para os pecados graves de que se recordar, indique a espécie e o número aproximado, na medida do possível.</p>
+          <div class="catechism-box">
+            <div class="catechism-kicker">Catecismo da Igreja Católica</div>
+            <p><strong>Pecado venial:</strong> ocorre em matéria leve ou quando, em matéria grave, faltam pleno conhecimento ou total consentimento.</p>
+            <div class="catechism-ref">CIC 1862–1863</div>
+          </div>
+          <div class="catechism-box">
+            <div class="catechism-kicker">Catecismo da Igreja Católica</div>
+            <p><strong>Contrição:</strong> arrependimento do pecado cometido acompanhado do propósito de não voltar a pecar.</p>
+            <div class="catechism-ref">CIC 1451</div>
+          </div>
+          <p class="helper-copy">Se você não lembrar a quantidade exata, indique uma frequência aproximada quando conseguir. Não invente uma precisão que não possui.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <h3 style="font-size:15px; margin-top:30px;">O que você quer examinar?</h3>
+    <p class="helper-copy" style="margin:4px 0 0;">Escolha um ou mais blocos para começar.</p>
+
+
     <div class="picker" id="picker">
       <label class="picker-item">
         <input type="checkbox" id="sel-dez" checked onchange="updateSelectionSummary()">
@@ -93,39 +178,19 @@
       <button class="btn primary" id="btn-start" onclick="startExam()">Iniciar o exame →</button>
     </div>
 
-    <h3 style="font-size:15px; margin-top:44px;">Quer entender melhor antes de começar?</h3>
-    <p style="color:var(--muted); font-size:13px; margin:4px 0 12px;">Toque para assistir sem sair da página. Assistir é opcional — você pode ir direto para o exame.</p>
-    <div class="video-grid" id="video-grid">
-      <a class="video-card" href="https://www.youtube.com/watch?v=1uBufZ8ThBM" data-yt="1uBufZ8ThBM" onclick="return playVideo(event,this)">
-        <div class="video-thumb"><img src="https://img.youtube.com/vi/1uBufZ8ThBM/hqdefault.jpg" alt="" loading="lazy"></div>
-        <div class="video-info">
-          <div class="video-title">Como fazer uma boa confissão?</div>
-          <div class="video-channel">Padre Paulo Ricardo</div>
+    <div class="accordion video-accordion">
+      <button class="accordion-trigger" type="button" aria-expanded="false" aria-controls="intro-videos"><span>▶ Quer ver vídeos explicativos sobre a Confissão?</span><span class="accordion-chevron">⌄</span></button>
+      <div class="accordion-panel" id="intro-videos" hidden>
+        <p class="helper-copy">Os vídeos são opcionais e ficam fora do fluxo principal do exame.</p>
+        <div class="video-grid" id="video-grid">
+          <a class="video-card" href="https://www.youtube.com/watch?v=1uBufZ8ThBM" data-yt="1uBufZ8ThBM" onclick="return playVideo(event,this)"><div class="video-thumb"><img src="https://img.youtube.com/vi/1uBufZ8ThBM/hqdefault.jpg" alt="" loading="lazy"></div><div class="video-info"><div class="video-title">Como fazer uma boa confissão?</div><div class="video-channel">Padre Paulo Ricardo</div></div></a>
+          <a class="video-card" href="https://www.youtube.com/watch?v=VFdBMS84r8g" data-yt="VFdBMS84r8g" onclick="return playVideo(event,this)"><div class="video-thumb"><img src="https://img.youtube.com/vi/VFdBMS84r8g/hqdefault.jpg" alt="" loading="lazy"></div><div class="video-info"><div class="video-title">O passo a passo para fazer uma Santa Confissão!</div><div class="video-channel">Padre Leonardo</div></div></a>
+          <a class="video-card" href="https://www.youtube.com/watch?v=CAslTOIJXjY" data-yt="CAslTOIJXjY" onclick="return playVideo(event,this)"><div class="video-thumb"><img src="https://img.youtube.com/vi/CAslTOIJXjY/hqdefault.jpg" alt="" loading="lazy"></div><div class="video-info"><div class="video-title">Exame de Consciência para Confissão — Parte 1</div><div class="video-channel">Padre Leonardo</div></div></a>
+          <a class="video-card" href="https://www.youtube.com/watch?v=IiVEudMHKYI" data-yt="IiVEudMHKYI" onclick="return playVideo(event,this)"><div class="video-thumb"><img src="https://img.youtube.com/vi/IiVEudMHKYI/hqdefault.jpg" alt="" loading="lazy"></div><div class="video-info"><div class="video-title">Como se confessar na prática? — O Guia da Confissão, ep. 5</div><div class="video-channel">Padre Felipe Konzen</div></div></a>
         </div>
-      </a>
-      <a class="video-card" href="https://www.youtube.com/watch?v=VFdBMS84r8g" data-yt="VFdBMS84r8g" onclick="return playVideo(event,this)">
-        <div class="video-thumb"><img src="https://img.youtube.com/vi/VFdBMS84r8g/hqdefault.jpg" alt="" loading="lazy"></div>
-        <div class="video-info">
-          <div class="video-title">O passo a passo para fazer uma Santa Confissão!</div>
-          <div class="video-channel">Padre Leonardo</div>
-        </div>
-      </a>
-      <a class="video-card" href="https://www.youtube.com/watch?v=CAslTOIJXjY" data-yt="CAslTOIJXjY" onclick="return playVideo(event,this)">
-        <div class="video-thumb"><img src="https://img.youtube.com/vi/CAslTOIJXjY/hqdefault.jpg" alt="" loading="lazy"></div>
-        <div class="video-info">
-          <div class="video-title">Exame de Consciência para Confissão — Parte 1</div>
-          <div class="video-channel">Padre Leonardo</div>
-        </div>
-      </a>
-      <a class="video-card" href="https://www.youtube.com/watch?v=IiVEudMHKYI" data-yt="IiVEudMHKYI" onclick="return playVideo(event,this)">
-        <div class="video-thumb"><img src="https://img.youtube.com/vi/IiVEudMHKYI/hqdefault.jpg" alt="" loading="lazy"></div>
-        <div class="video-info">
-          <div class="video-title">Como se confessar na prática? — O Guia da Confissão, ep. 5</div>
-          <div class="video-channel">Padre Felipe Konzen</div>
-        </div>
-      </a>
+        <a class="video-more" href="https://www.youtube.com/results?search_query=como+se+confessar+padre+exame+de+consci%C3%AAncia" target="_blank" rel="noopener">Ver mais vídeos sobre confissão no YouTube →</a>
+      </div>
     </div>
-    <a class="video-more" href="https://www.youtube.com/results?search_query=como+se+confessar+padre+exame+de+consci%C3%AAncia" target="_blank" rel="noopener">Ver mais vídeos sobre confissão no YouTube →</a>
   </section>
 
   <!-- Etapas selecionadas do exame são inseridas aqui pelo JavaScript -->
@@ -154,42 +219,37 @@
     </div>
   </section>
 
-  <!-- ================= REPORT (step number assigned dynamically) ================= -->
-  <section class="step" id="page-report">
-    <div class="cmd-head-top">
-      <div class="cmd-num"><span class="n">R</span> resultado</div>
-      <div class="cmd-progress" id="report-progress"></div>
+  <!-- ================= REVISÃO DE DÚVIDAS ================= -->
+  <section class="step" id="page-doubts">
+    <div class="cmd-head-top"><div class="cmd-num"><span class="n">?</span> revisão de dúvidas</div><div class="cmd-progress" id="doubts-progress"></div></div>
+    <h2>Itens que ficaram em dúvida</h2>
+    <p class="helper-copy">Revise somente o que marcou como “Tenho dúvida” ou “Decidir depois”. Nada aqui é classificado automaticamente como pecado.</p>
+    <div id="doubts-body"></div>
+    <div class="nav-buttons"><button class="btn ghost" id="btn-doubts-back">← Voltar</button><button class="btn primary" id="btn-doubts-next">Revisar minha Confissão →</button></div>
+  </section>
+
+  <!-- ================= REVISÃO PARA A CONFISSÃO ================= -->
+  <section class="step" id="page-review">
+    <div class="cmd-head-top"><div class="cmd-num"><span class="n">R</span> revisão</div><div class="cmd-progress" id="review-progress"></div></div>
+    <h2>🙏 Revisão para a Confissão</h2>
+    <p class="helper-copy">Aqui aparecem somente os itens que você decidiu incluir. Você pode editar frequência, observação ou remover qualquer item antes de exportar.</p>
+    <div class="report-meta"><div class="big-count" id="rp-total">0<span>itens incluídos</span></div><div class="report-actions no-print"><button class="btn" onclick="downloadTxt()">📝 Gerar TXT</button><button class="btn primary" onclick="printConfession()">📄 Gerar PDF</button></div></div>
+    <div id="review-body"></div>
+    <div class="report-block"><h4>Anotação geral (opcional)</h4><textarea class="notes" id="notes" placeholder="Alguma lembrança geral que você queira levar para a Confissão..." oninput="saveGeneralNotes()"></textarea></div>
+    <div class="nav-buttons"><button class="btn ghost" id="btn-review-back">← Voltar</button><button class="btn primary" id="btn-review-next">Orientação final →</button></div>
+  </section>
+
+  <!-- ================= ORIENTAÇÃO FINAL ================= -->
+  <section class="step" id="page-final">
+    <div class="cmd-head-top"><div class="cmd-num"><span class="n">✓</span> conclusão</div><div class="cmd-progress" id="final-progress"></div></div>
+    <h2>🙏 Sua preparação está pronta</h2>
+    <p class="lead">Leve sua lista apenas como auxílio de memória. Na Confissão, fale com simplicidade e sinceridade. Se tiver dificuldade para explicar algo, diga isso ao sacerdote e peça sua ajuda.</p>
+    <div class="accordion-stack">
+      <div class="accordion"><button class="accordion-trigger" type="button" aria-expanded="false" aria-controls="final-how-talk"><span>❓ Como falar com o padre?</span><span class="accordion-chevron">⌄</span></button><div class="accordion-panel" id="final-how-talk" hidden><p>Você pode começar dizendo há quanto tempo não se confessa e depois apresentar, de modo simples, os pecados de que se recorda. Não são necessários detalhes desnecessários.</p></div></div>
+      <div class="accordion"><button class="accordion-trigger" type="button" aria-expanded="false" aria-controls="final-how-works"><span>📖 Como funciona a Confissão?</span><span class="accordion-chevron">⌄</span></button><div class="accordion-panel" id="final-how-works" hidden><p>O sacerdote escuta a confissão, pode oferecer orientação, propõe uma penitência e concede a absolvição sacramental.</p></div></div>
+      <div class="accordion"><button class="accordion-trigger" type="button" aria-expanded="false" aria-controls="final-prep"><span>🙏 Preparação final</span><span class="accordion-chevron">⌄</span></button><div class="accordion-panel" id="final-prep" hidden><p>Faça seu Ato de Contrição, confie na misericórdia de Deus e aproxime-se do Sacramento com sinceridade.</p></div></div>
     </div>
-    <h2 style="margin-top:8px;">Minha preparação para a Confissão</h2>
-    <p style="color:var(--muted); font-size:13.5px; margin-bottom:8px;">Esta lista é apenas um auxílio de memória. Na Confissão, fale com simplicidade e sinceridade. Confesse especialmente os pecados graves de que se recordar, indicando sua espécie e número aproximado, na medida do possível. Se tiver dúvida sobre alguma situação, converse com o sacerdote.</p>
-    <p style="color:var(--muted); font-size:12.8px; margin:0 0 20px;">Não esconda deliberadamente, por vergonha, um pecado grave de que se recorda. A Confissão é lugar de misericórdia; se tiver dificuldade para falar, diga isso ao sacerdote e peça sua ajuda.</p>
-
-    <div class="report-meta">
-      <div class="big-count" id="rp-total">0<span>itens marcados</span></div>
-      <div class="report-actions no-print">
-        <button class="btn" onclick="downloadTxt()">Baixar (.txt)</button>
-        <button class="btn primary" onclick="window.print()">Imprimir / Salvar PDF</button>
-      </div>
-    </div>
-
-    <div id="report-body"></div>
-
-    <div class="report-block">
-      <h4>Anotações para o confessionário</h4>
-      <textarea class="notes" id="notes" placeholder="Espaço livre para anotar algo específico que queira lembrar na hora da confissão." oninput="renderReport()"></textarea>
-    </div>
-
-    <div class="contrition-card" style="margin-top:26px;">
-      <h3>Ato de Contrição</h3>
-      <p>Meu Deus, eu me arrependo de todo o coração de vos ter ofendido, porque sois tão bom e amável. Prometo, com a vossa graça, esforçar-me para ser bom. Meu Jesus, misericórdia! Amém.</p>
-    </div>
-
-    <p style="margin-top:16px; font-size:12px; color:var(--muted); text-align:center;">Esta lista é apenas um auxílio pessoal para recordar e confessar os pecados ao sacerdote.</p>
-
-    <div class="nav-buttons">
-      <button class="btn ghost" id="btn-report-back">← Voltar</button>
-      <button class="btn ghost" onclick="if(confirm('Isso vai apagar todas as respostas marcadas. Deseja continuar?')) resetAll();">Recomeçar o exame</button>
-    </div>
+    <div class="final-actions no-print"><button class="btn" onclick="goTo(REVIEW_STEP)">← Voltar à revisão</button><button class="btn danger-outline" onclick="confirmClearData()">🔒 Limpar meus dados e sair</button></div>
   </section>
 
   <footer class="foot no-print">
@@ -205,51 +265,18 @@
 <!-- Hidden printable version, always kept in sync -->
 <div id="report-print"></div>
 
-<!-- Player de música para oração -->
-<div class="meditation-player" id="meditation-player">
+<div class="privacy-lock no-print" id="privacy-lock" hidden role="dialog" aria-modal="true" aria-labelledby="privacy-lock-title">
+  <div class="privacy-lock-card"><div class="privacy-lock-icon">🔒</div><h2 id="privacy-lock-title">Seu exame foi protegido</h2><p>Por privacidade, ocultamos o conteúdo após um período sem interação.</p><p class="privacy-lock-warning" id="privacy-lock-warning"></p><button class="btn primary" id="privacy-continue-btn" type="button">Continuar meu exame</button><button class="btn ghost" type="button" onclick="confirmClearData()">Limpar meus dados e sair</button></div>
+</div>
 
-    <div class="meditation-now-playing">
-        <span class="music-icon">♪</span>
-
-        <div class="meditation-info">
-            <span class="meditation-caption">Música para oração</span>
-            <strong id="meditation-title">Miserere — Canto Gregoriano</strong>
-        </div>
-    </div>
-
-    <div class="meditation-controls">
-
-        <button
-            id="meditation-prev"
-            type="button"
-            aria-label="Música anterior"
-            title="Anterior"
-        >
-            ⏮
-        </button>
-
-        <button
-            id="meditation-toggle"
-            type="button"
-            aria-label="Reproduzir música"
-            title="Reproduzir"
-        >
-            ▶
-        </button>
-
-        <button
-            id="meditation-next"
-            type="button"
-            aria-label="Próxima música"
-            title="Próxima"
-        >
-            ⏭
-        </button>
-
-    </div>
-
+<div class="meditation-player no-print" id="meditation-player">
+  <div class="meditation-collapsed" id="meditation-collapsed" hidden><button type="button" class="mini-player-btn" id="meditation-expand" aria-label="Abrir player">🎵 <span id="mini-track-title">Música para reflexão</span></button></div>
+  <div class="meditation-expanded" id="meditation-expanded">
+    <div class="meditation-head"><div class="meditation-now-playing"><span class="music-icon">♪</span><div class="meditation-info"><span class="meditation-caption">Música para reflexão</span><strong id="meditation-title">Nenhum áudio carregado</strong></div></div><button class="player-minimize" id="meditation-minimize" type="button" aria-label="Minimizar player" title="Minimizar">—</button></div>
+    <div class="meditation-controls"><button id="meditation-prev" type="button" aria-label="Música anterior" title="Anterior">⏮</button><button id="meditation-toggle" type="button" aria-label="Reproduzir música" title="Reproduzir">▶</button><button id="meditation-next" type="button" aria-label="Próxima música" title="Próxima">⏭</button><label class="volume-control" aria-label="Volume">🔊 <input id="meditation-volume" type="range" min="0" max="1" step="0.05" value="0.25"></label></div>
+    <select id="meditation-select" class="meditation-select" aria-label="Escolher música"></select>
     <audio id="meditation-audio" preload="none"></audio>
-
+  </div>
 </div>
 
 <script src="assets/js/app.js" defer></script>

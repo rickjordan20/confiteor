@@ -695,136 +695,191 @@
     .report-meta .big-count{font-size:34px;}
   }
 
+/* ============================================================
+   EXPERIÊNCIA V2 — PRIVACIDADE, RESPOSTAS, ACORDEÕES, TEMA E PLAYER
+   ============================================================ */
 
-/* ========================================
-   PLAYER — MÚSICA PARA ORAÇÃO
-======================================== */
-
-.meditation-player {
-    position: fixed;
-    right: 18px;
-    bottom: 18px;
-    z-index: 1000;
-
-    width: 290px;
-    padding: 13px 15px;
-
-    background: #fbf7ec;
-    border: 1px solid #e4d9be;
-    border-radius: 12px;
-
-    box-shadow: 0 8px 28px rgba(42, 27, 18, 0.14);
+:root{
+  --surface-soft:rgba(122,19,48,.045);
+  --surface-strong:#fff;
+  --success:#2A564A;
+  --warning-bg:rgba(210,165,62,.16);
+  --warning-border:rgba(169,130,44,.45);
+  --danger:#8c2442;
+  --overlay:rgba(24,16,12,.82);
 }
 
-.meditation-now-playing {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+html[data-theme="dark"]{
+  --ink:#F3ECE5;
+
+  /* Vinho/bordô — identidade principal */
+  --wine:#9A3D50;
+  --wine-dark:#C06A79;
+
+  /* Dourado — Catecismo e destaques */
+  --gold:#D1AD62;
+
+  /* Verde sóbrio — confirmações */
+  --teal:#76A696;
+
+  /* Fundo */
+  --page:#16110F;
+  --card:#211917;
+  --card-border:#49372F;
+
+  --muted:#B8A79A;
+  --shadow:0 1px 0 rgba(255,255,255,.03);
+
+  /* Superfícies */
+  --surface-soft:rgba(154,61,80,.09);
+  --surface-strong:#2A211D;
+
+  --success:#76A696;
+
+  /* Caixas do Catecismo */
+  --warning-bg:rgba(209,173,98,.12);
+  --warning-border:rgba(209,173,98,.42);
+
+  --danger:#C76A79;
+
+  --overlay:rgba(8,7,6,.92);
+}
+html[data-theme="dark"] body::before{background-image:radial-gradient(circle at 1px 1px, rgba(154,61,80,.05) 1px, transparent 1px);}
+html[data-theme="dark"] .cover p.lead,
+html[data-theme="dark"] .q span.txt,
+html[data-theme="dark"] .cmd-desc,
+html[data-theme="dark"] .report-block li{color:var(--ink);}
+html[data-theme="dark"] textarea.notes,
+html[data-theme="dark"] .item-note textarea,
+html[data-theme="dark"] .freq-num,
+html[data-theme="dark"] .meditation-select{background:var(--surface-strong); color:var(--ink);}
+
+.header-actions{display:flex; align-items:center; gap:8px; flex-wrap:wrap; justify-content:flex-end;}
+.icon-btn,.privacy-clear-btn{
+  border:1px solid var(--card-border); background:var(--card); color:var(--ink); cursor:pointer;
+  border-radius:999px; padding:8px 11px; font-size:12px; transition:.15s ease;
+}
+.icon-btn{width:38px;height:38px;padding:0;font-size:16px;}
+.icon-btn:hover,.privacy-clear-btn:hover{border-color:var(--wine); background:var(--surface-soft);}
+.privacy-clear-btn{color:var(--wine);font-weight:600;}
+
+.progress-shell{margin-bottom:30px;}
+.progress-meta{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;font-size:11.5px;color:var(--muted);margin-bottom:6px;}
+#progress-percent{font-weight:700;color:var(--wine);}
+#progress-label{text-align:center;font-weight:600;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+#progress-remaining{text-align:right;}
+.progress-shell .progress-track{margin:0;}
+
+.privacy-note{display:flex;align-items:flex-start;gap:10px;background:rgba(42,86,74,.07);border:1px solid rgba(42,86,74,.2);padding:12px 14px;border-radius:8px;margin:20px 0 12px;font-size:12.5px;color:var(--muted);}
+.privacy-note strong{color:var(--teal);white-space:nowrap;}
+.intro-actions{margin:14px 0 18px;}
+.helper-copy{font-size:13.2px;color:var(--muted);line-height:1.6;}
+
+.accordion-stack{display:grid;gap:8px;margin:18px 0;}
+.accordion{border:1px solid var(--card-border);background:var(--card);border-radius:8px;overflow:hidden;}
+.accordion-trigger{width:100%;display:flex;align-items:center;justify-content:space-between;gap:14px;border:0;background:transparent;color:var(--ink);padding:13px 15px;text-align:left;cursor:pointer;font-weight:600;font-size:13.5px;}
+.accordion-trigger:hover{background:var(--surface-soft);}
+.accordion-chevron{color:var(--wine);font-size:17px;transition:transform .18s ease;}
+.accordion-trigger[aria-expanded="true"] .accordion-chevron{transform:rotate(180deg);}
+.accordion-panel{padding:0 15px 15px;font-size:13.2px;color:var(--ink);}
+.accordion-panel[hidden]{display:none!important;}
+.video-accordion{margin-top:36px;}
+
+.catechism-box{background:var(--warning-bg);border:1px solid var(--warning-border);border-left:4px solid var(--gold);border-radius:7px;padding:13px 14px;margin:10px 0;color:var(--ink);}
+.catechism-kicker{font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--gold);font-weight:800;margin-bottom:5px;}
+.catechism-box p{margin:0 0 5px;line-height:1.55;}
+.catechism-ref{font-size:11.5px;color:var(--muted);font-weight:700;}
+
+/* perguntas e respostas semânticas */
+.question-card{border-bottom:1px solid var(--card-border);padding:15px 0;}
+.question-card:last-child{border-bottom:none;}
+.question-text{font-size:14.5px;color:var(--ink);line-height:1.55;margin-bottom:10px;}
+.answer-row{display:flex;gap:7px;flex-wrap:wrap;}
+.answer-btn{border:1px solid var(--card-border);background:var(--surface-strong);color:var(--ink);border-radius:999px;padding:7px 13px;font-size:12.5px;cursor:pointer;transition:.15s ease;}
+.answer-btn:hover{border-color:var(--wine);}
+.answer-btn.selected{background:var(--wine);border-color:var(--wine);color:#fff;font-weight:700;}
+.answer-btn[data-answer="duvida"].selected{background:var(--gold);border-color:var(--gold);color:#241b0f;}
+.question-details{margin:11px 0 2px;padding:11px 12px;background:var(--surface-soft);border-radius:7px;display:grid;gap:10px;}
+.question-details[hidden]{display:none!important;}
+.include-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.include-toggle{border:1px solid var(--teal);background:transparent;color:var(--teal);padding:7px 11px;border-radius:999px;font-size:12px;font-weight:700;cursor:pointer;}
+.include-toggle.included{background:var(--teal);color:#fff;}
+.include-status{font-size:11.5px;color:var(--muted);}
+.item-actions{display:flex;gap:8px;flex-wrap:wrap;}
+.link-action{border:0;background:transparent;color:var(--wine);padding:2px 0;font-size:12px;font-weight:600;cursor:pointer;text-decoration:underline;text-decoration-color:transparent;text-underline-offset:3px;}
+.link-action:hover{text-decoration-color:currentColor;}
+.item-note{display:grid;gap:6px;}
+/* Quando a observação estiver recolhida */
+.item-note[hidden]{
+  display:none !important;
+}
+.item-note textarea{width:100%;min-height:70px;resize:vertical;border:1px solid var(--card-border);border-radius:6px;padding:9px 10px;font-family:inherit;font-size:12.8px;background:#fff;color:var(--ink);}
+.item-note-tools{display:flex;justify-content:space-between;gap:8px;}
+.freq-inline{display:flex;flex-wrap:wrap;gap:6px;align-items:center;}
+.freq-inline .freq-label{width:100%;}
+.spiritual-badge{font-size:11px;color:var(--gold);font-weight:700;margin-bottom:6px;}
+.doubt-help{border-left:3px solid var(--gold);padding-left:10px;font-size:12.5px;color:var(--muted);line-height:1.55;}
+
+.review-card,.doubt-card{border:1px solid var(--card-border);background:var(--card);border-radius:8px;padding:14px;margin:10px 0;}
+.review-card h4,.doubt-card h4{margin:0 0 8px;font-size:14px;color:var(--ink);}
+.review-sentence{font-size:13.8px;color:var(--ink);margin:0 0 8px;}
+.review-note{font-size:12.3px;color:var(--muted);background:var(--surface-soft);padding:8px 10px;border-radius:6px;margin-top:7px;}
+.review-tools{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
+.review-tools button{font-size:11.5px;padding:6px 9px;}
+.empty-state{border:1px dashed var(--card-border);border-radius:8px;padding:22px;text-align:center;color:var(--muted);font-size:13px;}
+.final-actions{display:flex;gap:10px;justify-content:space-between;flex-wrap:wrap;margin-top:28px;padding-top:18px;border-top:1px solid var(--card-border);}
+.danger-outline{border-color:var(--danger);color:var(--danger);}
+.danger-outline:hover{background:rgba(140,36,66,.08);}
+
+/* proteção por inatividade */
+.privacy-lock{position:fixed;inset:0;background:var(--overlay);z-index:5000;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(8px);}
+.privacy-lock[hidden]{display:none!important;}
+.privacy-lock-card{width:min(440px,100%);background:var(--card);color:var(--ink);border:1px solid var(--card-border);border-radius:14px;padding:26px;text-align:center;box-shadow:0 24px 80px rgba(0,0,0,.32);}
+.privacy-lock-icon{font-size:32px;margin-bottom:8px;}
+.privacy-lock-card h2{font-size:23px;margin-bottom:10px;}
+.privacy-lock-card p{font-size:13.5px;color:var(--muted);}
+.privacy-lock-warning{color:var(--danger)!important;font-weight:600;}
+.privacy-lock-card .btn{margin:5px;}
+
+/* player */
+.meditation-player{position:fixed;right:18px;bottom:18px;z-index:1200;width:300px;max-width:calc(100vw - 24px);}
+.meditation-expanded{background:var(--card);border:1px solid var(--card-border);border-radius:12px;padding:12px 13px;box-shadow:0 10px 35px rgba(42,27,18,.17);}
+.meditation-head{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;}
+.meditation-now-playing{display:flex;align-items:center;gap:10px;min-width:0;}
+.music-icon{width:34px;height:34px;border-radius:50%;background:var(--wine);color:#fff;display:flex;align-items:center;justify-content:center;flex:0 0 auto;}
+.meditation-info{min-width:0;display:flex;flex-direction:column;}
+.meditation-caption{font-size:10px;color:var(--muted);}
+.meditation-info strong{font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink);}
+.player-minimize{border:0;background:transparent;color:var(--muted);cursor:pointer;font-size:18px;width:30px;height:30px;}
+.meditation-controls{display:flex;align-items:center;justify-content:center;gap:8px;margin:10px 0 8px;}
+.meditation-controls>button{border:0;background:transparent;color:var(--wine);width:34px;height:34px;border-radius:50%;cursor:pointer;}
+#meditation-toggle{width:40px;height:40px;background:var(--wine);color:#fff;}
+.volume-control{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--muted);margin-left:4px;}
+.volume-control input{width:70px;accent-color:var(--wine);}
+.meditation-select{width:100%;border:1px solid var(--card-border);border-radius:6px;padding:7px 8px;background:#fff;color:var(--ink);font-family:inherit;font-size:11.5px;}
+.meditation-collapsed{display:flex;justify-content:flex-end;}
+.mini-player-btn{max-width:270px;border:1px solid var(--card-border);background:var(--card);color:var(--wine);border-radius:999px;padding:9px 13px;box-shadow:0 6px 24px rgba(42,27,18,.14);cursor:pointer;font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+@media (max-width:620px){
+  header.top{align-items:flex-start;}
+  .header-actions{max-width:180px;}
+  .privacy-clear-btn{font-size:10.5px;padding:7px 9px;}
+  .progress-meta{grid-template-columns:auto 1fr;}
+  #progress-remaining{display:none;}
+  .answer-btn{flex:1 1 auto;text-align:center;min-width:90px;}
+  .meditation-player{right:12px;bottom:12px;width:min(300px,calc(100vw - 24px));}
+  .meditation-expanded{padding:10px;}
+  .volume-control input{width:54px;}
+  .report-actions{width:100%;}
+  .report-actions .btn{flex:1;}
 }
 
-.music-icon {
-    width: 34px;
-    height: 34px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    flex: 0 0 auto;
-
-    border-radius: 50%;
-
-    background: #7a1330;
-    color: white;
-
-    font-size: 17px;
+@media print{
+  .meditation-player,.privacy-lock,.header-actions,.progress-shell,.accordion-trigger,.video-accordion,.intro-actions,.privacy-note,.final-actions,.review-tools,.question-details,.answer-row,.item-actions{display:none!important;}
+  #report-print{display:block!important;}
+  #report-print *{color:#222!important;}
+  #report-print .rp-head{border-color:#777!important;}
 }
-
-.meditation-info {
-    min-width: 0;
-    display: flex;
-    flex-direction: column;
-}
-
-.meditation-caption {
-    font-size: 10px;
-    color: #8b7960;
-    margin-bottom: 1px;
-}
-
-.meditation-info strong {
-    color: #2a1b12;
-
-    font-size: 12.5px;
-    line-height: 1.3;
-
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.meditation-controls {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    gap: 12px;
-
-    margin-top: 10px;
-}
-
-.meditation-controls button {
-    width: 34px;
-    height: 34px;
-
-    border: none;
-    border-radius: 50%;
-
-    background: transparent;
-    color: #7a1330;
-
-    cursor: pointer;
-
-    font-size: 14px;
-
-    transition:
-        background 0.15s ease,
-        transform 0.15s ease;
-}
-
-.meditation-controls button:hover {
-    background: rgba(122, 19, 48, 0.08);
-}
-
-.meditation-controls button:active {
-    transform: scale(0.94);
-}
-
-#meditation-toggle {
-    width: 42px;
-    height: 42px;
-
-    background: #7a1330;
-    color: #fff;
-
-    font-size: 15px;
-}
-
-#meditation-toggle:hover {
-    background: #5a0e22;
-}
-
-
-/* Celular */
-
-@media (max-width: 600px) {
-
-    .meditation-player {
-        left: 12px;
-        right: 12px;
-        bottom: 12px;
-
-        width: auto;
-    }
-
-}
+.review-edit-row{margin-top:9px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+.review-edit-row label{font-size:11.5px;color:var(--muted);font-weight:600;}
+.review-edit-row select{margin-left:6px;border:1px solid var(--card-border);border-radius:6px;padding:6px 8px;background:var(--surface-strong);color:var(--ink);font-family:inherit;font-size:11.5px;}

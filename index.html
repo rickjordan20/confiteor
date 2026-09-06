@@ -271,14 +271,191 @@
   <div class="privacy-lock-card"><div class="privacy-lock-icon">🔒</div><h2 id="privacy-lock-title">Seu exame foi protegido</h2><p>Por privacidade, ocultamos o conteúdo após um período sem interação.</p><p class="privacy-lock-warning" id="privacy-lock-warning"></p><button class="btn primary" id="privacy-continue-btn" type="button">Continuar meu exame</button><button class="btn ghost" type="button" onclick="confirmClearData()">Limpar meus dados e sair</button></div>
 </div>
 
-<div class="meditation-player no-print" id="meditation-player">
-  <div class="meditation-collapsed" id="meditation-collapsed" hidden><button type="button" class="mini-player-btn" id="meditation-expand" aria-label="Abrir player">🎵 <span id="mini-track-title">Música para reflexão</span></button></div>
-  <div class="meditation-expanded" id="meditation-expanded">
-    <div class="meditation-head"><div class="meditation-now-playing"><span class="music-icon">♪</span><div class="meditation-info"><span class="meditation-caption">Música para reflexão</span><strong id="meditation-title">Nenhum áudio carregado</strong></div></div><button class="player-minimize" id="meditation-minimize" type="button" aria-label="Minimizar player" title="Minimizar">—</button></div>
-    <div class="meditation-controls"><button id="meditation-prev" type="button" aria-label="Música anterior" title="Anterior">⏮</button><button id="meditation-toggle" type="button" aria-label="Reproduzir música" title="Reproduzir">▶</button><button id="meditation-next" type="button" aria-label="Próxima música" title="Próxima">⏭</button><label class="volume-control" aria-label="Volume">🔊 <input id="meditation-volume" type="range" min="0" max="1" step="0.05" value="0.25"></label></div>
-    <select id="meditation-select" class="meditation-select" aria-label="Escolher música"></select>
-    <audio id="meditation-audio" preload="none"></audio>
+<div
+  class="meditation-player no-print"
+  id="meditation-player"
+>
+
+  <!-- PLAYER RECOLHIDO -->
+  <div
+    class="meditation-collapsed"
+    id="meditation-collapsed"
+  >
+    <button
+      type="button"
+      class="mini-player-btn"
+      id="meditation-expand"
+      aria-label="Abrir música para meditação"
+    >
+      🎵 Música para meditar
+    </button>
   </div>
+
+
+  <!-- PLAYER EXPANDIDO -->
+  <div
+    class="meditation-expanded"
+    id="meditation-expanded"
+    hidden
+  >
+
+   <audio
+  id="meditation-audio"
+  preload="metadata"
+></audio>
+
+<div class="player-top">
+
+  <div class="player-icon">
+    ♪
+  </div>
+
+  <div class="player-info">
+    <div class="player-kicker">
+      Música para reflexão
+    </div>
+
+    <div
+      class="player-title"
+      id="meditation-title"
+    >
+      Carregando música...
+    </div>
+  </div>
+
+  <button
+    type="button"
+    class="player-minimize"
+    id="meditation-minimize"
+    aria-label="Minimizar player"
+    title="Minimizar"
+  >
+    —
+  </button>
+
+</div>
+
+
+<div class="player-controls">
+
+  <button
+    type="button"
+    class="player-skip"
+    id="meditation-prev"
+    aria-label="Música anterior"
+    title="Música anterior"
+  >
+    ‹‹
+  </button>
+
+  <button
+    type="button"
+    class="player-toggle"
+    id="meditation-toggle"
+    aria-label="Reproduzir ou pausar"
+    title="Reproduzir"
+  >
+    ▶
+  </button>
+
+  <button
+    type="button"
+    class="player-skip"
+    id="meditation-next"
+    aria-label="Próxima música"
+    title="Próxima música"
+  >
+    ››
+  </button>
+
+  <span class="player-volume-icon">
+    🔊
+  </span>
+
+  <input
+    type="range"
+    id="meditation-volume"
+    class="player-volume"
+    min="0"
+    max="1"
+    step="0.05"
+    value="0.25"
+    aria-label="Volume"
+  >
+
+</div>
+
+
+<select
+  id="meditation-select"
+  class="meditation-select"
+  aria-label="Escolher música"
+>
+  <option>Carregando...</option>
+</select>
+
+
+<div class="music-credits">
+
+  <button
+    type="button"
+    class="music-credits-toggle"
+    id="music-credits-toggle"
+    aria-expanded="false"
+    aria-controls="music-credits-panel"
+  >
+    ⓘ Créditos e licença
+  </button>
+
+  <div
+    class="music-credits-panel"
+    id="music-credits-panel"
+    hidden
+  >
+
+    <div>
+      <strong>Gravação:</strong>
+      <span id="music-credit"></span>
+    </div>
+
+    <div>
+      <strong>Fonte:</strong>
+      <a
+        id="music-source"
+        href="#"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Wikimedia Commons
+      </a>
+    </div>
+
+    <div>
+      <strong>Licença:</strong>
+      <a
+        id="music-license"
+        href="#"
+        target="_blank"
+        rel="noopener noreferrer"
+      ></a>
+    </div>
+
+    <div
+      id="music-modified"
+      class="music-modified"
+      hidden
+    >
+      Esta gravação foi modificada para uso no Confiteor.
+    </div>
+
+  </div>
+
+</div>
+  <span
+    id="mini-track-title"
+    hidden
+  ></span>
+
 </div>
 
 <script src="assets/js/app.js" defer></script>

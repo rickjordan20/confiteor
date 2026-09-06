@@ -710,26 +710,47 @@
 }
 
 html[data-theme="dark"]{
-  --ink:#F1E9DE;
-  --wine:#D68BA3;
-  --wine-dark:#F0B3C5;
-  --gold:#D9B45B;
-  --teal:#79B8A7;
-  --page:#171310;
-  --card:#211B17;
-  --card-border:#43372F;
-  --muted:#B7A799;
+  --ink:#F3ECE5;
+
+  /* Bordô/vinho */
+  --wine:#9A3D50;
+  --wine-dark:#C06A79;
+
+  /* Dourado */
+  --gold:#D1AD62;
+
+  /* Verde sóbrio */
+  --teal:#76A696;
+
+  /* Fundo */
+  --page:#16110F;
+  --card:#211917;
+  --card-border:#49372F;
+
+  --muted:#B8A79A;
   --shadow:0 1px 0 rgba(255,255,255,.03);
-  --surface-soft:rgba(214,139,163,.075);
-  --surface-strong:#2A231E;
-  --success:#79B8A7;
-  --warning-bg:rgba(217,180,91,.12);
-  --warning-border:rgba(217,180,91,.42);
-  --danger:#E59AB0;
-  --overlay:rgba(8,7,6,.9);
+
+  /* Superfícies */
+  --surface-soft:rgba(154,61,80,.09);
+  --surface-strong:#2A211D;
+
+  --success:#76A696;
+
+  /* Catecismo */
+  --warning-bg:rgba(209,173,98,.12);
+  --warning-border:rgba(209,173,98,.42);
+
+  --danger:#C76A79;
+
+  --overlay:rgba(8,7,6,.92);
 }
-html[data-theme="dark"] body::before{background-image:radial-gradient(circle at 1px 1px, rgba(214,139,163,.05) 1px, transparent 1px);}
-html[data-theme="dark"] .cover p.lead,
+html[data-theme="dark"] body::before{
+  background-image:radial-gradient(
+    circle at 1px 1px,
+    rgba(154,61,80,.05) 1px,
+    transparent 1px
+  );
+}
 html[data-theme="dark"] .q span.txt,
 html[data-theme="dark"] .cmd-desc,
 html[data-theme="dark"] .report-block li{color:var(--ink);}
@@ -793,6 +814,10 @@ html[data-theme="dark"] .meditation-select{background:var(--surface-strong); col
 .link-action{border:0;background:transparent;color:var(--wine);padding:2px 0;font-size:12px;font-weight:600;cursor:pointer;text-decoration:underline;text-decoration-color:transparent;text-underline-offset:3px;}
 .link-action:hover{text-decoration-color:currentColor;}
 .item-note{display:grid;gap:6px;}
+/* Garante que a observação fique realmente recolhida */
+.item-note[hidden]{
+  display:none !important;
+}
 .item-note textarea{width:100%;min-height:70px;resize:vertical;border:1px solid var(--card-border);border-radius:6px;padding:9px 10px;font-family:inherit;font-size:12.8px;background:#fff;color:var(--ink);}
 .item-note-tools{display:flex;justify-content:space-between;gap:8px;}
 .freq-inline{display:flex;flex-wrap:wrap;gap:6px;align-items:center;}

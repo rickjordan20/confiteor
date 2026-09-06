@@ -352,6 +352,127 @@ const PRIVACY_LOCK_MS = 5 * 60 * 1000;
 const PRIVACY_WARNING_MS = 25 * 60 * 1000;
 const PRIVACY_CLEAR_MS = 30 * 60 * 1000;
 
+const QUESTION_RELATIONS_URL = 'data/relacoes-perguntas.json';
+let questionRelations = {equivalencias:[], relacionados:[]};
+let questionRelationsLoaded = false;
+
+async function loadQuestionRelations(){
+  if(questionRelationsLoaded) return questionRelations;
+  try{
+    const response = await fetch(QUESTION_RELATIONS_URL,{cache:'no-store'});
+    if(!response.ok) throw new Error(`HTTP ${response.status}`);
+    const data = await response.json();
+    questionRelations = {
+      equivalencias:Array.isArray(data.equivalencias)?data.equivalencias:[],
+      relacionados:Array.isArray(data.relacionados)?data.relacionados:[]
+    };
+  }catch(error){
+    console.warn('Não foi possível carregar as relações entre perguntas:',error);
+    questionRelations = {equivalencias:[], relacionados:[]};
+  }
+  questionRelationsLoaded = true;
+  return questionRelations;
+}
+
+function blockTypeFromKey(key){
+  if(key.startsWith('dez')) return 'dez';
+  if(key.startsWith('cap')) return 'capitais';
+  if(key.startsWith('igr')) return 'igreja';
+  return '';
+}
+
+function relationSelectorMatches(meta,selector){
+  if(!meta || !selector) return false;
+  return blockTypeFromKey(meta.key)===selector.bloco
+    && String(meta.sec?.num||'')===String(selector.secao||'')
+    && String(meta.item?.t||'').trim()===String(selector.pergunta||'').trim();
+}
+
+function relationGroupsForKey(key,type='equivalencias'){
+  const meta=ITEM_REGISTRY[key];
+  if(!meta) return [];
+  const groups=questionRelations[type]||[];
+  return groups.filter(group=>(group.itens||[]).some(selector=>relationSelectorMatches(meta,selector)));
+}
+
+function equivalentGroupForKey(key){
+  return relationGroupsForKey(key,'equivalencias')[0]||null;
+}
+
+function relatedGroupsForKey(key){
+  return relationGroupsForKey(key,'relacionados');
+}
+
+function registryKeysForRelationGroup(group){
+  if(!group) return [];
+  return Object.keys(ITEM_REGISTRY).filter(key=>{
+    const meta=ITEM_REGISTRY[key];
+    return (group.itens||[]).some(selector=>relationSelectorMatches(meta,selector));
+  });
+}
+
+function equivalentKeysForKey(key){
+  const group=equivalentGroupForKey(key);
+  return registryKeysForRelationGroup(group).filter(other=>other!==key);
+}
+
+function questionLocationLabel(key){
+  const meta=ITEM_REGISTRY[key];
+  if(!meta) return '';
+  if(blockTypeFromKey(key)==='dez') return `${meta.sec.num}º Mandamento — ${meta.sec.title}`;
+  if(blockTypeFromKey(key)==='capitais') return `${meta.sec.title} — Pecados Capitais`;
+  if(blockTypeFromKey(key)==='igreja') return `${meta.sec.num}º Mandamento da Igreja — ${meta.sec.title}`;
+  return meta.sectionTitle||'';
+}
+
+function relationNoticeHtml(key){
+  const equivalent=equivalentGroupForKey(key);
+  const related=relatedGroupsForKey(key);
+  let html='';
+
+  if(equivalent){
+    const others=registryKeysForRelationGroup(equivalent).filter(k=>k!==key);
+    const where=others.map(questionLocationLabel).filter(Boolean);
+    html+=`<div class="question-relation equivalent">
+      <strong>🔗 Mesmo ponto moral</strong>
+      <span>Esta pergunta trata da mesma falta/ato moral${where.length?` também examinado em <strong>${where.map(escapeHtml).join('</strong> e <strong>')}</strong>`:''}. Para evitar duplicidade, resposta, inclusão, frequência e observação são compartilhadas.</span>
+    </div>`;
+  }
+
+  related.forEach(group=>{
+    const others=registryKeysForRelationGroup(group).filter(k=>k!==key);
+    const where=others.map(questionLocationLabel).filter(Boolean);
+    if(!where.length) return;
+    html+=`<div class="question-relation related">
+      <strong>↔ Tema relacionado: ${escapeHtml(group.nome||'')}</strong>
+      <span>Também aparece em ${where.map(escapeHtml).join(' e ')}. É um tema próximo, mas não é automaticamente a mesma falta; responda cada pergunta conforme o que realmente se aplica.</span>
+    </div>`;
+  });
+
+  return html;
+}
+
+function syncEquivalentState(sourceKey,{refresh=true}={}){
+  const group=equivalentGroupForKey(sourceKey);
+  if(!group) return;
+  const sourceState={...getItemState(sourceKey)};
+  registryKeysForRelationGroup(group).forEach(key=>{
+    if(key===sourceKey) return;
+    examState[key]={...sourceState};
+  });
+  persistExamState();
+  if(refresh){
+    registryKeysForRelationGroup(group).forEach(key=>{
+      if(key!==sourceKey){
+        const card=document.getElementById('card-'+key);
+        if(card) card.innerHTML=renderQuestionCardHtml(key);
+      }
+    });
+    updateTallies();
+  }
+}
+
+
 const examState = loadExamState();
 const REPORT_SECTIONS = [];
 const ITEM_REGISTRY = {};
@@ -428,7 +549,7 @@ function renderQuestionCardHtml(key){
   const indicative = getIndicativeAnswer(item);
   const shouldShowDetails = state.answer === 'duvida' || state.includeInConfession || state.decideLater || !!state.note || !!state.frequency;
   const sentence = item.f || '';
-  const noteHidden = ' hidden';
+  const noteHidden = state.note ? '' : ' hidden';
   const numberValue = state.frequency?.type === 'numero' && state.frequency?.n ? state.frequency.n : '';
 
   let details = '';
@@ -457,7 +578,8 @@ function renderQuestionCardHtml(key){
     details = `<div class="question-details">${decision}${freq}${note}${help}</div>`;
   }
 
-  return `${item.reportable===false?'<div class="spiritual-badge">Para aprofundar minha vida espiritual</div>':''}<div class="question-text">${item.t}</div><div class="answer-row" role="group" aria-label="Resposta"><button type="button" class="answer-btn ${state.answer==='sim'?'selected':''}" data-answer="sim" onclick="setAnswer('${key}','sim')">Sim</button><button type="button" class="answer-btn ${state.answer==='nao'?'selected':''}" data-answer="nao" onclick="setAnswer('${key}','nao')">Não</button><button type="button" class="answer-btn ${state.answer==='duvida'?'selected':''}" data-answer="duvida" onclick="setAnswer('${key}','duvida')">Tenho dúvida</button></div>${details}`;
+  const relationNotice=relationNoticeHtml(key);
+  return `${item.reportable===false?'<div class="spiritual-badge">Para aprofundar minha vida espiritual</div>':''}<div class="question-text">${item.t}</div>${relationNotice}<div class="answer-row" role="group" aria-label="Resposta"><button type="button" class="answer-btn ${state.answer==='sim'?'selected':''}" data-answer="sim" onclick="setAnswer('${key}','sim')">Sim</button><button type="button" class="answer-btn ${state.answer==='nao'?'selected':''}" data-answer="nao" onclick="setAnswer('${key}','nao')">Não</button><button type="button" class="answer-btn ${state.answer==='duvida'?'selected':''}" data-answer="duvida" onclick="setAnswer('${key}','duvida')">Tenho dúvida</button></div>${details}`;
 }
 function refreshQuestion(key){
   const card = document.getElementById('card-'+key);
@@ -475,30 +597,36 @@ function setAnswer(key, answer){
   else if(answer===indicative){ changes.includeInConfession=true; changes.decideLater=false; }
   else { changes.includeInConfession=false; changes.decideLater=false; changes.frequency=null; }
   updateItemState(key, changes);
+  syncEquivalentState(key,{refresh:false});
   refreshQuestion(key);
+  syncEquivalentState(key);
 }
 function toggleInclude(key){ setInclude(key,!getItemState(key).includeInConfession); }
 function setInclude(key,value){
   updateItemState(key,{includeInConfession:!!value,decideLater:false});
   if(!value) updateItemState(key,{frequency:null});
+  syncEquivalentState(key,{refresh:false});
   refreshQuestion(key);
+  syncEquivalentState(key);
   if(current===REVIEW_STEP) renderReview();
   if(current===DOUBT_STEP) renderDoubts();
 }
-function setDecideLater(key){ updateItemState(key,{includeInConfession:false,decideLater:true}); refreshQuestion(key); if(current===DOUBT_STEP) renderDoubts(); }
+function setDecideLater(key){ updateItemState(key,{includeInConfession:false,decideLater:true}); syncEquivalentState(key,{refresh:false}); refreshQuestion(key); syncEquivalentState(key); if(current===DOUBT_STEP) renderDoubts(); }
 function toggleItemNote(key){ const el=document.getElementById('note-'+key); if(el) el.hidden=!el.hidden; }
-function updateNote(key,value){ updateItemState(key,{note:value}); if(current===REVIEW_STEP) renderReview(); }
-function removeNote(key){ updateItemState(key,{note:''}); refreshQuestion(key); if(current===REVIEW_STEP) renderReview(); }
+function updateNote(key,value){ updateItemState(key,{note:value}); syncEquivalentState(key,{refresh:false}); if(current===REVIEW_STEP) renderReview(); }
+function removeNote(key){ updateItemState(key,{note:''}); syncEquivalentState(key,{refresh:false}); refreshQuestion(key); syncEquivalentState(key); if(current===REVIEW_STEP) renderReview(); }
 
 function onFreqPick(key,freqKey){
   const state=getItemState(key);
   if(freqKey==='numero') updateItemState(key,{frequency:{type:'numero',n:state.frequency?.type==='numero'?state.frequency.n:null}});
   else updateItemState(key,{frequency:{type:freqKey}});
+  syncEquivalentState(key,{refresh:false});
   refreshQuestion(key);
+  syncEquivalentState(key);
   if(freqKey==='numero') document.getElementById('freqnum-'+key)?.focus();
   if(current===REVIEW_STEP) renderReview();
 }
-function onFreqNumber(key,value){ updateItemState(key,{frequency:{type:'numero',n:value?parseInt(value,10):null}}); if(current===REVIEW_STEP) renderReview(); }
+function onFreqNumber(key,value){ updateItemState(key,{frequency:{type:'numero',n:value?parseInt(value,10):null}}); syncEquivalentState(key,{refresh:false}); if(current===REVIEW_STEP) renderReview(); }
 
 /* ============================================================
    CONSTRUÇÃO DAS ETAPAS
@@ -564,7 +692,7 @@ function updateSelectionSummary(){
   const sel=getSelection(); let total=0,chapters=0; if(sel.dez){total+=chapterQuestionCount(SECTIONS_DEZ);chapters++;} if(sel.capitais){total+=chapterQuestionCount(SECTIONS_CAPITAIS);chapters++;} if(sel.igreja){total+=chapterQuestionCount(SECTIONS_IGREJA);chapters++;}
   const summary=document.getElementById('picker-summary'),btn=document.getElementById('btn-start'); if(chapters===0){summary.textContent='Selecione ao menos um bloco para começar.';btn.disabled=true;}else{summary.textContent=`${total} perguntas no total, em ${chapters} ${chapters===1?'bloco':'blocos'}.`;btn.disabled=false;} saveSelection();
 }
-function startExam(){ const sel=getSelection(); if(!sel.dez&&!sel.capitais&&!sel.igreja)return updateSelectionSummary(); buildAllSteps(sel); updateTallies(); goTo(1); }
+async function startExam(){ const sel=getSelection(); if(!sel.dez&&!sel.capitais&&!sel.igreja)return updateSelectionSummary(); await loadQuestionRelations(); buildAllSteps(sel); updateTallies(); goTo(1); }
 
 /* ============================================================
    NAVEGAÇÃO E PROGRESSO
@@ -585,7 +713,34 @@ function renderDoubts(){ const body=document.getElementById('doubts-body'); cons
 function resolveDoubt(key,include){ updateItemState(key,{includeInConfession:!!include,decideLater:false}); if(!include)updateItemState(key,{frequency:null}); refreshQuestion(key); renderDoubts(); }
 function focusOriginalQuestion(key){ const card=document.getElementById('card-'+key); if(!card)return; const step=Number(card.closest('.step')?.dataset.step||0); goTo(step); setTimeout(()=>card.scrollIntoView({behavior:'smooth',block:'center'}),350); }
 function getIncludedItems(){
-  const out=[]; REPORT_SECTIONS.forEach(rs=>rs.sec.groups.forEach((g,gi)=>g.items.forEach((item,ii)=>{const key=`${rs.keyPrefix}-g${gi}-i${ii}`,state=getItemState(key);if(item.reportable!==false&&item.f&&state.includeInConfession)out.push({key,item,state,group:rs.group,sectionTitle:rs.title});}))); return out;
+  const out=[];
+  const byMoralGroup=new Map();
+
+  REPORT_SECTIONS.forEach(rs=>rs.sec.groups.forEach((g,gi)=>g.items.forEach((item,ii)=>{
+    const key=`${rs.keyPrefix}-g${gi}-i${ii}`;
+    const state=getItemState(key);
+    if(item.reportable===false||!item.f||!state.includeInConfession) return;
+
+    const equivalent=equivalentGroupForKey(key);
+    const dedupeKey=equivalent?`eq:${equivalent.id}`:`item:${key}`;
+
+    if(byMoralGroup.has(dedupeKey)){
+      const existing=byMoralGroup.get(dedupeKey);
+      if(!existing.alsoIn.includes(rs.title)) existing.alsoIn.push(rs.title);
+      return;
+    }
+
+    const entry={
+      key,item,state,group:rs.group,sectionTitle:rs.title,
+      moralGroup:equivalent?.id||null,
+      moralName:equivalent?.nome||null,
+      alsoIn:[]
+    };
+    byMoralGroup.set(dedupeKey,entry);
+    out.push(entry);
+  })));
+
+  return out;
 }
 function frequencyText(freq){ if(!freq||!freq.type||freq.type==='nao_precisar')return ''; if(freq.type==='numero'){if(!freq.n)return '';return `aproximadamente ${freq.n} ${freq.n===1?'vez':'vezes'}`;} const map={uma_vez:'uma vez',poucas_vezes:'poucas vezes',algumas_vezes:'algumas vezes',muitas_vezes:'muitas vezes',frequentemente:'frequentemente',habitualmente:'habitualmente'}; return map[freq.type]||''; }
 function buildConfessionSentence(frase,freq){ const f=frequencyText(freq); return f?`${frase} ${f}.`:`${frase}.`; }
@@ -598,7 +753,8 @@ function reviewCardHtml(x){
   const f=frequencyText(x.state.frequency);
   const current=x.state.frequency?.type||'nao_precisar';
   const opts=FREQ_OPTIONS.map(o=>`<option value="${o.key}" ${current===o.key?'selected':''}>${o.label}</option>`).join('');
-  return `<div class="review-card"><h4>${x.sectionTitle}</h4><p class="review-sentence">${escapeHtml(x.item.f)}${f?' — <em>'+escapeHtml(f)+'</em>':''}</p>${x.state.note?`<div class="review-note">📝 ${escapeHtml(x.state.note)}</div>`:''}<div class="review-edit-row"><label>Frequência <select onchange="setReviewFrequency('${x.key}',this.value)">${opts}</select></label></div><div class="review-tools"><button class="btn" onclick="editReviewNote('${x.key}')">Editar observação</button><button class="btn ghost" onclick="setInclude('${x.key}',false)">Remover item</button><button class="btn ghost" onclick="focusOriginalQuestion('${x.key}')">Voltar à pergunta</button></div></div>`;
+  const relationInfo=x.alsoIn?.length?`<div class="review-relation">🔗 Este mesmo ponto também foi examinado em: ${x.alsoIn.map(escapeHtml).join(' · ')}</div>`:'';
+  return `<div class="review-card"><h4>${x.sectionTitle}</h4><p class="review-sentence">${escapeHtml(x.item.f)}${f?' — <em>'+escapeHtml(f)+'</em>':''}</p>${relationInfo}${x.state.note?`<div class="review-note">📝 ${escapeHtml(x.state.note)}</div>`:''}<div class="review-edit-row"><label>Frequência <select onchange="setReviewFrequency('${x.key}',this.value)">${opts}</select></label></div><div class="review-tools"><button class="btn" onclick="editReviewNote('${x.key}')">Editar observação</button><button class="btn ghost" onclick="setInclude('${x.key}',false)">Remover item</button><button class="btn ghost" onclick="focusOriginalQuestion('${x.key}')">Voltar à pergunta</button></div></div>`;
 }
 function setReviewFrequency(key,type){
   if(type==='numero'){
@@ -671,7 +827,7 @@ function resetAll(){ confirmClearData(); }
 function init(){
   applyTheme(preferredTheme()); document.getElementById('theme-toggle')?.addEventListener('click',toggleTheme); document.getElementById('clear-data-btn')?.addEventListener('click',confirmClearData); document.getElementById('privacy-continue-btn')?.addEventListener('click',unlockPrivacy);
   ['pointerdown','keydown','touchstart','scroll'].forEach(ev=>window.addEventListener(ev,registerActivity,{passive:true})); setInterval(checkInactivity,15000);
-  initAccordions(); initMeditationPlayer(); restoreSelection(); updateSelectionSummary(); buildRail([{step:0,char:'•',title:'Início'}]); updateRail(); updateProgressBar();
+  initAccordions(); initMeditationPlayer(); loadQuestionRelations(); restoreSelection(); updateSelectionSummary(); buildRail([{step:0,char:'•',title:'Início'}]); updateRail(); updateProgressBar();
   const notes=document.getElementById('notes'); if(notes){notes.value=sessionStorage.getItem(NOTES_KEY)||'';notes.dataset.loaded='1';}
 }
 

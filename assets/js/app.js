@@ -549,7 +549,7 @@ function renderQuestionCardHtml(key){
   const indicative = getIndicativeAnswer(item);
   const shouldShowDetails = state.answer === 'duvida' || state.includeInConfession || state.decideLater || !!state.note || !!state.frequency;
   const sentence = item.f || '';
-  const noteHidden = state.note ? '' : ' hidden';
+  const noteHidden = ' hidden';
   const numberValue = state.frequency?.type === 'numero' && state.frequency?.n ? state.frequency.n : '';
 
   let details = '';

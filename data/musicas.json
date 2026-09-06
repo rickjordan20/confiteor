@@ -1,24 +1,54 @@
 [
   {
-    "titulo": "Miserere",
-    "subtitulo": "Schola Gregoriana Mediolanensis, Giovanni Vianini, & Gian Nicola Vessia; ",
-    "tipo": "Canto Gregoriano",
-    "arquivo": "assets/audio/Missa orbis factor - Kyrie.mp3",
+    "id": "kyrie-eleison-schola-gregoriana",
+    "titulo": "Kyrie Eleison",
+    "subtitulo": "Schola Gregoriana",
+    "tipo": "Canto Gregoriano · Súplica pela misericórdia",
+    "arquivo": "../assets/audio/Schola_Gregoriana-Kyrie_eleison.ogg",
+    "credito": "Schola Gregoriana",
+    "fonte": "Wikimedia Commons",
+    "paginaFonte": "https://commons.wikimedia.org/wiki/File:Schola_Gregoriana-Kyrie_eleison.ogg",
+    "licenca": "CC BY-SA 3.0",
+    "urlLicenca": "https://creativecommons.org/licenses/by-sa/3.0/",
     "ativo": true
   },
-    {
-    "titulo": "Adoro te devote",
-    "subtitulo": "The Cathedral Singers",
-    "tipo": "Canto Gregoriano",
-    "arquivo": "assets/audio/Adoro te devote.mp3",
+  {
+    "id": "kyrie-xi-orbis-factor",
+    "titulo": "Kyrie XI — Orbis Factor",
+    "subtitulo": "Paterm",
+    "tipo": "Canto Gregoriano · Súplica pela misericórdia",
+    "arquivo": "../assets/audio/Kyrie_XI.ogg",
+    "credito": "Paterm",
+    "fonte": "Wikimedia Commons",
+    "paginaFonte": "https://commons.wikimedia.org/wiki/File:Kyrie_XI.ogg",
+    "licenca": "CC BY-SA 3.0",
+    "urlLicenca": "https://creativecommons.org/licenses/by-sa/3.0/",
     "ativo": true
   },
-    {
-    "titulo": "Miserere",
-    "subtitulo": "Coro de Monges de Silos",
-    "tipo": "Canto Gregoriano",
-    "arquivo": "assets/audio/Kyrie Fons Bonitatis - Tropo (Modo III) (1999 Remastered Version).mp3",
+  {
+    "id": "veni-creator-spiritus",
+    "titulo": "Veni Creator Spiritus",
+    "subtitulo": "Membeth",
+    "tipo": "Canto Gregoriano · Invocação ao Espírito Santo",
+    "arquivo": "../assets/audio/Veni.creator.spiritus.ogg",
+    "credito": "Membeth",
+    "fonte": "Wikimedia Commons",
+    "paginaFonte": "https://commons.wikimedia.org/wiki/File:Veni.creator.spiritus.ogg",
+    "licenca": "Domínio público",
+    "urlLicenca": "https://commons.wikimedia.org/wiki/File:Veni.creator.spiritus.ogg",
+    "ativo": true
+  },
+  {
+    "id": "salve-regina-passy",
+    "titulo": "Salve Regina",
+    "subtitulo": "Les Petits Chanteurs de Passy",
+    "tipo": "Canto sacro · Oração mariana",
+    "arquivo": "../assets/audio/Petits_Chanteurs_de_Passy_-_Salve_Regina_de_Hermann_Contract.ogg",
+    "credito": "Les Petits Chanteurs de Passy",
+    "fonte": "Wikimedia Commons",
+    "paginaFonte": "https://commons.wikimedia.org/wiki/File:Petits_Chanteurs_de_Passy_-_Salve_Regina_de_Hermann_Contract.ogg",
+    "licenca": "CC BY-SA 3.0",
+    "urlLicenca": "https://creativecommons.org/licenses/by-sa/3.0/",
     "ativo": true
   }
- 
 ]

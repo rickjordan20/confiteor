@@ -143,7 +143,7 @@ const SECTIONS_DEZ = [
         label: "Autoridade, trabalho e sociedade", items: [
           { t: "Tenho tratado empregados, subordinados ou colegas com injustiça, exploração ou desrespeito à sua dignidade?", f: "Tratei trabalhadores ou colegas com injustiça, exploração ou desrespeito" },
           { t: "Tenho sido gravemente desonesto ou negligente no cumprimento de meus deveres profissionais?", f: "Fui gravemente desonesto ou negligente em meus deveres profissionais" },
-          { t: "Tenho desobedecido legitimamente constituídas autoridades em matéria justa sem motivo proporcional?", f: "Desobedeci a uma autoridade legítima em matéria justa sem motivo proporcional" }
+          { t: "Tenho desobedecido às autoridades legitimamente constituídas em matéria justa, sem motivo proporcional?", f: "Desobedeci a autoridades legitimamente constituídas em matéria justa sem motivo proporcional" }
         ]
       }
     ]
@@ -1094,9 +1094,66 @@ function updateTallies() { REPORT_SECTIONS.forEach(rs => { let count = 0, total 
 /* ============================================================
    DÚVIDAS E REVISÃO
    ============================================================ */
-function getDoubtKeys() { return Object.keys(ITEM_REGISTRY).filter(k => { const s = getItemState(k); return s.answer === 'duvida' || s.decideLater; }); }
+function getDoubtKeys() {
+
+  const seen = new Set();
+  const result = [];
+
+  Object.keys(ITEM_REGISTRY)
+    .forEach(key => {
+
+      const state =
+        getItemState(key);
+
+      if (
+        state.answer !== 'duvida' &&
+        !state.decideLater
+      ) {
+        return;
+      }
+
+      const equivalent =
+        equivalentGroupForKey(key);
+
+      const dedupeKey =
+        equivalent
+          ? `eq:${equivalent.id}`
+          : `item:${key}`;
+
+      if (seen.has(dedupeKey)) {
+        return;
+      }
+
+      seen.add(dedupeKey);
+
+      result.push(key);
+    });
+
+  return result;
+}
 function renderDoubts() { const body = document.getElementById('doubts-body'); const keys = getDoubtKeys(); if (!keys.length) { body.innerHTML = '<div class="empty-state">Nenhum item ficou pendente. Você pode seguir para a revisão da Confissão.</div>'; return; } body.innerHTML = keys.map(key => { const m = ITEM_REGISTRY[key], s = getItemState(key), g = m.guide; return `<div class="doubt-card"><h4>${m.sectionTitle}</h4><p class="review-sentence">${m.item.t}</p>${g ? `<div class="catechism-box"><div class="catechism-kicker">Referência no Catecismo</div><p>${g.text}</p><div class="catechism-ref">${g.ref}</div></div>` : ''}<div class="review-tools"><button class="btn ${s.includeInConfession ? 'primary' : ''}" onclick="setInclude('${key}',true)">☑ Incluir na Confissão</button><button class="btn" onclick="resolveDoubt('${key}',false)">Não incluir</button><button class="btn ghost" onclick="focusOriginalQuestion('${key}')">Voltar à pergunta</button></div></div>`; }).join(''); }
-function resolveDoubt(key, include) { updateItemState(key, { includeInConfession: !!include, decideLater: false }); if (!include) updateItemState(key, { frequency: null }); refreshQuestion(key); renderDoubts(); }
+function resolveDoubt(key, include) {
+  updateItemState(key, {
+    includeInConfession: !!include,
+    decideLater: false
+  });
+
+  if (!include) {
+    updateItemState(key, {
+      frequency: null
+    });
+  }
+
+  syncEquivalentState(key, {
+    refresh: false
+  });
+
+  refreshQuestion(key);
+
+  syncEquivalentState(key);
+
+  renderDoubts();
+}
 function focusOriginalQuestion(key) { const card = document.getElementById('card-' + key); if (!card) return; const step = Number(card.closest('.step')?.dataset.step || 0); goTo(step); setTimeout(() => card.scrollIntoView({ behavior: 'smooth', block: 'center' }), 350); }
 function getIncludedItems() {
   const out = [];
@@ -1143,18 +1200,79 @@ function reviewCardHtml(x) {
   return `<div class="review-card"><h4>${x.sectionTitle}</h4><p class="review-sentence">${escapeHtml(x.item.f)}${f ? ' — <em>' + escapeHtml(f) + '</em>' : ''}</p>${relationInfo}${x.state.note ? `<div class="review-note">📝 ${escapeHtml(x.state.note)}</div>` : ''}<div class="review-edit-row"><label>Frequência <select onchange="setReviewFrequency('${x.key}',this.value)">${opts}</select></label></div><div class="review-tools"><button class="btn" onclick="editReviewNote('${x.key}')">Editar observação</button><button class="btn ghost" onclick="setInclude('${x.key}',false)">Remover item</button><button class="btn ghost" onclick="focusOriginalQuestion('${x.key}')">Voltar à pergunta</button></div></div>`;
 }
 function setReviewFrequency(key, type) {
+
   if (type === 'numero') {
-    const atual = getItemState(key).frequency?.n || '';
-    const n = prompt('Número aproximado de vezes:', atual);
-    if (n === null) { renderReview(); return; }
+
+    const atual =
+      getItemState(key).frequency?.n || '';
+
+    const n = prompt(
+      'Número aproximado de vezes:',
+      atual
+    );
+
+    if (n === null) {
+      renderReview();
+      return;
+    }
+
     const parsed = parseInt(n, 10);
-    updateItemState(key, { frequency: { type: 'numero', n: Number.isFinite(parsed) && parsed > 0 ? parsed : null } });
+
+    updateItemState(key, {
+      frequency: {
+        type: 'numero',
+        n:
+          Number.isFinite(parsed) &&
+          parsed > 0
+            ? parsed
+            : null
+      }
+    });
+
   } else {
-    updateItemState(key, { frequency: { type } });
+
+    updateItemState(key, {
+      frequency: { type }
+    });
   }
-  renderReview(); refreshQuestion(key);
+
+  syncEquivalentState(key, {
+    refresh: false
+  });
+
+  renderReview();
+
+  refreshQuestion(key);
+
+  syncEquivalentState(key);
 }
-function editReviewNote(key) { const currentNote = getItemState(key).note || ''; const value = prompt('Observação opcional para lembrar na Confissão:', currentNote); if (value !== null) { updateItemState(key, { note: value.trim() }); renderReview(); refreshQuestion(key); } }
+function editReviewNote(key) {
+
+  const currentNote =
+    getItemState(key).note || '';
+
+  const value = prompt(
+    'Observação opcional para lembrar na Confissão:',
+    currentNote
+  );
+
+  if (value !== null) {
+
+    updateItemState(key, {
+      note: value.trim()
+    });
+
+    syncEquivalentState(key, {
+      refresh: false
+    });
+
+    renderReview();
+
+    refreshQuestion(key);
+
+    syncEquivalentState(key);
+  }
+}
 function saveGeneralNotes() { try { sessionStorage.setItem(NOTES_KEY, document.getElementById('notes')?.value || ''); } catch (_) { } renderPrintable(); }
 
 /* ============================================================
@@ -1198,13 +1316,327 @@ function clearSensitiveData(reload = true) { pauseMeditation(); try { sessionSto
    PLAYER DE MÚSICA PARA REFLEXÃO
    ============================================================ */
 let meditationPlaylist = [], meditationCurrentTrack = 0;
-function playerEls() { return { audio: document.getElementById('meditation-audio'), toggle: document.getElementById('meditation-toggle'), prev: document.getElementById('meditation-prev'), next: document.getElementById('meditation-next'), title: document.getElementById('meditation-title'), mini: document.getElementById('mini-track-title'), select: document.getElementById('meditation-select'), volume: document.getElementById('meditation-volume') }; }
-async function loadMeditationPlaylist() { const e = playerEls(); if (!e.audio) return; try { const r = await fetch('data/musicas.json', { cache: 'no-store' }); if (!r.ok) throw new Error('playlist'); meditationPlaylist = (await r.json()).filter(m => m.ativo !== false); e.select.innerHTML = meditationPlaylist.map((m, i) => `<option value="${i}">${escapeHtml(m.titulo)}${m.subtitulo ? ' — ' + escapeHtml(m.subtitulo) : ''}</option>`).join(''); if (meditationPlaylist.length) loadMeditationTrack(0); else e.title.textContent = 'Nenhuma música disponível'; } catch (_) { e.title.textContent = 'Músicas indisponíveis'; document.getElementById('meditation-player').hidden = true; } }
-function loadMeditationTrack(index) { const e = playerEls(), m = meditationPlaylist[index]; if (!m) return; meditationCurrentTrack = index; e.audio.src = encodeURI(m.arquivo); const label = `${m.titulo}${m.subtitulo ? ' — ' + m.subtitulo : ''}`; e.title.textContent = label; e.mini.textContent = m.titulo; e.select.value = String(index); }
+function playerEls(){
+  return {
+    audio:document.getElementById('meditation-audio'),
+    toggle:document.getElementById('meditation-toggle'),
+    prev:document.getElementById('meditation-prev'),
+    next:document.getElementById('meditation-next'),
+    title:document.getElementById('meditation-title'),
+    mini:document.getElementById('mini-track-title'),
+    select:document.getElementById('meditation-select'),
+    volume:document.getElementById('meditation-volume'),
+
+    credit:document.getElementById('music-credit'),
+    source:document.getElementById('music-source'),
+    license:document.getElementById('music-license'),
+    modified:document.getElementById('music-modified')
+  };
+}
+async function loadMeditationPlaylist() {
+
+  const e = playerEls();
+
+  if (!e.audio) return;
+
+  try {
+
+    const r = await fetch(
+      'data/musicas.json',
+      { cache: 'no-store' }
+    );
+
+    if (!r.ok) {
+      throw new Error('playlist');
+    }
+
+    meditationPlaylist =
+      (await r.json())
+        .filter(m => m.ativo !== false);
+
+
+    e.select.innerHTML =
+      meditationPlaylist
+        .map(
+          (m, i) =>
+            `<option value="${i}">
+              ${escapeHtml(m.titulo)}
+              ${
+                m.subtitulo
+                  ? ' — ' + escapeHtml(m.subtitulo)
+                  : ''
+              }
+            </option>`
+        )
+        .join('');
+
+
+    if (meditationPlaylist.length) {
+
+      loadMeditationTrack(0);
+
+    } else {
+
+      e.title.textContent =
+        'Nenhuma música disponível';
+
+    }
+
+  } catch (error) {
+
+    console.error(
+      'Erro ao carregar músicas:',
+      error
+    );
+
+    e.title.textContent =
+      'Músicas indisponíveis';
+
+  }
+
+}
+function loadMeditationTrack(index){
+
+  const e = playerEls();
+  const m = meditationPlaylist[index];
+
+  if(!m) return;
+
+  meditationCurrentTrack = index;
+
+  e.audio.src = encodeURI(m.arquivo);
+
+  const label =
+    `${m.titulo}${m.subtitulo ? ' — ' + m.subtitulo : ''}`;
+
+  e.title.textContent = label;
+
+  e.mini.textContent = m.titulo;
+
+  e.select.value = String(index);
+
+
+  /* Créditos */
+
+  if(e.credit){
+    e.credit.textContent =
+      m.credito || m.subtitulo || 'Não informado';
+  }
+
+  if(e.source){
+    e.source.textContent =
+      m.fonte || 'Fonte';
+
+    e.source.href =
+      m.paginaFonte || '#';
+  }
+
+  if(e.license){
+    e.license.textContent =
+      m.licenca || 'Não informada';
+
+    e.license.href =
+      m.urlLicenca || '#';
+  }
+
+  if(e.modified){
+    e.modified.hidden =
+      m.modificado !== true;
+  }
+}
 async function playMeditation() { const e = playerEls(); if (!meditationPlaylist.length) return; try { await e.audio.play(); e.toggle.textContent = '⏸'; e.toggle.title = 'Pausar'; } catch (_) { } }
 function pauseMeditation() { const e = playerEls(); if (!e.audio) return; e.audio.pause(); e.toggle.textContent = '▶'; e.toggle.title = 'Reproduzir'; }
 function nextMeditation(delta = 1) { if (!meditationPlaylist.length) return; loadMeditationTrack((meditationCurrentTrack + delta + meditationPlaylist.length) % meditationPlaylist.length); playMeditation(); }
-function initMeditationPlayer() { const e = playerEls(); if (!e.audio) return; e.audio.volume = .25; e.toggle.addEventListener('click', () => e.audio.paused ? playMeditation() : pauseMeditation()); e.prev.addEventListener('click', () => nextMeditation(-1)); e.next.addEventListener('click', () => nextMeditation(1)); e.audio.addEventListener('ended', () => nextMeditation(1)); e.volume.addEventListener('input', () => { e.audio.volume = Number(e.volume.value); }); e.select.addEventListener('change', () => { loadMeditationTrack(Number(e.select.value)); playMeditation(); }); document.getElementById('meditation-minimize').addEventListener('click', () => { document.getElementById('meditation-expanded').hidden = true; document.getElementById('meditation-collapsed').hidden = false; }); document.getElementById('meditation-expand').addEventListener('click', () => { document.getElementById('meditation-collapsed').hidden = true; document.getElementById('meditation-expanded').hidden = false; }); loadMeditationPlaylist(); }
+function openMeditationPlayer() {
+  const collapsed =
+    document.getElementById('meditation-collapsed');
+
+  const expanded =
+    document.getElementById('meditation-expanded');
+
+  if (collapsed) {
+    collapsed.hidden = true;
+  }
+
+  if (expanded) {
+    expanded.hidden = false;
+  }
+}
+
+
+function closeMeditationPlayer() {
+  const collapsed =
+    document.getElementById('meditation-collapsed');
+
+  const expanded =
+    document.getElementById('meditation-expanded');
+
+  if (expanded) {
+    expanded.hidden = true;
+  }
+
+  if (collapsed) {
+    collapsed.hidden = false;
+  }
+}
+function initMeditationPlayer() {
+
+  const e = playerEls();
+
+  if (!e.audio) return;
+
+
+  /* ========================================================
+     PLAY / PAUSE
+  ======================================================== */
+
+  e.toggle?.addEventListener('click', () => {
+
+    if (e.audio.paused) {
+      playMeditation();
+    } else {
+      pauseMeditation();
+    }
+
+  });
+
+
+  /* ========================================================
+     MÚSICA ANTERIOR
+  ======================================================== */
+
+  e.prev?.addEventListener('click', () => {
+    nextMeditation(-1);
+  });
+
+
+  /* ========================================================
+     PRÓXIMA MÚSICA
+  ======================================================== */
+
+  e.next?.addEventListener('click', () => {
+    nextMeditation(1);
+  });
+
+
+  /* ========================================================
+     QUANDO A MÚSICA TERMINAR
+  ======================================================== */
+
+  e.audio.addEventListener('ended', () => {
+    nextMeditation(1);
+  });
+
+
+  /* ========================================================
+     VOLUME
+  ======================================================== */
+
+  if (e.volume) {
+
+    e.audio.volume =
+      Number(e.volume.value || 0.25);
+
+    e.volume.addEventListener('input', () => {
+
+      e.audio.volume =
+        Number(e.volume.value);
+
+    });
+
+  }
+
+
+  /* ========================================================
+     SELEÇÃO MANUAL DA MÚSICA
+  ======================================================== */
+
+  e.select?.addEventListener('change', () => {
+
+    const index =
+      Number(e.select.value);
+
+    if (!Number.isFinite(index)) return;
+
+    loadMeditationTrack(index);
+
+    playMeditation();
+
+  });
+
+
+/* ========================================================
+   MINIMIZAR / EXPANDIR PLAYER
+======================================================== */
+
+const minimize =
+  document.getElementById('meditation-minimize');
+
+const expand =
+  document.getElementById('meditation-expand');
+
+
+minimize?.addEventListener(
+  'click',
+  closeMeditationPlayer
+);
+
+expand?.addEventListener(
+  'click',
+  openMeditationPlayer
+);
+
+
+
+
+  /* ========================================================
+     CRÉDITOS E LICENÇA
+  ======================================================== */
+
+  const creditsToggle =
+    document.getElementById(
+      'music-credits-toggle'
+    );
+
+  const creditsPanel =
+    document.getElementById(
+      'music-credits-panel'
+    );
+
+
+  if (
+    creditsToggle &&
+    creditsPanel
+  ) {
+
+    creditsToggle.addEventListener(
+      'click',
+      () => {
+
+        const isOpen =
+          !creditsPanel.hidden;
+
+        creditsPanel.hidden =
+          isOpen;
+
+        creditsToggle.setAttribute(
+          'aria-expanded',
+          String(!isOpen)
+        );
+
+      }
+    );
+
+  }
+
+
+  /* ========================================================
+     CARREGAR PLAYLIST
+  ======================================================== */
+
+  loadMeditationPlaylist();
+
+}
 
 /* ============================================================
    RESET VISUAL E INICIALIZAÇÃO

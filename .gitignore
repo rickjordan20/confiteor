@@ -1,16 +1,5 @@
-# Sistema operacional
 .DS_Store
 Thumbs.db
-
-# Editores
+*.log
 .vscode/
 .idea/
-
-# Arquivos temporários
-*.tmp
-*.temp
-*.swp
-*.swo
-
-# Logs
-*.log

@@ -339,822 +339,340 @@ const FREQ_OPTIONS = [
   { key:"numero",         label:"Número aproximado" }
 ];
 
-const answers = {};       // key -> true/false (marked or not)
-const frequencies = {};   // key -> { type: "muitas_vezes" | "numero" | ..., n?: number }
-const REPORT_SECTIONS = []; // populated at build time: {keyPrefix, sec, group, title, tallyId}
+
+/* ============================================================
+   ESTADO SEMÂNTICO, UX PROGRESSIVA, PRIVACIDADE E RELATÓRIO
+   ============================================================ */
+
+const STORAGE_KEY = 'confiteor-exam-state-v2';
+const NOTES_KEY = 'confiteor-general-notes-v2';
+const SELECTION_KEY = 'confiteor-selection-v2';
+const THEME_KEY = 'confiteor-theme';
+const PRIVACY_LOCK_MS = 5 * 60 * 1000;
+const PRIVACY_WARNING_MS = 25 * 60 * 1000;
+const PRIVACY_CLEAR_MS = 30 * 60 * 1000;
+
+const examState = loadExamState();
+const REPORT_SECTIONS = [];
+const ITEM_REGISTRY = {};
+const STEP_LABELS = {0:'Início'};
 let current = 0;
 let TOTAL_STEPS = 0;
 let CONTRITION_STEP = 0;
-let REPORT_STEP = 0;
+let DOUBT_STEP = 0;
+let REVIEW_STEP = 0;
+let FINAL_STEP = 0;
+
+const CIC_GUIDES = {
+  dez1:{ref:'CIC 2083–2141', text:'O primeiro mandamento orienta a fé, a esperança e a caridade para Deus e rejeita idolatria, superstição e práticas contrárias ao culto devido a Ele.'},
+  dez2:{ref:'CIC 2142–2167', text:'O segundo mandamento pede respeito pelo santo nome de Deus e trata do uso do nome divino, promessas, juramentos e blasfêmia.'},
+  dez3:{ref:'CIC 2168–2195', text:'O terceiro mandamento trata da santificação do Dia do Senhor, da participação na Eucaristia e do descanso devido.'},
+  dez4:{ref:'CIC 2196–2257', text:'O quarto mandamento trata dos deveres na família, da autoridade, da sociedade e das responsabilidades recíprocas.'},
+  dez5:{ref:'CIC 2258–2330', text:'O quinto mandamento protege a vida e a dignidade da pessoa humana e trata também da violência, da saúde e do respeito pela criação.'},
+  dez6:{ref:'CIC 2331–2400', text:'O sexto mandamento trata da vocação à castidade, do matrimônio e da integração da sexualidade na dignidade da pessoa.'},
+  dez7:{ref:'CIC 2401–2463', text:'O sétimo mandamento trata do respeito aos bens, da justiça, da restituição, do trabalho e da responsabilidade econômica e social.'},
+  dez8:{ref:'CIC 2464–2513', text:'O oitavo mandamento trata da verdade, da reputação, do testemunho, do sigilo e da responsabilidade na comunicação.'},
+  dez9:{ref:'CIC 2514–2533', text:'O nono mandamento trata da pureza do coração e do combate aos desejos desordenados.'},
+  dez10:{ref:'CIC 2534–2557', text:'O décimo mandamento trata da cobiça, da inveja e do apego desordenado aos bens.'},
+  capitais:{ref:'CIC 1866', text:'A tradição cristã chama de capitais certos vícios porque geram outros pecados e outros vícios.'},
+  igreja:{ref:'CIC 2041–2043', text:'Os preceitos da Igreja garantem um mínimo indispensável de vida sacramental, oração e crescimento moral.'}
+};
+
+function loadExamState(){
+  try{
+    const raw = sessionStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : {};
+  }catch(_){ return {}; }
+}
+function persistExamState(){
+  try{ sessionStorage.setItem(STORAGE_KEY, JSON.stringify(examState)); }catch(_){ }
+}
+function getItemState(key){
+  if(!examState[key]){
+    examState[key] = {answer:null, includeInConfession:false, frequency:null, note:'', decideLater:false};
+  }
+  return examState[key];
+}
+function updateItemState(key, changes){
+  examState[key] = {...getItemState(key), ...changes};
+  persistExamState();
+  return examState[key];
+}
+function isItemSelected(key){ return getItemState(key).includeInConfession === true; }
+function escapeHtml(value=''){
+  return String(value).replace(/[&<>'"]/g, ch=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[ch]));
+}
+function getIndicativeAnswer(item){ return item.indicativeAnswer || 'sim'; }
+function getGuide(opts){
+  if(opts.keyPrefix.startsWith('dez')) return CIC_GUIDES['dez'+opts.secNum] || null;
+  if(opts.keyPrefix.startsWith('cap')) return CIC_GUIDES.capitais;
+  if(opts.keyPrefix.startsWith('igr')) return CIC_GUIDES.igreja;
+  return null;
+}
 
 /* ============================================================
-   CONSTRUÇÃO DAS PÁGINAS (etapas do assistente)
+   COMPONENTES DE PERGUNTA
    ============================================================ */
-function buildChecklistPage(sec, opts){
-  const section = document.createElement('section');
-  section.className = 'step';
-  section.dataset.step = opts.globalStep;
+function frequencyButtonsHtml(key, state){
+  return FREQ_OPTIONS.map(o=>{
+    const sel = state.frequency?.type === o.key ? ' sel' : '';
+    return `<button type="button" class="freq-pill${sel}" data-freq="${o.key}" onclick="onFreqPick('${key}','${o.key}')">${o.label}</button>`;
+  }).join('');
+}
+function renderQuestionCardHtml(key){
+  const meta = ITEM_REGISTRY[key];
+  if(!meta) return '';
+  const {item, guide} = meta;
+  const state = getItemState(key);
+  const reportable = item.reportable !== false && !!item.f;
+  const indicative = getIndicativeAnswer(item);
+  const shouldShowDetails = state.answer === 'duvida' || state.includeInConfession || state.decideLater || !!state.note || !!state.frequency;
+  const sentence = item.f || '';
+  const noteHidden = ' hidden';
+  const numberValue = state.frequency?.type === 'numero' && state.frequency?.n ? state.frequency.n : '';
 
-  let groupsHtml = '';
-  let itemCount = 0;
-  sec.groups.forEach((g, gIdx) => {
-    if (g.label) groupsHtml += `<div class="group-label">${g.label}</div>`;
-    g.items.forEach((item, iIdx) => {
+  let details = '';
+  if(shouldShowDetails){
+    let decision = '';
+    if(reportable){
+      if(state.answer === 'duvida'){
+        decision = `<div class="doubt-help">Uma dúvida não é classificada automaticamente como pecado. Leia a explicação e, se ainda precisar, leve a questão ao sacerdote.</div>
+          <div class="include-row">
+            <button type="button" class="include-toggle ${state.includeInConfession?'included':''}" onclick="setInclude('${key}',true)">☑ Incluir na confissão</button>
+            <button type="button" class="link-action" onclick="setInclude('${key}',false)">Não incluir</button>
+            <button type="button" class="link-action" onclick="setDecideLater('${key}')">Decidir depois</button>
+            <span class="include-status">${state.decideLater?'Decisão pendente':state.includeInConfession?'Incluído na Confissão':'Não incluído'}</span>
+          </div>`;
+      } else if(state.answer === indicative || state.includeInConfession){
+        decision = `<div class="include-row"><button type="button" class="include-toggle ${state.includeInConfession?'included':''}" onclick="toggleInclude('${key}')">${state.includeInConfession?'✓ Incluído na Confissão':'Incluir na minha Confissão'}</button><span class="include-status">Resposta e inclusão são decisões separadas.</span></div>`;
+      }
+    }
+
+    const freq = reportable && state.includeInConfession ? `<div class="freq-inline"><span class="freq-label">Frequência aproximada (opcional)</span>${frequencyButtonsHtml(key,state)}<input type="number" min="1" class="freq-num ${state.frequency?.type==='numero'?'show':''}" id="freqnum-${key}" value="${numberValue}" placeholder="Nº" oninput="onFreqNumber('${key}',this.value)"></div>` : '';
+    const note = reportable && (state.includeInConfession || state.answer==='duvida') ? `<div class="item-actions"><button type="button" class="link-action" onclick="toggleItemNote('${key}')">✏️ ${state.note?'Editar observação':'Adicionar observação (opcional)'}</button></div><div class="item-note" id="note-${key}"${noteHidden}><textarea maxlength="800" placeholder="Escreva aqui alguma informação que você queira lembrar no momento da confissão..." oninput="updateNote('${key}',this.value)">${escapeHtml(state.note||'')}</textarea><div class="item-note-tools"><button type="button" class="link-action" onclick="toggleItemNote('${key}')">Recolher</button><button type="button" class="link-action" onclick="removeNote('${key}')">Remover observação</button></div></div>` : '';
+    const help = `<div class="accordion-stack">
+      <div class="accordion"><button class="accordion-trigger" type="button" aria-expanded="false"><span>❓ Entenda melhor esta pergunta</span><span class="accordion-chevron">⌄</span></button><div class="accordion-panel" hidden><p>Considere atos e omissões realmente assumidos por você. Tentação, sentimento espontâneo ou pensamento involuntário não devem ser tratados automaticamente como pecado. Se a situação depender de circunstâncias, leve a dúvida ao sacerdote.</p></div></div>
+      ${guide?`<div class="accordion"><button class="accordion-trigger" type="button" aria-expanded="false"><span>📖 O que a Igreja ensina?</span><span class="accordion-chevron">⌄</span></button><div class="accordion-panel" hidden><div class="catechism-box"><div class="catechism-kicker">Referência no Catecismo</div><p>${guide.text}</p><div class="catechism-ref">${guide.ref}</div></div></div></div>`:''}
+    </div>`;
+    details = `<div class="question-details">${decision}${freq}${note}${help}</div>`;
+  }
+
+  return `${item.reportable===false?'<div class="spiritual-badge">Para aprofundar minha vida espiritual</div>':''}<div class="question-text">${item.t}</div><div class="answer-row" role="group" aria-label="Resposta"><button type="button" class="answer-btn ${state.answer==='sim'?'selected':''}" data-answer="sim" onclick="setAnswer('${key}','sim')">Sim</button><button type="button" class="answer-btn ${state.answer==='nao'?'selected':''}" data-answer="nao" onclick="setAnswer('${key}','nao')">Não</button><button type="button" class="answer-btn ${state.answer==='duvida'?'selected':''}" data-answer="duvida" onclick="setAnswer('${key}','duvida')">Tenho dúvida</button></div>${details}`;
+}
+function refreshQuestion(key){
+  const card = document.getElementById('card-'+key);
+  if(card) card.innerHTML = renderQuestionCardHtml(key);
+  updateTallies();
+}
+function setAnswer(key, answer){
+  const meta = ITEM_REGISTRY[key];
+  if(!meta) return;
+  const reportable = meta.item.reportable !== false && !!meta.item.f;
+  const indicative = getIndicativeAnswer(meta.item);
+  const changes = {answer};
+  if(!reportable){ changes.includeInConfession=false; changes.decideLater=false; }
+  else if(answer==='duvida'){ changes.includeInConfession=false; changes.decideLater=true; }
+  else if(answer===indicative){ changes.includeInConfession=true; changes.decideLater=false; }
+  else { changes.includeInConfession=false; changes.decideLater=false; changes.frequency=null; }
+  updateItemState(key, changes);
+  refreshQuestion(key);
+}
+function toggleInclude(key){ setInclude(key,!getItemState(key).includeInConfession); }
+function setInclude(key,value){
+  updateItemState(key,{includeInConfession:!!value,decideLater:false});
+  if(!value) updateItemState(key,{frequency:null});
+  refreshQuestion(key);
+  if(current===REVIEW_STEP) renderReview();
+  if(current===DOUBT_STEP) renderDoubts();
+}
+function setDecideLater(key){ updateItemState(key,{includeInConfession:false,decideLater:true}); refreshQuestion(key); if(current===DOUBT_STEP) renderDoubts(); }
+function toggleItemNote(key){ const el=document.getElementById('note-'+key); if(el) el.hidden=!el.hidden; }
+function updateNote(key,value){ updateItemState(key,{note:value}); if(current===REVIEW_STEP) renderReview(); }
+function removeNote(key){ updateItemState(key,{note:''}); refreshQuestion(key); if(current===REVIEW_STEP) renderReview(); }
+
+function onFreqPick(key,freqKey){
+  const state=getItemState(key);
+  if(freqKey==='numero') updateItemState(key,{frequency:{type:'numero',n:state.frequency?.type==='numero'?state.frequency.n:null}});
+  else updateItemState(key,{frequency:{type:freqKey}});
+  refreshQuestion(key);
+  if(freqKey==='numero') document.getElementById('freqnum-'+key)?.focus();
+  if(current===REVIEW_STEP) renderReview();
+}
+function onFreqNumber(key,value){ updateItemState(key,{frequency:{type:'numero',n:value?parseInt(value,10):null}}); if(current===REVIEW_STEP) renderReview(); }
+
+/* ============================================================
+   CONSTRUÇÃO DAS ETAPAS
+   ============================================================ */
+function buildChecklistPage(sec,opts){
+  const section=document.createElement('section');
+  section.className='step'; section.dataset.step=opts.globalStep;
+  let groupsHtml=''; let itemCount=0;
+  sec.groups.forEach((g,gIdx)=>{
+    if(g.label) groupsHtml+=`<div class="group-label">${g.label}</div>`;
+    g.items.forEach((item,iIdx)=>{
       itemCount++;
-      const key = `${opts.keyPrefix}-g${gIdx}-i${iIdx}`;
-      const reportable = item.reportable !== false;
-      const pills = FREQ_OPTIONS.map(o =>
-        `<button type="button" class="freq-pill" data-freq="${o.key}" onclick="onFreqPick('${key}','${o.key}')">${o.label}</button>`
-      ).join('');
-      groupsHtml += `
-        <div class="qwrap${reportable ? '' : ' reflection'}" id="wrap-${key}">
-          <label class="q" data-key="${key}">
-            <input type="checkbox" id="${key}" onchange="onCheck('${key}', this.checked)">
-            <span class="txt">${item.t}</span>
-          </label>
-          ${reportable ? `<div class="freq-row" id="freq-${key}">
-            <span class="freq-label">Quantas vezes, aproximadamente?</span>
-            ${pills}
-            <input type="number" min="1" class="freq-num" id="freqnum-${key}" placeholder="Nº" oninput="onFreqNumber('${key}', this.value)">
-          </div>` : `<div class="reflection-note">Reflexão espiritual: este item não é acrescentado automaticamente à lista para a Confissão.</div>`}
-        </div>`;
+      const key=`${opts.keyPrefix}-g${gIdx}-i${iIdx}`;
+      ITEM_REGISTRY[key]={key,item,sec,groupLabel:g.label,groupName:opts.groupName,sectionTitle:opts.reportTitle,guide:getGuide({...opts,secNum:sec.num})};
+      getItemState(key);
+      groupsHtml+=`<div class="question-card" id="card-${key}">${renderQuestionCardHtml(key)}</div>`;
     });
   });
-
-  section.innerHTML = `
-    <div class="cmd-head">
-      <div class="cmd-head-top">
-        <div class="cmd-num"><span class="n">${opts.badge}</span> ${opts.chapterLabel}</div>
-        <div class="cmd-progress">${opts.chapterProgress}</div>
-      </div>
-      <h2>${sec.title}</h2>
-      ${sec.subtitle ? `<div class="cmd-subtitle">${sec.subtitle}</div>` : ''}
-      <div class="cmd-verse">${sec.verse}</div>
-      ${sec.description ? `<p class="cmd-desc">${sec.description}</p>` : ''}
-      <div class="cmd-tally" id="tally-${opts.keyPrefix}">0 de ${itemCount} marcados</div>
-    </div>
-    ${groupsHtml}
-    <div class="nav-buttons">
-      <button class="btn ghost" onclick="goTo(${opts.prevStep})">← Voltar</button>
-      <button class="btn primary" onclick="goTo(${opts.nextStep})">${opts.nextLabel}</button>
-    </div>
-  `;
+  section.innerHTML=`<div class="cmd-head"><div class="cmd-head-top"><div class="cmd-num"><span class="n">${opts.badge}</span> ${opts.chapterLabel}</div><div class="cmd-progress">${opts.chapterProgress}</div></div><h2>${sec.title}</h2>${sec.subtitle?`<div class="cmd-subtitle">${sec.subtitle}</div>`:''}<div class="cmd-verse">${sec.verse}</div>${sec.description?`<p class="cmd-desc">${sec.description}</p>`:''}<div class="cmd-tally" id="tally-${opts.keyPrefix}">0 incluídos</div></div>${groupsHtml}<div class="nav-buttons"><button class="btn ghost" onclick="goTo(${opts.prevStep})">← Voltar</button><button class="btn primary" onclick="goTo(${opts.nextStep})">${opts.nextLabel}</button></div>`;
   return section;
 }
-
-function buildInfoPage(def, globalStep, prevStep, nextStep){
-  const section = document.createElement('section');
-  section.className = 'step';
-  section.dataset.step = globalStep;
-  section.innerHTML = `
-    <div class="cmd-head-top">
-      <div class="cmd-num"><span class="n">${def.badge}</span> ${def.chapterLabel}</div>
-    </div>
-    ${def.eyebrow ? `<div class="eyebrow" style="margin-top:12px;">${def.eyebrow}</div>` : ''}
-    <h2 style="font-size:28px; margin-top:6px;">${def.title}</h2>
-    ${def.bodyHtml}
-    <div class="nav-buttons">
-      <button class="btn ghost" onclick="goTo(${prevStep})">← Voltar</button>
-      <button class="btn primary" onclick="goTo(${nextStep})">${def.nextLabel}</button>
-    </div>
-  `;
+function buildInfoPage(def,globalStep,prevStep,nextStep){
+  const section=document.createElement('section'); section.className='step'; section.dataset.step=globalStep;
+  section.innerHTML=`<div class="cmd-head-top"><div class="cmd-num"><span class="n">${def.badge}</span> ${def.chapterLabel}</div></div>${def.eyebrow?`<div class="eyebrow" style="margin-top:12px;">${def.eyebrow}</div>`:''}<h2 style="font-size:28px;margin-top:6px;">${def.title}</h2>${def.bodyHtml}<div class="nav-buttons"><button class="btn ghost" onclick="goTo(${prevStep})">← Voltar</button><button class="btn primary" onclick="goTo(${nextStep})">${def.nextLabel}</button></div>`;
   return section;
 }
-
 function buildAllSteps(sel){
-  const container = document.getElementById('cmd-steps');
-  container.innerHTML = '';
-  REPORT_SECTIONS.length = 0;
-  const railDefs = []; // {step, char, title, chapterFirst}
-
-  // cover is already in the DOM as step 0
-  railDefs.push({ step:0, char:'•', title:'Início' });
-
-  let stepCounter = 1;
-
-  // ---- Dez Mandamentos ----
-  if (sel.dez){
-    SECTIONS_DEZ.forEach((sec, i) => {
-      const globalStep = stepCounter;
-      const el = buildChecklistPage(sec, {
-        globalStep, keyPrefix:`dez${i}`, badge:i+1,
-        chapterLabel:`Mandamento ${sec.num}`,
-        chapterProgress:`Etapa ${i+1} de ${SECTIONS_DEZ.length}`,
-        prevStep: globalStep-1, nextStep: globalStep+1,
-        nextLabel: i===SECTIONS_DEZ.length-1 ? 'Continuar →' : 'Próximo mandamento →'
-      });
-      container.appendChild(el);
-      REPORT_SECTIONS.push({ keyPrefix:`dez${i}`, sec, group:'Dez Mandamentos', title:`${sec.num}º Mandamento — ${sec.title}` });
-      railDefs.push({ step:globalStep, char:String(i+1), title:`Mandamento ${sec.num} — ${sec.title}`, chapterFirst:i===0 });
-      stepCounter++;
+  const container=document.getElementById('cmd-steps'); container.innerHTML='';
+  REPORT_SECTIONS.length=0; Object.keys(ITEM_REGISTRY).forEach(k=>delete ITEM_REGISTRY[k]);
+  const railDefs=[{step:0,char:'•',title:'Início'}]; let stepCounter=1;
+  if(sel.dez){
+    SECTIONS_DEZ.forEach((sec,i)=>{
+      const globalStep=stepCounter; const kp=`dez${i}`;
+      const title=`${sec.num}º Mandamento — ${sec.title}`;
+      container.appendChild(buildChecklistPage(sec,{globalStep,keyPrefix:kp,badge:i+1,chapterLabel:`Mandamento ${sec.num}`,chapterProgress:`Etapa ${i+1} de ${SECTIONS_DEZ.length}`,prevStep:globalStep-1,nextStep:globalStep+1,nextLabel:i===SECTIONS_DEZ.length-1?'Continuar →':'Próximo mandamento →',groupName:'Dez Mandamentos',reportTitle:title}));
+      REPORT_SECTIONS.push({keyPrefix:kp,sec,group:'Dez Mandamentos',title}); STEP_LABELS[globalStep]=`${sec.num}º Mandamento`; railDefs.push({step:globalStep,char:String(i+1),title,chapterFirst:i===0}); stepCounter++;
     });
   }
-
-  // ---- Pecados Capitais ----
-  if (sel.capitais){
-    // intro
-    {
-      const globalStep = stepCounter;
-      const el = buildInfoPage({
-        badge:'P', chapterLabel:'Pecados Capitais',
-        eyebrow:'Conhecer · Discernir · Vencer',
-        title:'Os 7 Pecados Capitais',
-        bodyHtml: CAPITAIS_INTRO_HTML,
-        nextLabel:'Começar →'
-      }, globalStep, globalStep-1, globalStep+1);
-      container.appendChild(el);
-      railDefs.push({ step:globalStep, char:'P', title:'Os 7 Pecados Capitais', chapterFirst:true });
-      stepCounter++;
-    }
-
-    // 7 seções
-    SECTIONS_CAPITAIS.forEach((sec, i) => {
-      const globalStep = stepCounter;
-      const el = buildChecklistPage(sec, {
-        globalStep, keyPrefix:`cap${i}`, badge:i+1,
-        chapterLabel:`Pecado Capital ${sec.num}`,
-        chapterProgress:`Etapa ${i+1} de ${SECTIONS_CAPITAIS.length}`,
-        prevStep: globalStep-1, nextStep: globalStep+1,
-        nextLabel: i===SECTIONS_CAPITAIS.length-1 ? 'Continuar →' : 'Próximo pecado →'
-      });
-      container.appendChild(el);
-      REPORT_SECTIONS.push({ keyPrefix:`cap${i}`, sec, group:'Pecados Capitais', title:`${sec.num}º Pecado Capital — ${sec.title}` });
-      railDefs.push({ step:globalStep, char:String(i+1), title:`Pecado Capital — ${sec.title}` });
-      stepCounter++;
-    });
-
-    // para vencer (outro)
-    {
-      const globalStep = stepCounter;
-      const el = buildInfoPage({
-        badge:'+', chapterLabel:'Pecados Capitais',
-        title:'Para vencer os pecados capitais',
-        bodyHtml: CAPITAIS_OUTRO_HTML,
-        nextLabel:'Continuar →'
-      }, globalStep, globalStep-1, globalStep+1);
-      container.appendChild(el);
-      railDefs.push({ step:globalStep, char:'+', title:'Para vencer os pecados capitais' });
-      stepCounter++;
-    }
+  if(sel.capitais){
+    let gs=stepCounter; container.appendChild(buildInfoPage({badge:'P',chapterLabel:'Pecados Capitais',eyebrow:'Conhecer · Discernir · Vencer',title:'Os 7 Pecados Capitais',bodyHtml:CAPITAIS_INTRO_HTML,nextLabel:'Começar →'},gs,gs-1,gs+1)); STEP_LABELS[gs]='Pecados Capitais'; railDefs.push({step:gs,char:'P',title:'Pecados Capitais',chapterFirst:true}); stepCounter++;
+    SECTIONS_CAPITAIS.forEach((sec,i)=>{ const globalStep=stepCounter,kp=`cap${i}`,title=`${sec.num}º Pecado Capital — ${sec.title}`; container.appendChild(buildChecklistPage(sec,{globalStep,keyPrefix:kp,badge:i+1,chapterLabel:`Pecado Capital ${sec.num}`,chapterProgress:`Etapa ${i+1} de ${SECTIONS_CAPITAIS.length}`,prevStep:globalStep-1,nextStep:globalStep+1,nextLabel:i===SECTIONS_CAPITAIS.length-1?'Continuar →':'Próximo pecado →',groupName:'Pecados Capitais',reportTitle:title})); REPORT_SECTIONS.push({keyPrefix:kp,sec,group:'Pecados Capitais',title}); STEP_LABELS[globalStep]=sec.title; railDefs.push({step:globalStep,char:String(i+1),title}); stepCounter++; });
+    gs=stepCounter; container.appendChild(buildInfoPage({badge:'+',chapterLabel:'Pecados Capitais',title:'Para vencer os pecados capitais',bodyHtml:CAPITAIS_OUTRO_HTML,nextLabel:'Continuar →'},gs,gs-1,gs+1)); STEP_LABELS[gs]='Para vencer os pecados capitais'; railDefs.push({step:gs,char:'+',title:'Para vencer os pecados capitais'}); stepCounter++;
   }
-
-  // ---- Mandamentos da Igreja ----
-  if (sel.igreja){
-    // intro
-    {
-      const globalStep = stepCounter;
-      const el = buildInfoPage({
-        badge:'I', chapterLabel:'Mandamentos da Igreja',
-        eyebrow:'Viver a fé em comunhão',
-        title:'Os 5 Mandamentos da Igreja',
-        bodyHtml: IGREJA_INTRO_HTML,
-        nextLabel:'Começar →'
-      }, globalStep, globalStep-1, globalStep+1);
-      container.appendChild(el);
-      railDefs.push({ step:globalStep, char:'I', title:'Os 5 Mandamentos da Igreja', chapterFirst:true });
-      stepCounter++;
-    }
-
-    // 5 seções
-    SECTIONS_IGREJA.forEach((sec, i) => {
-      const globalStep = stepCounter;
-      const el = buildChecklistPage(sec, {
-        globalStep, keyPrefix:`igr${i}`, badge:i+1,
-        chapterLabel:`Mandamento da Igreja ${sec.num}`,
-        chapterProgress:`Etapa ${i+1} de ${SECTIONS_IGREJA.length}`,
-        prevStep: globalStep-1, nextStep: globalStep+1,
-        nextLabel: i===SECTIONS_IGREJA.length-1 ? 'Continuar →' : 'Próximo →'
-      });
-      container.appendChild(el);
-      REPORT_SECTIONS.push({ keyPrefix:`igr${i}`, sec, group:'Mandamentos da Igreja', title:`${sec.num}º Mandamento da Igreja — ${sec.title}` });
-      railDefs.push({ step:globalStep, char:String(i+1), title:`Mandamento da Igreja — ${sec.title}` });
-      stepCounter++;
-    });
+  if(sel.igreja){
+    let gs=stepCounter; container.appendChild(buildInfoPage({badge:'I',chapterLabel:'Mandamentos da Igreja',eyebrow:'Viver a fé em comunhão',title:'Os 5 Mandamentos da Igreja',bodyHtml:IGREJA_INTRO_HTML,nextLabel:'Começar →'},gs,gs-1,gs+1)); STEP_LABELS[gs]='Mandamentos da Igreja'; railDefs.push({step:gs,char:'I',title:'Mandamentos da Igreja',chapterFirst:true}); stepCounter++;
+    SECTIONS_IGREJA.forEach((sec,i)=>{ const globalStep=stepCounter,kp=`igr${i}`,title=`${sec.num}º Mandamento da Igreja — ${sec.title}`; container.appendChild(buildChecklistPage(sec,{globalStep,keyPrefix:kp,badge:i+1,chapterLabel:`Mandamento da Igreja ${sec.num}`,chapterProgress:`Etapa ${i+1} de ${SECTIONS_IGREJA.length}`,prevStep:globalStep-1,nextStep:globalStep+1,nextLabel:i===SECTIONS_IGREJA.length-1?'Continuar →':'Próximo →',groupName:'Mandamentos da Igreja',reportTitle:title})); REPORT_SECTIONS.push({keyPrefix:kp,sec,group:'Mandamentos da Igreja',title}); STEP_LABELS[globalStep]=`Mandamento da Igreja ${sec.num}`; railDefs.push({step:globalStep,char:String(i+1),title}); stepCounter++; });
   }
-
-  // ---- Contrição e Relatório (já existem no HTML) ----
-  CONTRITION_STEP = stepCounter;
-  REPORT_STEP = stepCounter + 1;
-  TOTAL_STEPS = REPORT_STEP;
-
-  const pageContrition = document.getElementById('page-contrition');
-  pageContrition.dataset.step = CONTRITION_STEP;
-  document.getElementById('contrition-progress').textContent = `Etapa ${CONTRITION_STEP} de ${TOTAL_STEPS}`;
-  document.getElementById('btn-contrition-back').onclick = () => goTo(CONTRITION_STEP-1);
-  document.getElementById('btn-contrition-next').onclick = () => goTo(REPORT_STEP);
-  railDefs.push({ step:CONTRITION_STEP, char:'C', title:'Arrependimento', chapterFirst:true });
-
-  const pageReport = document.getElementById('page-report');
-  pageReport.dataset.step = REPORT_STEP;
-  document.getElementById('report-progress').textContent = `Etapa ${REPORT_STEP} de ${TOTAL_STEPS}`;
-  document.getElementById('btn-report-back').onclick = () => goTo(CONTRITION_STEP);
-  railDefs.push({ step:REPORT_STEP, char:'R', title:'Relatório', chapterFirst:true });
-
-  buildRail(railDefs);
+  CONTRITION_STEP=stepCounter++; DOUBT_STEP=stepCounter++; REVIEW_STEP=stepCounter++; FINAL_STEP=stepCounter++; TOTAL_STEPS=FINAL_STEP;
+  STEP_LABELS[CONTRITION_STEP]='Arrependimento'; STEP_LABELS[DOUBT_STEP]='Revisão de dúvidas'; STEP_LABELS[REVIEW_STEP]='Revisão para a Confissão'; STEP_LABELS[FINAL_STEP]='Conclusão';
+  const contr=document.getElementById('page-contrition'); contr.dataset.step=CONTRITION_STEP; document.getElementById('contrition-progress').textContent=`Etapa ${CONTRITION_STEP} de ${TOTAL_STEPS}`; document.getElementById('btn-contrition-back').onclick=()=>goTo(CONTRITION_STEP-1); document.getElementById('btn-contrition-next').onclick=()=>goTo(DOUBT_STEP); railDefs.push({step:CONTRITION_STEP,char:'C',title:'Arrependimento',chapterFirst:true});
+  const doubts=document.getElementById('page-doubts'); doubts.dataset.step=DOUBT_STEP; document.getElementById('doubts-progress').textContent=`Etapa ${DOUBT_STEP} de ${TOTAL_STEPS}`; document.getElementById('btn-doubts-back').onclick=()=>goTo(CONTRITION_STEP); document.getElementById('btn-doubts-next').onclick=()=>goTo(REVIEW_STEP); railDefs.push({step:DOUBT_STEP,char:'?',title:'Revisão de dúvidas',chapterFirst:true});
+  const review=document.getElementById('page-review'); review.dataset.step=REVIEW_STEP; document.getElementById('review-progress').textContent=`Etapa ${REVIEW_STEP} de ${TOTAL_STEPS}`; document.getElementById('btn-review-back').onclick=()=>goTo(DOUBT_STEP); document.getElementById('btn-review-next').onclick=()=>goTo(FINAL_STEP); railDefs.push({step:REVIEW_STEP,char:'R',title:'Revisão para a Confissão',chapterFirst:true});
+  const final=document.getElementById('page-final'); final.dataset.step=FINAL_STEP; document.getElementById('final-progress').textContent=`Etapa ${FINAL_STEP} de ${TOTAL_STEPS}`; railDefs.push({step:FINAL_STEP,char:'✓',title:'Conclusão',chapterFirst:true});
+  buildRail(railDefs); persistExamState();
 }
 
-/* ============================================================
-   SELEÇÃO DE BLOCOS (capa)
-   ============================================================ */
-function chapterQuestionCount(sections){
-  let n = 0;
-  sections.forEach(sec => sec.groups.forEach(g => n += g.items.length));
-  return n;
-}
-
-function getSelection(){
-  return {
-    dez: document.getElementById('sel-dez').checked,
-    capitais: document.getElementById('sel-capitais').checked,
-    igreja: document.getElementById('sel-igreja').checked
-  };
-}
-
+function chapterQuestionCount(sections){ let n=0; sections.forEach(sec=>sec.groups.forEach(g=>n+=g.items.length)); return n; }
+function getSelection(){ return {dez:document.getElementById('sel-dez').checked,capitais:document.getElementById('sel-capitais').checked,igreja:document.getElementById('sel-igreja').checked}; }
+function saveSelection(){ try{sessionStorage.setItem(SELECTION_KEY,JSON.stringify(getSelection()));}catch(_){ } }
+function restoreSelection(){ try{ const s=JSON.parse(sessionStorage.getItem(SELECTION_KEY)||'null'); if(s){document.getElementById('sel-dez').checked=!!s.dez;document.getElementById('sel-capitais').checked=!!s.capitais;document.getElementById('sel-igreja').checked=!!s.igreja;} }catch(_){ } }
 function updateSelectionSummary(){
-  document.getElementById('count-dez').textContent = chapterQuestionCount(SECTIONS_DEZ) + ' perguntas';
-  document.getElementById('count-capitais').textContent = chapterQuestionCount(SECTIONS_CAPITAIS) + ' perguntas';
-  document.getElementById('count-igreja').textContent = chapterQuestionCount(SECTIONS_IGREJA) + ' perguntas';
-
-  const sel = getSelection();
-  let total = 0, chapters = 0;
-  if (sel.dez){ total += chapterQuestionCount(SECTIONS_DEZ); chapters++; }
-  if (sel.capitais){ total += chapterQuestionCount(SECTIONS_CAPITAIS); chapters++; }
-  if (sel.igreja){ total += chapterQuestionCount(SECTIONS_IGREJA); chapters++; }
-
-  const summary = document.getElementById('picker-summary');
-  const btn = document.getElementById('btn-start');
-  if (chapters === 0){
-    summary.textContent = 'Selecione ao menos um bloco para começar.';
-    if (btn) btn.disabled = true;
-  } else {
-    const blocoLabel = chapters === 1 ? 'bloco' : 'blocos';
-    summary.textContent = `${total} perguntas no total, em ${chapters} ${blocoLabel}.`;
-    if (btn) btn.disabled = false;
-  }
+  document.getElementById('count-dez').textContent=chapterQuestionCount(SECTIONS_DEZ)+' perguntas'; document.getElementById('count-capitais').textContent=chapterQuestionCount(SECTIONS_CAPITAIS)+' perguntas'; document.getElementById('count-igreja').textContent=chapterQuestionCount(SECTIONS_IGREJA)+' perguntas';
+  const sel=getSelection(); let total=0,chapters=0; if(sel.dez){total+=chapterQuestionCount(SECTIONS_DEZ);chapters++;} if(sel.capitais){total+=chapterQuestionCount(SECTIONS_CAPITAIS);chapters++;} if(sel.igreja){total+=chapterQuestionCount(SECTIONS_IGREJA);chapters++;}
+  const summary=document.getElementById('picker-summary'),btn=document.getElementById('btn-start'); if(chapters===0){summary.textContent='Selecione ao menos um bloco para começar.';btn.disabled=true;}else{summary.textContent=`${total} perguntas no total, em ${chapters} ${chapters===1?'bloco':'blocos'}.`;btn.disabled=false;} saveSelection();
 }
+function startExam(){ const sel=getSelection(); if(!sel.dez&&!sel.capitais&&!sel.igreja)return updateSelectionSummary(); buildAllSteps(sel); updateTallies(); goTo(1); }
 
 /* ============================================================
-   VÍDEOS RECOMENDADOS (player embutido sob demanda)
+   NAVEGAÇÃO E PROGRESSO
    ============================================================ */
-function playVideo(evt, el){
-  evt.preventDefault();
-  const id = el.dataset.yt;
-  const thumb = el.querySelector('.video-thumb');
-  if (thumb.classList.contains('is-playing')) return false;
-  thumb.classList.add('is-playing');
-  thumb.innerHTML = `<iframe src="https://www.youtube.com/embed/${id}?autoplay=1&rel=0" title="Vídeo do YouTube" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>`;
-  return false;
-}
-
-function startExam(){
-  const sel = getSelection();
-  if (!sel.dez && !sel.capitais && !sel.igreja){
-    updateSelectionSummary();
-    return;
-  }
-  buildAllSteps(sel);
-  updateTallies();
-  updateProgressBar();
-  renderReport();
-  goTo(1);
-}
-
-/* ============================================================
-   NAVEGAÇÃO / RAIL / PROGRESSO
-   ============================================================ */
-function buildRail(railDefs){
-  const rail = document.getElementById('rail');
-  rail.innerHTML = '';
-  railDefs.forEach((def, idx) => {
-    const dot = document.createElement('div');
-    dot.className = 'dot' + (def.chapterFirst ? ' chapter-first' : '');
-    dot.id = 'dot-'+def.step;
-    dot.textContent = def.char;
-    dot.title = def.title;
-    dot.setAttribute('role','button');
-    dot.tabIndex = 0;
-    dot.onclick = () => goTo(def.step);
-    dot.onkeydown = (e) => { if (e.key==='Enter' || e.key===' ') { e.preventDefault(); goTo(def.step); } };
-    rail.appendChild(dot);
-    if (idx < railDefs.length-1){
-      const line = document.createElement('div');
-      line.className='line';
-      line.id = 'line-'+def.step;
-      rail.appendChild(line);
-    }
-  });
-}
-
-function updateRail(){
-  for (let i=0;i<=TOTAL_STEPS;i++){
-    const dot = document.getElementById('dot-'+i);
-    if (!dot) continue;
-    dot.classList.toggle('active', i===current);
-    dot.classList.toggle('done', i<current);
-    const line = document.getElementById('line-'+i);
-    if (line) line.classList.toggle('done', i<current);
-  }
-  const activeDot = document.getElementById('dot-'+current);
-  if (activeDot) activeDot.scrollIntoView({block:'nearest', inline:'center', behavior:'smooth'});
-}
-
-function totalQuestionCount(){
-  let n = 0;
-  REPORT_SECTIONS.forEach(rs => rs.sec.groups.forEach(g => n += g.items.length));
-  return n;
-}
-
-function totalAnsweredCount(){
-  return Object.values(answers).filter(Boolean).length;
-}
-
+function buildRail(defs){ const rail=document.getElementById('rail'); rail.innerHTML=''; defs.forEach((def,idx)=>{ const dot=document.createElement('div'); dot.className='dot'+(def.chapterFirst?' chapter-first':''); dot.id='dot-'+def.step; dot.textContent=def.char; dot.title=def.title; dot.setAttribute('role','button'); dot.tabIndex=0; dot.onclick=()=>goTo(def.step); dot.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();goTo(def.step);}}; rail.appendChild(dot); if(idx<defs.length-1){const line=document.createElement('div');line.className='line';line.id='line-'+def.step;rail.appendChild(line);} }); }
+function updateRail(){ for(let i=0;i<=TOTAL_STEPS;i++){const dot=document.getElementById('dot-'+i);if(!dot)continue;dot.classList.toggle('active',i===current);dot.classList.toggle('done',i<current);const line=document.getElementById('line-'+i);if(line)line.classList.toggle('done',i<current);} document.getElementById('dot-'+current)?.scrollIntoView({block:'nearest',inline:'center',behavior:'smooth'}); }
 function updateProgressBar(){
-  const fill = document.getElementById('progress-fill');
-  if (!fill) return;
-  if (!TOTAL_STEPS){
-    fill.style.width = '0%';
-    return;
-  }
-  const pct = Math.round((current / TOTAL_STEPS) * 100);
-  fill.style.width = Math.max(0, Math.min(100, pct)) + '%';
+  const max=Math.max(TOTAL_STEPS,1); const pct=Math.max(0,Math.min(100,Math.round((current/max)*100))); const fill=document.getElementById('progress-fill'); if(fill)fill.style.width=pct+'%'; document.getElementById('progress-percent').textContent=pct+'%'; document.getElementById('progress-label').textContent=STEP_LABELS[current]||'Exame de consciência'; const remaining=Math.max(TOTAL_STEPS-current,0); document.getElementById('progress-remaining').textContent=remaining?`${remaining} ${remaining===1?'etapa restante':'etapas restantes'}`:'Concluído'; const track=document.querySelector('.progress-track[role="progressbar"]'); track?.setAttribute('aria-valuenow',String(pct));
 }
-
-function goTo(step){
-  step = Math.max(0, Math.min(TOTAL_STEPS, step));
-  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
-  const target = document.querySelector(`.step[data-step="${step}"]`);
-  if (target) target.classList.add('active');
-  current = step;
-  updateRail();
-  updateTallies();
-  updateProgressBar();
-  if (step === REPORT_STEP) renderReport();
-  window.scrollTo({top:0, behavior:'smooth'});
-}
+function goTo(step){ step=Math.max(0,Math.min(TOTAL_STEPS,step)); document.querySelectorAll('.step').forEach(s=>s.classList.remove('active')); const target=document.querySelector(`.step[data-step="${step}"]`); if(target)target.classList.add('active'); current=step; updateRail(); updateTallies(); updateProgressBar(); if(step===DOUBT_STEP)renderDoubts(); if(step===REVIEW_STEP)renderReview(); window.scrollTo({top:0,behavior:'smooth'}); }
+function updateTallies(){ REPORT_SECTIONS.forEach(rs=>{let count=0,total=0;rs.sec.groups.forEach((g,gi)=>g.items.forEach((item,ii)=>{if(item.reportable!==false)total++;const key=`${rs.keyPrefix}-g${gi}-i${ii}`;if(item.reportable!==false&&isItemSelected(key))count++;}));const el=document.getElementById('tally-'+rs.keyPrefix);if(el)el.textContent=`${count} ${count===1?'incluído':'incluídos'} na Confissão`;}); }
 
 /* ============================================================
-   MARCAÇÃO DE ITENS E FREQUÊNCIA
+   DÚVIDAS E REVISÃO
    ============================================================ */
-function onCheck(key, isChecked){
-  answers[key] = isChecked;
-  const box = document.getElementById(key);
-  box.closest('.q').classList.toggle('checked', isChecked);
-  const wrap = document.getElementById('wrap-'+key);
-  if (wrap) wrap.classList.toggle('show-freq', isChecked);
-  if (!isChecked){
-    delete frequencies[key];
-    const row = document.getElementById('freq-'+key);
-    if (row) row.querySelectorAll('.freq-pill').forEach(b => b.classList.remove('sel'));
-    const numEl = document.getElementById('freqnum-'+key);
-    if (numEl){ numEl.classList.remove('show'); numEl.value=''; }
+function getDoubtKeys(){ return Object.keys(ITEM_REGISTRY).filter(k=>{const s=getItemState(k);return s.answer==='duvida'||s.decideLater;}); }
+function renderDoubts(){ const body=document.getElementById('doubts-body'); const keys=getDoubtKeys(); if(!keys.length){body.innerHTML='<div class="empty-state">Nenhum item ficou pendente. Você pode seguir para a revisão da Confissão.</div>';return;} body.innerHTML=keys.map(key=>{const m=ITEM_REGISTRY[key],s=getItemState(key),g=m.guide;return `<div class="doubt-card"><h4>${m.sectionTitle}</h4><p class="review-sentence">${m.item.t}</p>${g?`<div class="catechism-box"><div class="catechism-kicker">Referência no Catecismo</div><p>${g.text}</p><div class="catechism-ref">${g.ref}</div></div>`:''}<div class="review-tools"><button class="btn ${s.includeInConfession?'primary':''}" onclick="setInclude('${key}',true)">☑ Incluir na Confissão</button><button class="btn" onclick="resolveDoubt('${key}',false)">Não incluir</button><button class="btn ghost" onclick="focusOriginalQuestion('${key}')">Voltar à pergunta</button></div></div>`;}).join(''); }
+function resolveDoubt(key,include){ updateItemState(key,{includeInConfession:!!include,decideLater:false}); if(!include)updateItemState(key,{frequency:null}); refreshQuestion(key); renderDoubts(); }
+function focusOriginalQuestion(key){ const card=document.getElementById('card-'+key); if(!card)return; const step=Number(card.closest('.step')?.dataset.step||0); goTo(step); setTimeout(()=>card.scrollIntoView({behavior:'smooth',block:'center'}),350); }
+function getIncludedItems(){
+  const out=[]; REPORT_SECTIONS.forEach(rs=>rs.sec.groups.forEach((g,gi)=>g.items.forEach((item,ii)=>{const key=`${rs.keyPrefix}-g${gi}-i${ii}`,state=getItemState(key);if(item.reportable!==false&&item.f&&state.includeInConfession)out.push({key,item,state,group:rs.group,sectionTitle:rs.title});}))); return out;
+}
+function frequencyText(freq){ if(!freq||!freq.type||freq.type==='nao_precisar')return ''; if(freq.type==='numero'){if(!freq.n)return '';return `aproximadamente ${freq.n} ${freq.n===1?'vez':'vezes'}`;} const map={uma_vez:'uma vez',poucas_vezes:'poucas vezes',algumas_vezes:'algumas vezes',muitas_vezes:'muitas vezes',frequentemente:'frequentemente',habitualmente:'habitualmente'}; return map[freq.type]||''; }
+function buildConfessionSentence(frase,freq){ const f=frequencyText(freq); return f?`${frase} ${f}.`:`${frase}.`; }
+function renderReview(){
+  const body=document.getElementById('review-body'),items=getIncludedItems(); document.getElementById('rp-total').innerHTML=`${items.length}<span>itens incluídos</span>`; const notes=document.getElementById('notes'); if(notes&&!notes.dataset.loaded){notes.value=sessionStorage.getItem(NOTES_KEY)||'';notes.dataset.loaded='1';}
+  if(!items.length){body.innerHTML='<div class="empty-state">Você ainda não incluiu nenhum item na Confissão. Volte ao exame ou revise suas dúvidas.</div>';renderPrintable();return;}
+  const groups={}; items.forEach(x=>{(groups[x.group]??=[]).push(x);}); body.innerHTML=Object.entries(groups).map(([group,list])=>`<div class="report-group-title">${group}</div>${list.map(x=>reviewCardHtml(x)).join('')}`).join(''); renderPrintable();
+}
+function reviewCardHtml(x){
+  const f=frequencyText(x.state.frequency);
+  const current=x.state.frequency?.type||'nao_precisar';
+  const opts=FREQ_OPTIONS.map(o=>`<option value="${o.key}" ${current===o.key?'selected':''}>${o.label}</option>`).join('');
+  return `<div class="review-card"><h4>${x.sectionTitle}</h4><p class="review-sentence">${escapeHtml(x.item.f)}${f?' — <em>'+escapeHtml(f)+'</em>':''}</p>${x.state.note?`<div class="review-note">📝 ${escapeHtml(x.state.note)}</div>`:''}<div class="review-edit-row"><label>Frequência <select onchange="setReviewFrequency('${x.key}',this.value)">${opts}</select></label></div><div class="review-tools"><button class="btn" onclick="editReviewNote('${x.key}')">Editar observação</button><button class="btn ghost" onclick="setInclude('${x.key}',false)">Remover item</button><button class="btn ghost" onclick="focusOriginalQuestion('${x.key}')">Voltar à pergunta</button></div></div>`;
+}
+function setReviewFrequency(key,type){
+  if(type==='numero'){
+    const atual=getItemState(key).frequency?.n||'';
+    const n=prompt('Número aproximado de vezes:',atual);
+    if(n===null){renderReview();return;}
+    const parsed=parseInt(n,10);
+    updateItemState(key,{frequency:{type:'numero',n:Number.isFinite(parsed)&&parsed>0?parsed:null}});
+  }else{
+    updateItemState(key,{frequency:{type}});
   }
-  updateTallies();
-  updateProgressBar();
+  renderReview(); refreshQuestion(key);
 }
-
-function onFreqPick(key, freqKey){
-  const row = document.getElementById('freq-'+key);
-  if (!row) return;
-  row.querySelectorAll('.freq-pill').forEach(b => b.classList.toggle('sel', b.dataset.freq === freqKey));
-  const numEl = document.getElementById('freqnum-'+key);
-  if (freqKey === 'numero'){
-    numEl.classList.add('show');
-    frequencies[key] = { type:'numero', n: numEl.value ? parseInt(numEl.value,10) : null };
-    numEl.focus();
-  } else {
-    if (numEl){ numEl.classList.remove('show'); numEl.value=''; }
-    frequencies[key] = { type:freqKey };
-  }
-}
-
-function onFreqNumber(key, value){
-  const n = value ? parseInt(value,10) : null;
-  frequencies[key] = { type:'numero', n };
-}
-
-function updateTallies(){
-  REPORT_SECTIONS.forEach(rs => {
-    let count = 0;
-    let total = 0;
-    rs.sec.groups.forEach((g, gIdx) => g.items.forEach((_, iIdx) => {
-      total++;
-      if (answers[`${rs.keyPrefix}-g${gIdx}-i${iIdx}`]) count++;
-    }));
-    const el = document.getElementById('tally-'+rs.keyPrefix);
-    if (el) el.textContent = `${count} de ${total} marcados`;
-  });
-}
-
-// Builds the confession-ready sentence from the pre-written base phrase
-// plus the frequency the person picked. Never invents wording beyond this.
-function buildConfessionSentence(frase, freq){
-  if (!freq || !freq.type || freq.type === 'nao_precisar'){
-    return frase + '.';
-  }
-  if (freq.type === 'numero'){
-    if (!freq.n || freq.n < 1) return frase + '.';
-    const vezes = freq.n === 1 ? 'vez' : 'vezes';
-    return `${frase} aproximadamente ${freq.n} ${vezes}.`;
-  }
-  const words = {
-    uma_vez: 'uma vez',
-    poucas_vezes: 'poucas vezes',
-    algumas_vezes: 'algumas vezes',
-    muitas_vezes: 'muitas vezes',
-    frequentemente: 'frequentemente',
-    habitualmente: 'habitualmente'
-  };
-  const suffix = words[freq.type];
-  return suffix ? `${frase} ${suffix}.` : frase + '.';
-}
+function editReviewNote(key){ const currentNote=getItemState(key).note||''; const value=prompt('Observação opcional para lembrar na Confissão:',currentNote); if(value!==null){updateItemState(key,{note:value.trim()});renderReview();refreshQuestion(key);} }
+function saveGeneralNotes(){ try{sessionStorage.setItem(NOTES_KEY,document.getElementById('notes')?.value||'');}catch(_){ } renderPrintable(); }
 
 /* ============================================================
-   RELATÓRIO
+   PDF / TXT — UMA ÚNICA FONTE DE DADOS
    ============================================================ */
-function collectMarked(){
-  // returns [{ group, sections:[{title, items}] }]
-  const byGroup = [];
-  const groupIndex = {};
-  REPORT_SECTIONS.forEach(rs => {
-    const items = [];
-    rs.sec.groups.forEach((g, gIdx) => g.items.forEach((item, iIdx) => {
-      const key = `${rs.keyPrefix}-g${gIdx}-i${iIdx}`;
-      if (answers[key] && item.reportable !== false && item.f) items.push(buildConfessionSentence(item.f, frequencies[key]));
-    }));
-    if (!items.length) return;
-    if (!(rs.group in groupIndex)){
-      groupIndex[rs.group] = byGroup.length;
-      byGroup.push({ group: rs.group, sections: [] });
-    }
-    byGroup[groupIndex[rs.group]].sections.push({ title: rs.title, items });
-  });
-  return byGroup;
+function renderPrintable(){
+  const items=getIncludedItems(),notes=(document.getElementById('notes')?.value||sessionStorage.getItem(NOTES_KEY)||'').trim(); const grouped={}; items.forEach(x=>{(grouped[x.group]??=[]).push(x);}); const print=document.getElementById('report-print');
+  print.innerHTML=`<div class="rp-head"><h1>Minha preparação para a Confissão</h1><p>Exame de Consciência · ${new Date().toLocaleDateString('pt-BR')}<br>Elaboração e organização: Catequista Rickson Jordan</p></div>${Object.entries(grouped).map(([group,list])=>`<div class="rp-block"><h4 style="font-size:15px;border-bottom:2px solid #777;padding-bottom:4px;">${group}</h4><ul>${list.map(x=>`<li>${escapeHtml(buildConfessionSentence(x.item.f,x.state.frequency))}${x.state.note?`<br><small><strong>Observação:</strong> ${escapeHtml(x.state.note)}</small>`:''}</li>`).join('')}</ul></div>`).join('')||'<p>Nenhum item incluído.</p>'}${notes?`<div class="rp-notes"><strong>Anotação geral:</strong><br>${escapeHtml(notes)}</div>`:''}<div class="rp-contrition">“Meu Deus, eu me arrependo de todo o coração de vos ter ofendido, porque sois tão bom e amável. Prometo, com a vossa graça, esforçar-me para ser bom. Meu Jesus, misericórdia! Amém.”</div><p style="font-size:11px;color:#666;">Esta lista é apenas um auxílio pessoal de memória para a Confissão.</p>`;
 }
-
-function renderReport(){
-  const groups = collectMarked();
-  const notes = document.getElementById('notes') ? document.getElementById('notes').value.trim() : '';
-  const total = groups.reduce((n,g)=> n + g.sections.reduce((m,s)=>m+s.items.length,0), 0);
-
-  document.getElementById('rp-total').innerHTML = `${total}<span>itens marcados</span>`;
-
-  const body = document.getElementById('report-body');
-  if (!groups.length){
-    body.innerHTML = `<div class="report-empty">Nenhum item foi marcado ainda. Volte ao exame para revisar com calma.</div>`;
-  } else {
-    body.innerHTML = groups.map(g => `
-      <div class="report-group-title">${g.group}</div>
-      ${g.sections.map(s => `
-        <div class="report-block">
-          <h4>${s.title}</h4>
-          <ul>${s.items.map(t=>`<li>${t}</li>`).join('')}</ul>
-        </div>
-      `).join('')}
-    `).join('');
-  }
-
-  const print = document.getElementById('report-print');
-  print.innerHTML = `
-    <div class="rp-head">
-      <h1>Minha preparação para a Confissão</h1>
-      <p>Exame de Consciência · ${new Date().toLocaleDateString('pt-BR')}<br>Elaboração e organização: Catequista Rickson Jordan</p>
-    </div>
-    ${ groups.length ? groups.map(g => `
-      <div class="rp-block">
-        <h4 style="font-size:15px; color:var(--wine); border-bottom:2px solid var(--wine); padding-bottom:4px;">${g.group}</h4>
-        ${g.sections.map(s => `
-          <div style="margin:10px 0 14px;">
-            <h4>${s.title}</h4>
-            <ul>${s.items.map(t=>`<li>${t}</li>`).join('')}</ul>
-          </div>
-        `).join('')}
-      </div>
-    `).join('') : '<p style="font-style:italic; color:#8B7960;">Nenhum item foi marcado.</p>' }
-    ${ notes ? `<div class="rp-notes"><strong>Anotações:</strong><br>${notes.replace(/</g,'&lt;')}</div>` : '' }
-    <div class="rp-contrition">
-      “Meu Deus, eu me arrependo de todo o coração de vos ter ofendido, porque sois tão bom e amável.
-      Prometo, com a vossa graça, esforçar-me para ser bom. Meu Jesus, misericórdia! Amém.”
-    </div>
-    <p style="margin-top:14px; font-size:11px; color:#8B7960;">Esta lista é apenas um auxílio pessoal de memória para a Confissão.<br>Exame de Consciência — Elaboração e organização: Catequista Rickson Jordan.</p>
-  `;
-}
-
+function printConfession(){ renderPrintable(); window.print(); }
 function downloadTxt(){
-  const groups = collectMarked();
-  const notes = document.getElementById('notes') ? document.getElementById('notes').value.trim() : '';
-  let out = `MINHA PREPARAÇÃO PARA A CONFISSÃO\nExame de Consciência\nElaboração e organização: Catequista Rickson Jordan\n${new Date().toLocaleDateString('pt-BR')}\n\n`;
-  if (!groups.length){
-    out += 'Nenhum item foi marcado.\n\n';
-  } else {
-    groups.forEach(g => {
-      out += `${g.group.toUpperCase()}\n${'='.repeat(g.group.length)}\n\n`;
-      g.sections.forEach(s => {
-        out += `${s.title}\n`;
-        s.items.forEach(t => out += `  - ${t}\n`);
-        out += '\n';
-      });
-    });
-  }
-  if (notes) out += `Anotações:\n${notes}\n\n`;
-  out += `Ato de Contrição:\n"Meu Deus, eu me arrependo de todo o coração de vos ter ofendido, porque sois tão bom e amável. Prometo, com a vossa graça, esforçar-me para ser bom. Meu Jesus, misericórdia! Amém."\n\n`;
-  out += `Esta lista é apenas um auxílio pessoal de memória para a Confissão.\n`;
-  out += `Elaboração e organização: Catequista Rickson Jordan.\n`;
-
-  const blob = new Blob([out], {type:'text/plain;charset=utf-8'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'minha-preparacao-para-confissao.txt';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-}
-
-function resetAll(){
-  Object.keys(answers).forEach(k => delete answers[k]);
-  Object.keys(frequencies).forEach(k => delete frequencies[k]);
-  document.querySelectorAll('.q input[type=checkbox]').forEach(cb => { cb.checked=false; cb.closest('.q').classList.remove('checked'); });
-  document.querySelectorAll('.qwrap').forEach(w => w.classList.remove('show-freq'));
-  document.querySelectorAll('.freq-pill').forEach(b => b.classList.remove('sel'));
-  document.querySelectorAll('.freq-num').forEach(n => { n.classList.remove('show'); n.value=''; });
-  const notesEl = document.getElementById('notes');
-  if (notesEl) notesEl.value = '';
-  updateTallies();
-  updateProgressBar();
-  renderReport();
-  goTo(0);
+  const items=getIncludedItems(),notes=(document.getElementById('notes')?.value||sessionStorage.getItem(NOTES_KEY)||'').trim(); const grouped={}; items.forEach(x=>{(grouped[x.group]??=[]).push(x);}); let out=`MINHA PREPARAÇÃO PARA A CONFISSÃO\nExame de Consciência\nElaboração e organização: Catequista Rickson Jordan\n${new Date().toLocaleDateString('pt-BR')}\n\n`; Object.entries(grouped).forEach(([group,list])=>{out+=`${group.toUpperCase()}\n${'='.repeat(group.length)}\n`;list.forEach(x=>{out+=`- ${buildConfessionSentence(x.item.f,x.state.frequency)}\n`;if(x.state.note)out+=`  Observação: ${x.state.note}\n`;});out+='\n';}); if(!items.length)out+='Nenhum item incluído.\n\n'; if(notes)out+=`Anotação geral:\n${notes}\n\n`; out+=`Ato de Contrição:\n"Meu Deus, eu me arrependo de todo o coração de vos ter ofendido, porque sois tão bom e amável. Prometo, com a vossa graça, esforçar-me para ser bom. Meu Jesus, misericórdia! Amém."\n\nEsta lista é apenas um auxílio pessoal de memória para a Confissão.\n`;
+  const blob=new Blob([out],{type:'text/plain;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='minha-preparacao-para-confissao.txt';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
 }
 
 /* ============================================================
-   INICIALIZAÇÃO
+   VÍDEOS E ACORDEÕES
    ============================================================ */
-updateSelectionSummary();
-buildRail([{ step:0, char:'•', title:'Início' }]);
-updateRail();
+function playVideo(evt,el){ evt.preventDefault(); const id=el.dataset.yt,thumb=el.querySelector('.video-thumb'); if(thumb.classList.contains('is-playing'))return false; thumb.classList.add('is-playing'); thumb.innerHTML=`<iframe src="https://www.youtube.com/embed/${id}?autoplay=1&rel=0" title="Vídeo do YouTube" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>`; return false; }
+function initAccordions(){ document.addEventListener('click',e=>{const btn=e.target.closest('.accordion-trigger');if(!btn)return; const expanded=btn.getAttribute('aria-expanded')==='true'; btn.setAttribute('aria-expanded',String(!expanded)); let panel=null; const id=btn.getAttribute('aria-controls'); if(id)panel=document.getElementById(id); else panel=btn.nextElementSibling; if(panel)panel.hidden=expanded; registerActivity();}); }
 
+/* ============================================================
+   TEMA CLARO / ESCURO
+   ============================================================ */
+function preferredTheme(){ const stored=localStorage.getItem(THEME_KEY); if(stored==='dark'||stored==='light')return stored; return window.matchMedia?.('(prefers-color-scheme: dark)').matches?'dark':'light'; }
+function applyTheme(theme){ document.documentElement.dataset.theme=theme; const btn=document.getElementById('theme-toggle'); if(btn){btn.textContent=theme==='dark'?'☀️':'🌙';btn.title=theme==='dark'?'Usar tema claro':'Usar tema escuro';} }
+function toggleTheme(){ const next=document.documentElement.dataset.theme==='dark'?'light':'dark'; localStorage.setItem(THEME_KEY,next); applyTheme(next); }
 
-/* =====================================================
-   PLAYER DE MÚSICA PARA ORAÇÃO
-   Playlist carregada de assets/data/musicas.json
-===================================================== */
+/* ============================================================
+   PRIVACIDADE, INATIVIDADE E LIMPEZA
+   ============================================================ */
+let lastActivity=Date.now(),isPrivacyLocked=false;
+function registerActivity(){ if(!isPrivacyLocked)lastActivity=Date.now(); }
+function lockForPrivacy(){ if(isPrivacyLocked)return; isPrivacyLocked=true; document.getElementById('privacy-lock').hidden=false; document.body.style.overflow='hidden'; }
+function unlockPrivacy(){ isPrivacyLocked=false; lastActivity=Date.now(); document.getElementById('privacy-lock').hidden=true; document.getElementById('privacy-lock-warning').textContent=''; document.body.style.overflow=''; }
+function checkInactivity(){ const elapsed=Date.now()-lastActivity; if(elapsed>=PRIVACY_LOCK_MS)lockForPrivacy(); if(isPrivacyLocked&&elapsed>=PRIVACY_WARNING_MS){const min=Math.max(0,Math.ceil((PRIVACY_CLEAR_MS-elapsed)/60000));document.getElementById('privacy-lock-warning').textContent=`Se a inatividade continuar, os dados desta sessão serão apagados em aproximadamente ${min} ${min===1?'minuto':'minutos'}.`;} if(elapsed>=PRIVACY_CLEAR_MS){clearSensitiveData(false);} }
+function confirmClearData(){ if(confirm('Isso apagará respostas, observações, frequências e progresso desta sessão. Deseja continuar?'))clearSensitiveData(true); }
+function clearSensitiveData(reload=true){ pauseMeditation(); try{sessionStorage.removeItem(STORAGE_KEY);sessionStorage.removeItem(NOTES_KEY);sessionStorage.removeItem(SELECTION_KEY);}catch(_){ } Object.keys(examState).forEach(k=>delete examState[k]); if(reload)location.reload(); else location.reload(); }
 
-let meditationPlaylist = [];
-let meditationCurrentTrack = 0;
+/* ============================================================
+   PLAYER DE MÚSICA PARA REFLEXÃO
+   ============================================================ */
+let meditationPlaylist=[],meditationCurrentTrack=0;
+function playerEls(){return {audio:document.getElementById('meditation-audio'),toggle:document.getElementById('meditation-toggle'),prev:document.getElementById('meditation-prev'),next:document.getElementById('meditation-next'),title:document.getElementById('meditation-title'),mini:document.getElementById('mini-track-title'),select:document.getElementById('meditation-select'),volume:document.getElementById('meditation-volume')};}
+async function loadMeditationPlaylist(){ const e=playerEls(); if(!e.audio)return; try{const r=await fetch('data/musicas.json',{cache:'no-store'});if(!r.ok)throw new Error('playlist');meditationPlaylist=(await r.json()).filter(m=>m.ativo!==false);e.select.innerHTML=meditationPlaylist.map((m,i)=>`<option value="${i}">${escapeHtml(m.titulo)}${m.subtitulo?' — '+escapeHtml(m.subtitulo):''}</option>`).join('');if(meditationPlaylist.length)loadMeditationTrack(0);else e.title.textContent='Nenhuma música disponível';}catch(_){e.title.textContent='Músicas indisponíveis';document.getElementById('meditation-player').hidden=true;} }
+function loadMeditationTrack(index){ const e=playerEls(),m=meditationPlaylist[index];if(!m)return;meditationCurrentTrack=index;e.audio.src=encodeURI(m.arquivo);const label=`${m.titulo}${m.subtitulo?' — '+m.subtitulo:''}`;e.title.textContent=label;e.mini.textContent=m.titulo;e.select.value=String(index); }
+async function playMeditation(){const e=playerEls();if(!meditationPlaylist.length)return;try{await e.audio.play();e.toggle.textContent='⏸';e.toggle.title='Pausar';}catch(_){}}
+function pauseMeditation(){const e=playerEls();if(!e.audio)return;e.audio.pause();e.toggle.textContent='▶';e.toggle.title='Reproduzir';}
+function nextMeditation(delta=1){if(!meditationPlaylist.length)return;loadMeditationTrack((meditationCurrentTrack+delta+meditationPlaylist.length)%meditationPlaylist.length);playMeditation();}
+function initMeditationPlayer(){const e=playerEls();if(!e.audio)return;e.audio.volume=.25;e.toggle.addEventListener('click',()=>e.audio.paused?playMeditation():pauseMeditation());e.prev.addEventListener('click',()=>nextMeditation(-1));e.next.addEventListener('click',()=>nextMeditation(1));e.audio.addEventListener('ended',()=>nextMeditation(1));e.volume.addEventListener('input',()=>{e.audio.volume=Number(e.volume.value);});e.select.addEventListener('change',()=>{loadMeditationTrack(Number(e.select.value));playMeditation();});document.getElementById('meditation-minimize').addEventListener('click',()=>{document.getElementById('meditation-expanded').hidden=true;document.getElementById('meditation-collapsed').hidden=false;});document.getElementById('meditation-expand').addEventListener('click',()=>{document.getElementById('meditation-collapsed').hidden=true;document.getElementById('meditation-expanded').hidden=false;});loadMeditationPlaylist();}
 
-const meditationAudio = document.getElementById("meditation-audio");
-const meditationToggle = document.getElementById("meditation-toggle");
-const meditationPrev = document.getElementById("meditation-prev");
-const meditationNext = document.getElementById("meditation-next");
-const meditationTitle = document.getElementById("meditation-title");
-
-
-/* -----------------------------------------------------
-   CARREGAR PLAYLIST DO JSON
------------------------------------------------------ */
-
-async function carregarMusicas() {
-
-    try {
-
-        const resposta = await fetch("data/musicas.json");
-
-        if (!resposta.ok) {
-            throw new Error(
-                `Erro ao carregar playlist: ${resposta.status}`
-            );
-        }
-
-        const dados = await resposta.json();
-
-        /*
-         * Se futuramente você usar "ativo": false
-         * no JSON, a música não aparecerá no player.
-         *
-         * Se não existir a propriedade "ativo",
-         * a música será considerada ativa.
-         */
-        meditationPlaylist = dados.filter(
-            musica => musica.ativo !== false
-        );
-
-        if (meditationPlaylist.length === 0) {
-            meditationTitle.textContent = "Nenhuma música disponível";
-            meditationToggle.disabled = true;
-            meditationPrev.disabled = true;
-            meditationNext.disabled = true;
-            return;
-        }
-
-        loadMeditationTrack(0);
-
-    } catch (erro) {
-
-        console.error("Erro ao carregar as músicas:", erro);
-
-        meditationTitle.textContent =
-            "Não foi possível carregar as músicas";
-
-        meditationToggle.disabled = true;
-        meditationPrev.disabled = true;
-        meditationNext.disabled = true;
-    }
+/* ============================================================
+   RESET VISUAL E INICIALIZAÇÃO
+   ============================================================ */
+function resetAll(){ confirmClearData(); }
+function init(){
+  applyTheme(preferredTheme()); document.getElementById('theme-toggle')?.addEventListener('click',toggleTheme); document.getElementById('clear-data-btn')?.addEventListener('click',confirmClearData); document.getElementById('privacy-continue-btn')?.addEventListener('click',unlockPrivacy);
+  ['pointerdown','keydown','touchstart','scroll'].forEach(ev=>window.addEventListener(ev,registerActivity,{passive:true})); setInterval(checkInactivity,15000);
+  initAccordions(); initMeditationPlayer(); restoreSelection(); updateSelectionSummary(); buildRail([{step:0,char:'•',title:'Início'}]); updateRail(); updateProgressBar();
+  const notes=document.getElementById('notes'); if(notes){notes.value=sessionStorage.getItem(NOTES_KEY)||'';notes.dataset.loaded='1';}
 }
 
-
-/* -----------------------------------------------------
-   CARREGAR UMA MÚSICA
------------------------------------------------------ */
-
-function loadMeditationTrack(index) {
-
-    const musica = meditationPlaylist[index];
-
-    if (!musica) return;
-
-    meditationAudio.src = musica.arquivo;
-
-    /*
-     * Mostra título + subtítulo.
-     * Exemplo:
-     * Miserere — Salmo 50 (51)
-     */
-
-    if (musica.subtitulo) {
-
-        meditationTitle.textContent =
-            `${musica.titulo} — ${musica.subtitulo}`;
-
-    } else {
-
-        meditationTitle.textContent =
-            musica.titulo;
-
-    }
-}
-
-
-/* -----------------------------------------------------
-   REPRODUZIR
------------------------------------------------------ */
-
-async function playMeditation() {
-
-    if (meditationPlaylist.length === 0) return;
-
-    try {
-
-        await meditationAudio.play();
-
-        meditationToggle.textContent = "⏸";
-        meditationToggle.title = "Pausar";
-
-        meditationToggle.setAttribute(
-            "aria-label",
-            "Pausar música para oração"
-        );
-
-    } catch (erro) {
-
-        console.error(
-            "Não foi possível reproduzir o áudio:",
-            erro
-        );
-
-    }
-}
-
-
-/* -----------------------------------------------------
-   PAUSAR
------------------------------------------------------ */
-
-function pauseMeditation() {
-
-    meditationAudio.pause();
-
-    meditationToggle.textContent = "▶";
-    meditationToggle.title = "Reproduzir";
-
-    meditationToggle.setAttribute(
-        "aria-label",
-        "Reproduzir música para oração"
-    );
-}
-
-
-/* -----------------------------------------------------
-   PLAY / PAUSE
------------------------------------------------------ */
-
-meditationToggle.addEventListener("click", () => {
-
-    if (meditationAudio.paused) {
-
-        playMeditation();
-
-    } else {
-
-        pauseMeditation();
-
-    }
-
-});
-
-
-/* -----------------------------------------------------
-   PRÓXIMA MÚSICA
------------------------------------------------------ */
-
-meditationNext.addEventListener("click", () => {
-
-    if (meditationPlaylist.length === 0) return;
-
-    meditationCurrentTrack++;
-
-    if (
-        meditationCurrentTrack >=
-        meditationPlaylist.length
-    ) {
-
-        meditationCurrentTrack = 0;
-
-    }
-
-    loadMeditationTrack(
-        meditationCurrentTrack
-    );
-
-    playMeditation();
-
-});
-
-
-/* -----------------------------------------------------
-   MÚSICA ANTERIOR
------------------------------------------------------ */
-
-meditationPrev.addEventListener("click", () => {
-
-    if (meditationPlaylist.length === 0) return;
-
-    meditationCurrentTrack--;
-
-    if (meditationCurrentTrack < 0) {
-
-        meditationCurrentTrack =
-            meditationPlaylist.length - 1;
-
-    }
-
-    loadMeditationTrack(
-        meditationCurrentTrack
-    );
-
-    playMeditation();
-
-});
-
-
-/* -----------------------------------------------------
-   QUANDO A MÚSICA TERMINAR,
-   TOCAR A PRÓXIMA AUTOMATICAMENTE
------------------------------------------------------ */
-
-meditationAudio.addEventListener("ended", () => {
-
-    if (meditationPlaylist.length === 0) return;
-
-    meditationCurrentTrack++;
-
-    if (
-        meditationCurrentTrack >=
-        meditationPlaylist.length
-    ) {
-
-        meditationCurrentTrack = 0;
-
-    }
-
-    loadMeditationTrack(
-        meditationCurrentTrack
-    );
-
-    playMeditation();
-
-});
-
-
-/* -----------------------------------------------------
-   VOLUME INICIAL
-   0.25 = 25%
------------------------------------------------------ */
-
-meditationAudio.volume = 0.25;
-
-
-/* -----------------------------------------------------
-   INICIAR PLAYER
------------------------------------------------------ */
-
-carregarMusicas();
+document.addEventListener('DOMContentLoaded',init);

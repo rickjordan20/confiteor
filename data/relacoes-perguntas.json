@@ -1,0 +1,262 @@
+{
+  "versao": 1,
+  "descricao": "Configuração das perguntas equivalentes e relacionadas do Confiteor. Edite somente este arquivo para acrescentar, remover ou reorganizar relações sem precisar alterar o app.js.",
+  "regras": {
+    "equivalencias": "Perguntas que tratam essencialmente do mesmo ato/falta. Compartilham resposta, inclusão, frequência e observação e aparecem uma única vez na revisão final.",
+    "relacionados": "Perguntas próximas ou do mesmo tema, mas que não são necessariamente a mesma falta. Apenas exibem um aviso de relação; as respostas permanecem independentes."
+  },
+  "equivalencias": [
+    {
+      "id": "domingo-falta-missa",
+      "nome": "Falta à Missa dominical ou em festa de guarda",
+      "itens": [
+        {
+          "bloco": "dez",
+          "secao": "3",
+          "pergunta": "Faltei à Santa Missa em domingo ou dia santo de guarda sem motivo sério?"
+        },
+        {
+          "bloco": "igreja",
+          "secao": "1",
+          "pergunta": "Faltei à Missa em domingo ou festa de guarda sem motivo sério?"
+        }
+      ]
+    },
+    {
+      "id": "domingo-santificacao-trabalho",
+      "nome": "Trabalhos ou ocupações que impedem a santificação do Dia do Senhor",
+      "itens": [
+        {
+          "bloco": "dez",
+          "secao": "3",
+          "pergunta": "Tenho realizado ou exigido sem necessidade trabalhos e atividades que impedem o culto devido a Deus, a alegria própria do Dia do Senhor ou o descanso adequado?"
+        },
+        {
+          "bloco": "igreja",
+          "secao": "1",
+          "pergunta": "Tenho realizado sem necessidade trabalhos ou ocupações que impedem a santificação desses dias?"
+        }
+      ]
+    },
+    {
+      "id": "castidade-masturbacao",
+      "nome": "Masturbação",
+      "itens": [
+        {
+          "bloco": "dez",
+          "secao": "6",
+          "pergunta": "Tenho praticado masturbação?"
+        },
+        {
+          "bloco": "capitais",
+          "secao": "3",
+          "pergunta": "Tenho praticado masturbação?"
+        }
+      ]
+    },
+    {
+      "id": "castidade-pornografia",
+      "nome": "Pornografia",
+      "itens": [
+        {
+          "bloco": "dez",
+          "secao": "6",
+          "pergunta": "Tenho procurado ou consumido pornografia deliberadamente?"
+        },
+        {
+          "bloco": "capitais",
+          "secao": "3",
+          "pergunta": "Tenho procurado deliberadamente pornografia ou outros estímulos para alimentar a luxúria?"
+        }
+      ]
+    },
+    {
+      "id": "castidade-atos-fora-matrimonio",
+      "nome": "Atos sexuais fora do matrimônio",
+      "itens": [
+        {
+          "bloco": "dez",
+          "secao": "6",
+          "pergunta": "Tenho praticado relações ou atos sexuais fora do matrimônio?"
+        },
+        {
+          "bloco": "capitais",
+          "secao": "3",
+          "pergunta": "Tenho praticado atos sexuais fora do matrimônio?"
+        }
+      ]
+    },
+    {
+      "id": "castidade-pensamentos-fantasias",
+      "nome": "Consentimento em pensamentos ou fantasias sexualmente impuras",
+      "itens": [
+        {
+          "bloco": "dez",
+          "secao": "9",
+          "pergunta": "Tenho consentido deliberadamente em pensamentos ou fantasias sexualmente impuras?"
+        },
+        {
+          "bloco": "capitais",
+          "secao": "3",
+          "pergunta": "Tenho consentido deliberadamente em pensamentos ou fantasias sexualmente impuras?"
+        }
+      ]
+    }
+  ],
+  "relacionados": [
+    {
+      "id": "ira-odio-rancor-vinganca",
+      "nome": "Ódio, rancor e vingança",
+      "itens": [
+        {
+          "bloco": "dez",
+          "secao": "5",
+          "pergunta": "Tenho alimentado deliberadamente ódio grave, desejo de vingança ou desejo sério de mal contra alguém?"
+        },
+        {
+          "bloco": "capitais",
+          "secao": "4",
+          "pergunta": "Tenho alimentado deliberadamente raiva, ressentimento ou rancor contra alguém?"
+        },
+        {
+          "bloco": "capitais",
+          "secao": "4",
+          "pergunta": "Tenho desejado vingança injusta?"
+        },
+        {
+          "bloco": "capitais",
+          "secao": "4",
+          "pergunta": "Tenho recusado perdoar interiormente, alimentando deliberadamente o ódio?"
+        }
+      ]
+    },
+    {
+      "id": "ira-agressividade",
+      "nome": "Agressão e agressividade injusta",
+      "itens": [
+        {
+          "bloco": "dez",
+          "secao": "5",
+          "pergunta": "Tenho agredido alguém física ou verbalmente de modo injusto?"
+        },
+        {
+          "bloco": "capitais",
+          "secao": "4",
+          "pergunta": "Tenho tratado alguém com agressividade injusta nas palavras ou atitudes?"
+        }
+      ]
+    },
+    {
+      "id": "inveja-bem-alheio",
+      "nome": "Inveja diante do bem ou prosperidade do próximo",
+      "itens": [
+        {
+          "bloco": "dez",
+          "secao": "10",
+          "pergunta": "Tenho sentido inveja deliberadamente alimentada diante dos bens ou prosperidade do próximo?"
+        },
+        {
+          "bloco": "capitais",
+          "secao": "6",
+          "pergunta": "Tenho alimentado tristeza ou ressentimento porque outra pessoa recebeu um bem, dom ou sucesso?"
+        }
+      ]
+    },
+    {
+      "id": "inveja-desejo-perda",
+      "nome": "Desejo de que o próximo perca bens ou vantagens",
+      "itens": [
+        {
+          "bloco": "dez",
+          "secao": "10",
+          "pergunta": "Tenho desejado que outra pessoa perca seus bens, posição ou vantagens para que eu os tenha?"
+        },
+        {
+          "bloco": "capitais",
+          "secao": "6",
+          "pergunta": "Tenho desejado que alguém perca um bem, posição ou vantagem por inveja?"
+        }
+      ]
+    },
+    {
+      "id": "riquezas-apego-desordenado",
+      "nome": "Apego desordenado ao dinheiro e às riquezas",
+      "itens": [
+        {
+          "bloco": "dez",
+          "secao": "10",
+          "pergunta": "Tenho alimentado apego desordenado às riquezas ou desejo desmedido de acumulá-las?"
+        },
+        {
+          "bloco": "capitais",
+          "secao": "2",
+          "pergunta": "Tenho me apegado de modo desordenado ao dinheiro ou aos bens?"
+        }
+      ]
+    },
+    {
+      "id": "oracao-abandono-indiferenca",
+      "nome": "Abandono deliberado da oração ou vida espiritual",
+      "itens": [
+        {
+          "bloco": "dez",
+          "secao": "1",
+          "pergunta": "Tenho abandonado deliberadamente a oração e a relação com Deus por indiferença ou rejeição?"
+        },
+        {
+          "bloco": "capitais",
+          "secao": "7",
+          "pergunta": "Tenho abandonado deliberadamente a oração ou deveres espirituais importantes por acídia ou indiferença?"
+        }
+      ]
+    },
+    {
+      "id": "alcool-excesso-risco",
+      "nome": "Uso desordenado ou imprudente de álcool",
+      "itens": [
+        {
+          "bloco": "dez",
+          "secao": "5",
+          "pergunta": "Abusei de álcool ou drogas de modo a causar grave dano ou risco a mim ou a outras pessoas?"
+        },
+        {
+          "bloco": "capitais",
+          "secao": "5",
+          "pergunta": "Tenho usado bebidas alcoólicas de modo excessivo ou imprudente?"
+        }
+      ]
+    },
+    {
+      "id": "familia-reconciliacao-perdao",
+      "nome": "Reconciliação e perdão nos conflitos",
+      "itens": [
+        {
+          "bloco": "dez",
+          "secao": "4",
+          "pergunta": "Tenho me recusado, sem motivo justo, a buscar reconciliação em conflitos familiares?"
+        },
+        {
+          "bloco": "capitais",
+          "secao": "4",
+          "pergunta": "Tenho recusado perdoar interiormente, alimentando deliberadamente o ódio?"
+        }
+      ]
+    },
+    {
+      "id": "trabalho-desonestidade-fraude",
+      "nome": "Desonestidade no trabalho, estudos ou negócios",
+      "itens": [
+        {
+          "bloco": "dez",
+          "secao": "4",
+          "pergunta": "Tenho sido gravemente desonesto ou negligente no cumprimento de meus deveres profissionais?"
+        },
+        {
+          "bloco": "dez",
+          "secao": "7",
+          "pergunta": "Tenho praticado fraude, engano ou desonestidade em estudos, trabalho, contratos ou negócios?"
+        }
+      ]
+    }
+  ]
+}

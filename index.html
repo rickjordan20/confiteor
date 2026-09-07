@@ -18,9 +18,19 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
   <link
+    rel="preload"
+    as="style"
     href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&display=swap"
-    rel="stylesheet">
+    onload="this.onload=null;this.rel='stylesheet'">
+
+  <noscript>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&display=swap">
+  </noscript>
+
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
 
@@ -30,9 +40,7 @@
 
     <header class="top no-print">
       <div class="site-brand">
-        <img src="assets/img/capa-confiteri-fundo-claro.png" class="logo-light" alt="Confiteri">
-
-        <img src="assets/img/capa-confiteri-fundo-escuro.png" class="logo-dark" alt="Confiteri">
+        <div class="site-logo-image" role="img" aria-label="Confiteri"></div>
       </div>
       <div class="header-actions">
         <button class="icon-btn" id="theme-toggle" type="button" aria-label="Alternar tema"
@@ -40,6 +48,8 @@
         <button class="privacy-clear-btn" id="clear-data-btn" type="button">🔒 Limpar meus dados e sair</button>
       </div>
     </header>
+
+    <main id="main-content">
 
     <div class="rail-wrap no-print">
       <div class="rail" id="rail"></div>
@@ -977,6 +987,8 @@
       </div>
     </div>
 
+    </main>
+
     <footer class="foot no-print">
 
       <div class="foot-brand">
@@ -1340,7 +1352,7 @@
 
     <!-- PLAYER RECOLHIDO -->
     <div class="meditation-collapsed" id="meditation-collapsed">
-      <button type="button" class="mini-player-btn" id="meditation-expand" aria-label="Abrir música para meditação">
+      <button type="button" class="mini-player-btn" id="meditation-expand">
         🎵 Música para meditar
       </button>
     </div>
@@ -1563,7 +1575,7 @@
     </div>
 
     <script src="assets/js/app.js" defer></script>
-    <script src="assets/js/metrics.js"></script>
+    <script src="assets/js/metrics.js" defer></script>
 </body>
 
 </html>

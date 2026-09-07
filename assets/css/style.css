@@ -35,6 +35,7 @@
 :root {
   --ink: #2A1B12;
   --wine: #7A1330;
+  --wine-text: #7A1330;
   --wine-dark: #5A0E22;
   --gold: #A9822C;
   --teal: #2A564A;
@@ -55,6 +56,7 @@
 html[data-theme="dark"] {
   --ink: #F3ECE5;
   --wine: #9A3D50;
+  --wine-text: #C76A79;
   --wine-dark: #C06A79;
   --gold: #D1AD62;
   --teal: #76A696;
@@ -161,7 +163,7 @@ header.top {
 }
 .icon-btn { width: 38px; height: 38px; padding: 0; font-size: 16px; }
 .icon-btn:hover, .privacy-clear-btn:hover { border-color: var(--wine); background: var(--surface-soft); }
-.privacy-clear-btn { color: var(--wine); font-weight: 600; }
+.privacy-clear-btn { color: var(--wine-text); font-weight: 600; }
 
 /* Logo */
 header.top .site-brand {
@@ -177,11 +179,7 @@ header.top .site-brand {
   overflow: hidden !important;
   line-height: 0 !important;
 }
-header.top .site-brand img,
-header.top img.site-logo,
-header.top img.logo-light,
-header.top img.logo-dark,
-header.top img[src*="logo-confiteri"] {
+header.top .site-logo-image {
   display: block;
   box-sizing: border-box !important;
   width: 190px !important;
@@ -191,16 +189,18 @@ header.top img[src*="logo-confiteri"] {
   height: 58px !important;
   block-size: 58px !important;
   max-height: 58px !important;
-  object-fit: contain !important;
-  object-position: left center !important;
   flex: 0 0 190px !important;
   margin: 0 !important;
   padding: 0 !important;
+  background-image: url("../img/capa-confiteri-fundo-claro.webp");
+  background-repeat: no-repeat;
+  background-position: left center;
+  background-size: contain;
 }
-header.top .logo-light { display: block !important; }
-header.top .logo-dark { display: none !important; }
-html[data-theme="dark"] header.top .logo-light { display: none !important; }
-html[data-theme="dark"] header.top .logo-dark { display: block !important; }
+
+html[data-theme="dark"] header.top .site-logo-image {
+  background-image: url("../img/capa-confiteri-fundo-escuro.webp");
+}
 
 /* ============================================================
    03. PROGRESSO E ETAPAS
@@ -258,7 +258,7 @@ html[data-theme="dark"] header.top .logo-dark { display: block !important; }
   color: var(--muted);
   margin-bottom: 6px;
 }
-#progress-percent { font-weight: 700; color: var(--wine); }
+#progress-percent { font-weight: 700; color: var(--wine-text); }
 #progress-label { text-align: center; font-weight: 600; color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 #progress-remaining { text-align: right; }
 .progress-track {
@@ -278,7 +278,7 @@ html[data-theme="dark"] header.top .logo-dark { display: block !important; }
    04. CAPA E INTRODUÇÃO
    ============================================================ */
 .eyebrow {
-  color: var(--wine);
+  color: var(--wine-text);
   font-family: 'Fraunces', serif;
   font-style: italic;
   font-size: 16px;
@@ -352,7 +352,7 @@ html[data-theme="dark"] header.top .logo-dark { display: block !important; }
   font-size: 13.5px;
 }
 .accordion-trigger:hover { background: var(--surface-soft); }
-.accordion-chevron { color: var(--wine); font-size: 17px; transition: transform .18s ease; }
+.accordion-chevron { color: var(--wine-text); font-size: 17px; transition: transform .18s ease; }
 .accordion-trigger[aria-expanded="true"] .accordion-chevron { transform: rotate(180deg); }
 .accordion-panel { padding: 0 15px 15px; font-size: 13.2px; color: var(--ink); }
 .accordion-panel[hidden] { display: none !important; }
@@ -392,7 +392,7 @@ html[data-theme="dark"] header.top .logo-dark { display: block !important; }
 .video-info { padding: 10px 12px; }
 .video-title { font-size: 13.5px; font-weight: 600; line-height: 1.35; }
 .video-channel { font-size: 12px; color: var(--muted); margin-top: 3px; }
-.video-more { display: inline-block; margin-top: 14px; font-size: 13px; font-weight: 600; color: var(--wine); text-decoration: none; border-bottom: 1px solid transparent; }
+.video-more { display: inline-block; margin-top: 14px; font-size: 13px; font-weight: 600; color: var(--wine-text); text-decoration: none; border-bottom: 1px solid transparent; }
 .video-more:hover { border-bottom-color: var(--wine); }
 
 /* ============================================================
@@ -448,7 +448,7 @@ html[data-theme="dark"] header.top .logo-dark { display: block !important; }
 .cmd-head { margin-bottom: 6px; }
 .cmd-head-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
 .cmd-progress { font-size: 11.5px; color: var(--muted); font-weight: 600; letter-spacing: .01em; }
-.cmd-num { display: inline-flex; align-items: center; gap: 8px; color: var(--wine); font-family: 'Fraunces', serif; font-style: italic; font-size: 14px; margin-bottom: 8px; }
+.cmd-num { display: inline-flex; align-items: center; gap: 8px; color: var(--wine-text); font-family: 'Fraunces', serif; font-style: italic; font-size: 14px; margin-bottom: 8px; }
 .cmd-num .n { min-width: 24px; height: 24px; padding: 0 5px; border-radius: 12px; background: var(--wine); color: #fff; font-style: normal; font-size: 12px; display: flex; align-items: center; justify-content: center; font-weight: 700; }
 .cmd-head h2 { font-size: 25px; margin-bottom: 8px; }
 .cmd-subtitle { font-size: 13px; color: var(--muted); font-style: italic; margin: -6px 0 10px; }
@@ -474,7 +474,7 @@ html[data-theme="dark"] header.top .logo-dark { display: block !important; }
 .include-toggle.included { background: var(--teal); color: #fff; }
 .include-status { font-size: 11.5px; color: var(--muted); }
 .item-actions { display: flex; gap: 8px; flex-wrap: wrap; }
-.link-action { border: 0; background: transparent; color: var(--wine); padding: 2px 0; font-size: 12px; font-weight: 600; cursor: pointer; text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 3px; }
+.link-action { border: 0; background: transparent; color: var(--wine-text); padding: 2px 0; font-size: 12px; font-weight: 600; cursor: pointer; text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 3px; }
 .link-action:hover { text-decoration-color: currentColor; }
 .item-note { display: grid; gap: 6px; }
 .item-note[hidden] { display: none !important; }
@@ -611,7 +611,7 @@ textarea.notes { width: 100%; min-height: 90px; margin-top: 8px; border: 1px sol
    ============================================================ */
 .meditation-player { position: fixed; right: 18px; bottom: 18px; z-index: 1200; width: 320px; max-width: calc(100vw - 24px); }
 .meditation-collapsed { display: flex; justify-content: flex-end; }
-.mini-player-btn { max-width: 270px; border: 1px solid var(--card-border); background: var(--card); color: var(--wine); border-radius: 999px; padding: 9px 13px; box-shadow: 0 6px 24px rgba(42, 27, 18, .14); cursor: pointer; font-size: 12px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mini-player-btn { max-width: 270px; border: 1px solid var(--card-border); background: var(--card); color: var(--wine-text); border-radius: 999px; padding: 9px 13px; box-shadow: 0 6px 24px rgba(42, 27, 18, .14); cursor: pointer; font-size: 12px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .meditation-expanded { width: 320px; padding: 14px; border: 1px solid var(--card-border); border-radius: 14px; background: var(--card); box-shadow: 0 8px 28px rgba(0, 0, 0, .16); }
 .player-top { display: grid; grid-template-columns: 42px 1fr 28px; gap: 10px; align-items: center; }
 .player-icon { width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: var(--wine); color: #fff; font-size: 18px; font-weight: 700; }
@@ -620,7 +620,7 @@ textarea.notes { width: 100%; min-height: 90px; margin-top: 8px; border: 1px sol
 .player-title { font-size: 12px; font-weight: 700; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .player-minimize { width: 28px; height: 28px; border: 0; background: transparent; color: var(--muted); font-size: 20px; cursor: pointer; }
 .player-controls { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 12px; }
-.player-skip { width: 30px; height: 30px; border: 0; background: transparent; color: var(--wine); border-radius: 50%; cursor: pointer; font-size: 16px; }
+.player-skip { width: 30px; height: 30px; border: 0; background: transparent; color: var(--wine-text); border-radius: 50%; cursor: pointer; font-size: 16px; }
 .player-skip:hover { background: var(--surface-soft); }
 .player-toggle { width: 42px; height: 42px; border: 0; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: var(--wine); color: #fff; cursor: pointer; font-size: 16px; }
 .player-toggle:hover { filter: brightness(1.08); }
@@ -631,7 +631,7 @@ textarea.notes { width: 100%; min-height: 90px; margin-top: 8px; border: 1px sol
 .music-credits-toggle { border: 0; background: transparent; padding: 2px 0; color: var(--muted); font-family: inherit; font-size: 10.5px; cursor: pointer; }
 .music-credits-toggle:hover { color: var(--wine); }
 .music-credits-panel { margin-top: 8px; padding: 9px; border: 1px solid var(--card-border); border-radius: 7px; background: var(--surface-soft); color: var(--muted); font-size: 10px; line-height: 1.55; }
-.music-credits-panel a { color: var(--wine); text-decoration: none; }
+.music-credits-panel a { color: var(--wine-text); text-decoration: none; }
 .music-credits-panel a:hover { text-decoration: underline; }
 .music-modified { margin-top: 5px; font-style: italic; }
 .meditation-expanded[hidden], .meditation-collapsed[hidden], .music-credits-panel[hidden] { display: none !important; }
@@ -641,10 +641,10 @@ textarea.notes { width: 100%; min-height: 90px; margin-top: 8px; border: 1px sol
    ============================================================ */
 footer.foot { margin-top: 56px; padding: 32px 20px 24px; display: flex; flex-direction: column; align-items: center; text-align: center; color: var(--muted); border-top: 1px solid var(--card-border); }
 .foot-brand { display: flex; flex-direction: column; align-items: center; gap: 4px; }
-.foot-brand strong { font-family: 'Fraunces', serif; font-size: 18px; font-weight: 700; letter-spacing: .08em; color: var(--wine); }
+.foot-brand strong { font-family: 'Fraunces', serif; font-size: 18px; font-weight: 700; letter-spacing: .08em; color: var(--wine-text); }
 .foot-brand span { font-size: 10.5px; color: var(--muted); }
 .foot-links { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 9px; margin: 18px 0 13px; }
-.foot-links button { appearance: none; border: 0; background: transparent; padding: 3px 2px; font: inherit; font-size: 11.5px; font-weight: 600; color: var(--wine); cursor: pointer; transition: color .18s ease, transform .18s ease; }
+.foot-links button { appearance: none; border: 0; background: transparent; padding: 3px 2px; font: inherit; font-size: 11.5px; font-weight: 600; color: var(--wine-text); cursor: pointer; transition: color .18s ease, transform .18s ease; }
 .foot-links button:hover { color: var(--gold); transform: translateY(-1px); }
 .foot-links button:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 4px; }
 .foot-links span { color: var(--gold); font-size: 8px; }
@@ -657,7 +657,7 @@ footer.foot { margin-top: 56px; padding: 32px 20px 24px; display: flex; flex-dir
 .footer-modal-card { position: relative; z-index: 1; width: min(680px, 100%); max-height: min(760px, calc(100vh - 40px)); overflow-y: auto; background: var(--card); color: var(--ink); border: 1px solid var(--card-border); border-radius: 14px; box-shadow: 0 24px 60px rgba(0, 0, 0, .28), 0 0 0 1px rgba(255, 255, 255, .02); }
 .footer-modal-head { position: sticky; top: 0; z-index: 2; display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; padding: 20px 22px 16px; background: var(--card); border-bottom: 1px solid var(--card-border); }
 .footer-modal-kicker { display: block; margin-bottom: 4px; color: var(--gold); font-size: 9px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
-.footer-modal-head h2 { margin: 0; font-family: 'Fraunces', serif; font-size: 24px; font-weight: 700; color: var(--wine); }
+.footer-modal-head h2 { margin: 0; font-family: 'Fraunces', serif; font-size: 24px; font-weight: 700; color: var(--wine-text); }
 .footer-modal-close { flex: 0 0 auto; width: 38px; height: 38px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid var(--card-border); border-radius: 50%; background: transparent; color: var(--muted); font-size: 18px; line-height: 1; cursor: pointer; transition: border-color .18s ease, color .18s ease, background-color .18s ease, transform .18s ease; }
 .footer-modal-close:hover { color: var(--wine); border-color: var(--wine); background: var(--surface-soft); transform: rotate(4deg); }
 .footer-modal-close:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
@@ -1260,11 +1260,7 @@ body.feedback-modal-open {
   .report-actions { width: 100%; }
   .report-actions .btn { flex: 1; }
   header.top .site-brand { width: 165px !important; max-width: 165px !important; height: 54px !important; max-height: 54px !important; }
-  header.top .site-brand img,
-  header.top img.site-logo,
-  header.top img.logo-light,
-  header.top img.logo-dark,
-  header.top img[src*="logo-confiteri"] {
+  header.top .site-logo-image {
     width: 155px !important;
     inline-size: 155px !important;
     max-width: 155px !important;

@@ -167,7 +167,7 @@
 
     </div>
 
-    <h3 style="font-size:15px; margin-top:30px;">O que você quer examinar?</h3>
+    <h3 style="font-size:15px; margin-top:30px;">Selecione os roteiros</h3>
     <p class="helper-copy" style="margin:4px 0 0;">Escolha um ou mais blocos para começar.</p>
 
 
@@ -198,6 +198,28 @@
       </label>
     </div>
     <p id="picker-summary" style="color:var(--muted); font-size:13px; margin-top:10px;"></p>
+
+    <div class="last-confession-card">
+      <div class="last-confession-head">
+        <strong>🕊️ Quando foi sua última Confissão?</strong>
+        <span>Essa informação será usada automaticamente no seu roteiro final.</span>
+      </div>
+      <label class="sr-only" for="last-confession">Quando foi sua última Confissão?</label>
+      <select id="last-confession" class="last-confession-select" onchange="saveLastConfession(); updateSelectionSummary()">
+        <option value="">Selecione uma opção</option>
+        <option value="poucos_dias">Há poucos dias</option>
+        <option value="algumas_semanas">Há algumas semanas</option>
+        <option value="um_mes">Há cerca de 1 mês</option>
+        <option value="alguns_meses">Há alguns meses</option>
+        <option value="um_ano">Há cerca de 1 ano</option>
+        <option value="mais_de_um_ano">Há mais de 1 ano</option>
+        <option value="nao_lembro">Não me lembro</option>
+        <option value="primeira_confissao">Esta será minha primeira Confissão</option>
+        <option value="outro">Outro período</option>
+      </select>
+      <input id="last-confession-other" class="last-confession-other" type="text" maxlength="80" placeholder="Ex.: há cerca de 2 anos" hidden oninput="saveLastConfession(); updateSelectionSummary()">
+      <p class="field-help">Não precisa lembrar a data exata. Uma referência aproximada é suficiente.</p>
+    </div>
 
     <div class="nav-buttons">
       <span></span>
@@ -265,18 +287,55 @@
     <div class="nav-buttons"><button class="btn ghost" id="btn-review-back">← Voltar</button><button class="btn primary" id="btn-review-next">Orientação final →</button></div>
   </section>
 
-  <!-- ================= ORIENTAÇÃO FINAL ================= -->
+  <!-- ================= ORIENTAÇÃO FINAL / ESCOLHA DE USO ================= -->
   <section class="step" id="page-final">
     <div class="cmd-head-top"><div class="cmd-num"><span class="n">✓</span> conclusão</div><div class="cmd-progress" id="final-progress"></div></div>
     <h2>🙏 Sua preparação está pronta</h2>
-    <p class="lead">Leve sua lista apenas como auxílio de memória. Na Confissão, fale com simplicidade e sinceridade. Se tiver dificuldade para explicar algo, diga isso ao sacerdote e peça sua ajuda.</p>
-    <div class="accordion-stack">
-      <div class="accordion"><button class="accordion-trigger" type="button" aria-expanded="false" aria-controls="final-how-talk"><span>❓ Como falar com o padre?</span><span class="accordion-chevron">⌄</span></button><div class="accordion-panel" id="final-how-talk" hidden><p>Você pode começar dizendo há quanto tempo não se confessa e depois apresentar, de modo simples, os pecados de que se recorda. Não são necessários detalhes desnecessários.</p></div></div>
-      <div class="accordion"><button class="accordion-trigger" type="button" aria-expanded="false" aria-controls="final-how-works"><span>📖 Como funciona a Confissão?</span><span class="accordion-chevron">⌄</span></button><div class="accordion-panel" id="final-how-works" hidden><p>O sacerdote escuta a confissão, pode oferecer orientação, propõe uma penitência e concede a absolvição sacramental.</p></div></div>
-      <div class="accordion"><button class="accordion-trigger" type="button" aria-expanded="false" aria-controls="final-prep"><span>🙏 Preparação final</span><span class="accordion-chevron">⌄</span></button><div class="accordion-panel" id="final-prep" hidden><p>Faça seu Ato de Contrição, confie na misericórdia de Deus e aproxime-se do Sacramento com sinceridade.</p></div></div>
+    <p class="lead">Seu roteiro já está organizado. Agora escolha como deseja levá-lo para a Confissão.</p>
+
+    <div class="confession-choice-grid no-print">
+      <div class="confession-choice-card">
+        <div class="choice-icon">📱</div>
+        <h3>Modo Confissão</h3>
+        <p>Use um passo a passo simples no celular durante a Confissão. É totalmente opcional.</p>
+        <button class="btn primary" type="button" onclick="openConfessionMode()">🙏 Entrar no Modo Confissão</button>
+      </div>
+      <div class="confession-choice-card">
+        <div class="choice-icon">📄</div>
+        <h3>Levar o roteiro pronto</h3>
+        <p>Prefere não usar o celular? Gere o mesmo roteiro completo para PDF, impressão ou TXT.</p>
+        <div class="choice-actions">
+          <button class="btn primary" type="button" onclick="printConfession()">📄 Gerar PDF / Imprimir</button>
+          <button class="btn" type="button" onclick="downloadTxt()">📝 Gerar TXT</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="accordion-stack" style="margin-top:20px;">
+      <div class="accordion"><button class="accordion-trigger" type="button" aria-expanded="false" aria-controls="final-how-talk"><span>❓ Como falar com o padre?</span><span class="accordion-chevron">⌄</span></button><div class="accordion-panel" id="final-how-talk" hidden><p>Comece fazendo o sinal da cruz e diga aproximadamente quando foi sua última Confissão. Depois apresente com simplicidade os pecados que preparou. Se tiver alguma dúvida, pergunte ao sacerdote.</p></div></div>
+      <div class="accordion"><button class="accordion-trigger" type="button" aria-expanded="false" aria-controls="final-prep"><span>🙏 Preparação final</span><span class="accordion-chevron">⌄</span></button><div class="accordion-panel" id="final-prep" hidden><p>Confie na misericórdia de Deus. O roteiro é apenas um auxílio de memória e não substitui o diálogo com o sacerdote.</p></div></div>
     </div>
     <div class="final-actions no-print"><button class="btn" onclick="goTo(REVIEW_STEP)">← Voltar à revisão</button><button class="btn danger-outline" onclick="confirmClearData()">🔒 Limpar meus dados e sair</button></div>
   </section>
+
+  <!-- ================= MODO CONFISSÃO OPCIONAL ================= -->
+  <div class="confession-mode no-print" id="confession-mode" hidden role="dialog" aria-modal="true" aria-labelledby="confession-mode-title">
+    <div class="confession-mode-shell">
+      <div class="confession-mode-top">
+        <div>
+          <span class="confession-mode-kicker">Modo Confissão</span>
+          <h2 id="confession-mode-title">Roteiro guiado</h2>
+        </div>
+        <button class="icon-btn" type="button" onclick="closeConfessionMode()" aria-label="Fechar Modo Confissão">✕</button>
+      </div>
+      <div class="confession-mode-progress"><div id="confession-mode-progress-fill"></div></div>
+      <div id="confession-mode-body"></div>
+      <div class="confession-mode-nav">
+        <button class="btn ghost" id="confession-mode-prev" type="button" onclick="confessionModePrev()">← Voltar</button>
+        <button class="btn primary" id="confession-mode-next" type="button" onclick="confessionModeNext()">Próximo →</button>
+      </div>
+    </div>
+  </div>
 
   <footer class="foot no-print">
     <strong>Exame de Consciência</strong><br>

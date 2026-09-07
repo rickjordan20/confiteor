@@ -69,10 +69,13 @@
 
       <div class="privacy-note">
         <strong>🔒 Privacidade</strong>
-        <span>Sua privacidade é prioridade
-          Suas respostas e observações são processadas no seu próprio navegador e não são enviadas nem armazenadas em um
-          banco de dados pelo Confiteri. Ao limpar o exame ou encerrar a sessão, os dados da preparação são descartados.
-          Você também pode usar “Limpar meus dados e sair” a qualquer momento.
+
+        <span>
+          O conteúdo do seu exame de consciência permanece no seu dispositivo.
+          Respostas, pecados selecionados, frequências, observações e o roteiro da
+          Confissão não são armazenados no banco de dados do Confiteri.
+          Estatísticas gerais de uso podem ser registradas separadamente, sem acesso
+          ao conteúdo da sua preparação.
         </span>
       </div>
 
@@ -82,6 +85,101 @@
           consciência</button>
       </div>
 
+      <!-- ================= FRUTOS DO CONFITERI ================= -->
+
+      <section class="impact-dashboard no-print" id="confiteri-impact">
+
+        <div class="impact-dashboard-top">
+
+          <div>
+            <span class="impact-dashboard-kicker">
+              ✦ Frutos do Confiteri
+            </span>
+
+            <h2>Um pequeno auxílio no caminho da Reconciliação</h2>
+          </div>
+
+          <span class="impact-dashboard-badge">
+            ♡ Mais almas para Deus
+          </span>
+
+        </div>
+
+
+        <div class="impact-dashboard-grid">
+
+          <div class="impact-stat">
+
+            <div class="impact-stat-icon impact-icon-visits">
+              👥
+            </div>
+
+            <div class="impact-stat-content">
+              <strong id="stat-visits">—</strong>
+              <span>visitas</span>
+            </div>
+
+          </div>
+
+
+          <div class="impact-stat">
+
+            <div class="impact-stat-icon impact-icon-confessions">
+              ✝
+            </div>
+
+            <div class="impact-stat-content">
+              <strong id="stat-confessions">—</strong>
+              <span>confissões registradas</span>
+            </div>
+
+          </div>
+
+
+          <div class="impact-stat">
+
+            <div class="impact-stat-icon impact-icon-countries">
+              🌎
+            </div>
+
+            <div class="impact-stat-content">
+              <strong id="stat-countries">—</strong>
+              <span>países alcançados</span>
+            </div>
+
+          </div>
+
+
+          <div class="impact-stat">
+
+            <div class="impact-stat-icon impact-icon-rating">
+              ★
+            </div>
+
+            <div class="impact-stat-content">
+              <strong id="stat-rating">—</strong>
+              <span>avaliação média</span>
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="impact-dashboard-bottom">
+
+          <span>
+            🔒 Nenhuma resposta, pecado, frequência ou observação
+            do seu exame é utilizada nestas estatísticas.
+          </span>
+
+          <em>
+            “Tudo para a maior glória de Deus.”
+          </em>
+
+        </div>
+
+      </section>
       <div class="accordion-stack intro-accordions">
 
         <div class="accordion">
@@ -802,6 +900,16 @@
       <h2>🙏 Sua preparação está pronta</h2>
       <p class="lead">Seu roteiro já está organizado. Agora escolha como deseja levá-lo para a Confissão.</p>
 
+      <div class="final-feedback-actions no-print">
+        <button class="btn primary" type="button" id="open-confession-modal">
+          ✝ Registrar minha Confissão
+        </button>
+
+        <button class="btn" type="button" id="open-review-modal">
+          ★ Avaliar o Confiteri
+        </button>
+      </div>
+
       <div class="confession-choice-grid no-print">
         <div class="confession-choice-card">
           <div class="choice-icon">📱</div>
@@ -838,177 +946,6 @@
         </div>
       </div>
 
-            <!-- ================= FRUTOS E AVALIAÇÃO ================= -->
-      <section class="feedback-section no-print">
-
-        <!-- Confissão realizada -->
-        <div class="confession-feedback-card">
-
-          <div class="feedback-icon">✝️</div>
-
-          <h3>Depois da sua Confissão</h3>
-
-          <p class="helper-copy">
-            Quando você realizar sua Confissão, se desejar, volte aqui e registre
-            anonimamente mais um fruto do Confiteri.
-          </p>
-
-          <button
-            class="btn primary"
-            id="btn-confession-completed"
-            type="button">
-            ✝ Sim, já me confessei
-          </button>
-
-          <p
-            id="confession-message"
-            class="helper-copy"
-            aria-live="polite">
-          </p>
-
-          <p class="feedback-privacy">
-            🔒 Esta confirmação é anônima e não é vinculada às respostas
-            do seu exame de consciência.
-          </p>
-
-        </div>
-
-
-        <!-- Avaliação -->
-        <div class="review-feedback-card">
-
-          <div class="feedback-icon">💬</div>
-
-          <h3>Como foi sua experiência com o Confiteri?</h3>
-
-          <p class="helper-copy">
-            Sua avaliação ajuda a melhorar a plataforma.
-          </p>
-
-
-          <!-- Nota -->
-          <div class="review-field">
-
-            <label for="review-rating">
-              <strong>Sua avaliação</strong>
-            </label>
-
-            <select
-              id="review-rating"
-              class="review-select">
-
-              <option value="">
-                Selecione uma nota
-              </option>
-
-              <option value="5">
-                ★★★★★ — Excelente
-              </option>
-
-              <option value="4">
-                ★★★★☆ — Muito bom
-              </option>
-
-              <option value="3">
-                ★★★☆☆ — Bom
-              </option>
-
-              <option value="2">
-                ★★☆☆☆ — Regular
-              </option>
-
-              <option value="1">
-                ★☆☆☆☆ — Ruim
-              </option>
-
-            </select>
-
-          </div>
-
-
-          <!-- Nome -->
-          <div class="review-field">
-
-            <label for="review-name">
-              <strong>Nome</strong>
-              <span class="optional-label">(opcional)</span>
-            </label>
-
-            <input
-              type="text"
-              id="review-name"
-              maxlength="80"
-              placeholder="Como gostaria de ser identificado">
-          </div>
-
-
-          <!-- Comentário -->
-          <div class="review-field">
-
-            <label for="review-comment">
-              <strong>Comentário</strong>
-              <span class="optional-label">(opcional)</span>
-            </label>
-
-            <textarea
-              id="review-comment"
-              maxlength="500"
-              rows="4"
-              placeholder="Conte-nos como foi sua experiência com o Confiteri..."></textarea>
-
-            <small>
-              Máximo de 500 caracteres.
-            </small>
-
-          </div>
-
-
-          <!-- Autorizações -->
-          <div class="review-permissions">
-
-            <label>
-              <input
-                type="checkbox"
-                id="review-publish-comment">
-
-              Autorizo a publicação do meu comentário como depoimento
-              no Confiteri.
-            </label>
-
-
-            <label>
-              <input
-                type="checkbox"
-                id="review-publish-name">
-
-              Autorizo também a publicação do meu nome junto ao depoimento.
-            </label>
-
-          </div>
-
-
-          <button
-            class="btn primary"
-            id="btn-submit-review"
-            type="button">
-            Enviar avaliação
-          </button>
-
-          <p
-            id="review-message"
-            class="helper-copy"
-            aria-live="polite">
-          </p>
-
-
-          <p class="feedback-privacy">
-            🔒 Sua avaliação não é vinculada às respostas,
-            observações ou itens do seu exame de consciência.
-          </p>
-
-        </div>
-
-      </section>
 
       <div class="final-actions no-print"><button class="btn" onclick="goTo(REVIEW_STEP)">← Voltar à
           revisão</button><button class="btn danger-outline" onclick="confirmClearData()">🔒 Limpar meus dados e
@@ -1048,19 +985,37 @@
       </div>
 
       <nav class="foot-links" aria-label="Informações do Confiteri">
-        <button type="button" data-footer-modal="about">Sobre</button>
+
+        <button type="button" data-footer-modal="about">
+          Sobre
+        </button>
+
         <span aria-hidden="true">•</span>
+
         <button type="button" data-footer-modal="credits">
           Fontes e Créditos
           <span class="foot-review-badge">Em revisão</span>
         </button>
+
         <span aria-hidden="true">•</span>
-        <button type="button" data-footer-modal="privacy">Privacidade</button>
+
+        <button type="button" data-footer-modal="privacy">
+          Privacidade
+        </button>
+
+        <span aria-hidden="true">•</span>
+
+        <a href="/privacidade.html" target="_blank" rel="noopener noreferrer">
+          Política de Privacidade
+        </a>
+
       </nav>
 
       <div class="foot-bottom">
         <span>© 2026 Confiteri</span>
+
         <span aria-hidden="true">•</span>
+
         <a href="https://www.confiteri.com.br/" target="_blank" rel="noopener noreferrer">
           www.confiteri.com.br
         </a>
@@ -1091,62 +1046,146 @@
         <div class="footer-modal-content">
 
           <p>
-            O <strong>Confiteri</strong> é uma plataforma católica criada para
-            auxiliar na preparação pessoal para o
-            <strong>Sacramento da Reconciliação</strong>.
+            O <strong>Confiteri</strong> foi desenvolvido com prioridade à privacidade,
+            especialmente por lidar com informações pessoais utilizadas durante o exame
+            de consciência.
+          </p>
+
+          <h3>Respostas do exame de consciência</h3>
+
+          <p>
+            As respostas, dúvidas, frequências, observações pessoais, itens selecionados
+            e o roteiro preparado para a Confissão são processados no próprio navegador.
           </p>
 
           <p>
-            A proposta é oferecer um exame de consciência guiado, simples e
-            privado, ajudando cada pessoa a refletir sobre sua vida, organizar
-            aquilo que deseja confessar e chegar mais preparada à Confissão.
+            Essas informações <strong>não são enviadas nem armazenadas no banco de dados
+              do Confiteri</strong>.
           </p>
 
-          <h3>Como o Confiteri ajuda?</h3>
+          <h3>Armazenamento no dispositivo</h3>
 
           <p>
-            A plataforma reúne diferentes roteiros de exame de consciência,
-            permite registrar dúvidas, frequência aproximada e observações
-            pessoais e, ao final, organiza somente aquilo que a pessoa decidiu
-            levar à Confissão.
+            O andamento do exame utiliza recursos de armazenamento do próprio navegador,
+            como o <code>sessionStorage</code>, para manter a preparação durante a sessão
+            atual.
           </p>
 
           <p>
-            O roteiro pode ser utilizado pelo
-            <strong>Modo Confissão</strong> no celular ou levado em
-            <strong>PDF, impressão ou TXT</strong>.
+            Algumas preferências técnicas, como o tema visual e controles destinados a
+            evitar registros repetidos, podem utilizar armazenamento local do navegador.
           </p>
 
-          <h3>Para diferentes momentos da caminhada</h3>
+          <h3>Estatísticas gerais de uso</h3>
 
           <p>
-            O Confiteri foi pensado tanto para quem está se preparando para
-            uma das primeiras Confissões quanto para quem já vive regularmente
-            o Sacramento.
+            Para compreender o alcance e melhorar a plataforma, o Confiteri registra
+            estatísticas gerais de utilização.
           </p>
 
           <p>
-            Por isso, explicações, referências catequéticas, vídeos e outros
-            recursos de formação são opcionais e ficam fora do fluxo principal,
-            podendo ser consultados quando necessários.
+            Essas estatísticas podem incluir:
           </p>
 
-          <h3>Um auxílio, não um substituto</h3>
+          <ul>
+            <li>data da visita;</li>
+            <li>país aproximado de acesso;</li>
+            <li>
+              origem da visita, como mecanismo de busca, rede social, link compartilhado
+              ou acesso direto;
+            </li>
+            <li>quantidade total de visitas.</li>
+          </ul>
+
+          <p>
+            Essas informações são utilizadas de forma estatística e
+            <strong>não são associadas às respostas do exame de consciência</strong>.
+          </p>
+
+          <h3>Registro voluntário de Confissão</h3>
+
+          <p>
+            Depois de realizar o Sacramento da Reconciliação, o usuário pode optar por
+            registrar anonimamente que realizou sua Confissão com auxílio do Confiteri.
+          </p>
+
+          <p>
+            Esse registro serve apenas para acrescentar uma unidade ao contador geral de
+            Confissões registradas. O Confiteri não recebe informações sobre o conteúdo
+            da Confissão, os pecados confessados ou o sacerdote procurado.
+          </p>
+
+          <h3>Avaliações e comentários</h3>
+
+          <p>
+            O usuário pode, voluntariamente, avaliar sua experiência com o Confiteri.
+            A nota é enviada para a plataforma, enquanto o nome e o comentário são
+            opcionais.
+          </p>
+
+          <p>
+            Caso seja enviado um comentário, o usuário pode escolher separadamente se
+            autoriza a publicação do comentário e se autoriza a exibição do seu nome.
+          </p>
+
+          <p>
+            Mesmo quando houver autorização, os depoimentos podem passar por moderação
+            antes de serem publicados.
+          </p>
+
+          <p>
+            As avaliações e comentários
+            <strong>não são vinculados ao conteúdo do exame de consciência</strong>.
+          </p>
+
+          <h3>O que o Confiteri não armazena</h3>
+
+          <ul>
+            <li>pecados ou situações marcadas durante o exame;</li>
+            <li>respostas “Sim”, “Não” ou “Tenho dúvida”;</li>
+            <li>frequências informadas para os itens;</li>
+            <li>observações pessoais do exame;</li>
+            <li>anotação geral da Confissão;</li>
+            <li>roteiro preparado para o sacerdote.</li>
+          </ul>
+
+          <h3>Proteções adicionais</h3>
+
+          <ul>
+            <li>proteção da tela após período de inatividade;</li>
+            <li>aviso antes da limpeza automática da sessão;</li>
+            <li>opção para limpar manualmente os dados da preparação;</li>
+            <li>
+              encerramento do Modo Confissão com possibilidade de apagar os dados da
+              sessão;
+            </li>
+            <li>
+              separação entre os dados locais do exame e as estatísticas gerais da
+              plataforma.
+            </li>
+          </ul>
 
           <div class="footer-info-box">
+            <strong>🔒 Em resumo</strong>
+
             <p>
-              O Confiteri não determina automaticamente se uma situação é pecado
-              e não substitui o diálogo, o discernimento ou a orientação do
-              sacerdote. Seu propósito é ajudar na preparação para o encontro
-              sacramental com a misericórdia de Deus.
+              O conteúdo da sua preparação para a Confissão permanece no seu dispositivo.
+              O Confiteri recebe apenas estatísticas gerais de utilização e informações
+              que você decidir enviar voluntariamente, como a confirmação de Confissão e
+              sua avaliação da plataforma.
             </p>
           </div>
 
-          <p>
-            Para conhecer as pessoas que contribuíram com o projeto e as
-            referências utilizadas em sua elaboração, consulte
-            <strong>Fontes e Créditos</strong>.
-          </p>
+          <div class="footer-info-box">
+            <strong>Conteúdos externos</strong>
+
+            <p>
+              Recursos como vídeos, músicas, fontes ou outros serviços externos podem
+              realizar suas próprias requisições de rede. Isso não significa que as
+              respostas do seu exame de consciência sejam compartilhadas com esses
+              serviços.
+            </p>
+          </div>
 
         </div>
 
@@ -1403,6 +1442,124 @@
       </div>
       <span id="mini-track-title" hidden></span>
 
+    </div>
+
+    <div class="feedback-modal no-print" id="confession-modal" hidden role="dialog" aria-modal="true"
+      aria-labelledby="confession-modal-title">
+
+      <div class="feedback-modal-backdrop" data-close-feedback-modal></div>
+
+      <div class="feedback-modal-card">
+
+        <button class="feedback-modal-close" type="button" data-close-feedback-modal aria-label="Fechar">
+          ✕
+        </button>
+
+        <div class="feedback-modal-icon">✝️</div>
+
+        <h2 id="confession-modal-title">
+          Já realizou sua Confissão?
+        </h2>
+
+        <p>
+          Se desejar, registre anonimamente mais um fruto do Confiteri.
+        </p>
+
+        <button class="btn primary" id="btn-confession-completed" type="button">
+          ✝ Sim, já me confessei
+        </button>
+
+        <p id="confession-message" class="helper-copy" aria-live="polite">
+        </p>
+
+        <p class="feedback-modal-privacy">
+          🔒 Esta confirmação é anônima e não é vinculada às respostas
+          do seu exame de consciência.
+        </p>
+
+      </div>
+    </div>
+
+    <div class="feedback-modal no-print" id="review-modal" hidden role="dialog" aria-modal="true"
+      aria-labelledby="review-modal-title">
+
+      <div class="feedback-modal-backdrop" data-close-feedback-modal></div>
+
+      <div class="feedback-modal-card feedback-modal-card-wide">
+
+        <button class="feedback-modal-close" type="button" data-close-feedback-modal aria-label="Fechar">
+          ✕
+        </button>
+
+        <div class="feedback-modal-icon">💬</div>
+
+        <h2 id="review-modal-title">
+          Como foi sua experiência com o Confiteri?
+        </h2>
+
+        <p>
+          Sua avaliação ajuda a melhorar a plataforma.
+        </p>
+
+        <div class="review-field">
+          <label for="review-rating">
+            <strong>Sua avaliação</strong>
+          </label>
+
+          <select id="review-rating" class="review-select">
+            <option value="">Selecione uma nota</option>
+            <option value="5">★★★★★ — Excelente</option>
+            <option value="4">★★★★☆ — Muito bom</option>
+            <option value="3">★★★☆☆ — Bom</option>
+            <option value="2">★★☆☆☆ — Regular</option>
+            <option value="1">★☆☆☆☆ — Ruim</option>
+          </select>
+        </div>
+
+        <div class="review-field">
+          <label for="review-name">
+            <strong>Nome</strong>
+            <span class="optional-label">(opcional)</span>
+          </label>
+
+          <input type="text" id="review-name" maxlength="80" placeholder="Como gostaria de ser identificado">
+        </div>
+
+        <div class="review-field">
+          <label for="review-comment">
+            <strong>Comentário</strong>
+            <span class="optional-label">(opcional)</span>
+          </label>
+
+          <textarea id="review-comment" maxlength="500" rows="4"
+            placeholder="Conte-nos como foi sua experiência com o Confiteri..."></textarea>
+        </div>
+
+        <div class="review-permissions">
+          <label>
+            <input type="checkbox" id="review-publish-comment">
+            Autorizo a publicação do meu comentário como depoimento.
+          </label>
+
+          <label>
+            <input type="checkbox" id="review-publish-name">
+            Autorizo também a publicação do meu nome.
+          </label>
+        </div>
+
+        <button class="btn primary" id="btn-submit-review" type="button">
+          Enviar avaliação
+        </button>
+
+        <p id="review-message" class="helper-copy" aria-live="polite">
+        </p>
+
+        <p class="feedback-modal-privacy">
+          🔒 Sua avaliação não é vinculada às respostas,
+          observações ou itens do seu exame de consciência.
+        </p>
+
+      </div>
     </div>
 
     <script src="assets/js/app.js" defer></script>

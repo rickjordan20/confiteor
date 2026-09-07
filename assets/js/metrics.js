@@ -519,10 +519,248 @@ function initializeFeedbackArea() {
 }
 
 /* =========================================================
+   ESTATÍSTICAS PÚBLICAS
+   ========================================================= */
+
+async function loadPublicStats() {
+
+  try {
+
+    const response = await fetch(
+      "/api/stats",
+      {
+        method: "GET",
+        cache: "no-store"
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(
+        `Erro HTTP ${response.status}`
+      );
+    }
+
+    const stats = await response.json();
+
+    updateStat(
+      "stat-visits",
+      stats.visits
+    );
+
+    updateStat(
+      "stat-confessions",
+      stats.confessions
+    );
+
+    updateStat(
+      "stat-countries",
+      stats.countries
+    );
+
+
+    const ratingElement =
+      document.getElementById(
+        "stat-rating"
+      );
+
+    if (ratingElement) {
+
+      if (stats.reviews > 0) {
+
+        const rating =
+          Number(
+            stats.ratingAverage || 0
+          )
+          .toFixed(1)
+          .replace(".", ",");
+
+        animateText(
+          ratingElement,
+          `★ ${rating}`
+        );
+
+      } else {
+
+        ratingElement.textContent = "—";
+
+      }
+
+    }
+
+  } catch (error) {
+
+    console.error(
+      "Confiteri: erro ao carregar estatísticas.",
+      error
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   ATUALIZAÇÃO VISUAL DOS NÚMEROS
+   ========================================================= */
+
+function updateStat(id, value) {
+
+  const element =
+    document.getElementById(id);
+
+  if (!element) {
+    return;
+  }
+
+  const number =
+    Number(value || 0);
+
+  animateNumber(
+    element,
+    number
+  );
+
+}
+
+
+/* =========================================================
+   ANIMAÇÃO DOS NÚMEROS
+   ========================================================= */
+
+function animateNumber(
+  element,
+  finalValue
+) {
+
+  const duration = 700;
+
+  const startTime =
+    performance.now();
+
+  function frame(currentTime) {
+
+    const progress =
+      Math.min(
+        (currentTime - startTime)
+        / duration,
+        1
+      );
+
+    /*
+     * Pequena desaceleração no final.
+     */
+    const eased =
+      1 - Math.pow(
+        1 - progress,
+        3
+      );
+
+    const current =
+      Math.round(
+        finalValue * eased
+      );
+
+    element.textContent =
+      current.toLocaleString(
+        "pt-BR"
+      );
+
+    if (progress < 1) {
+      requestAnimationFrame(
+        frame
+      );
+    }
+
+  }
+
+  requestAnimationFrame(frame);
+
+}
+
+
+/* =========================================================
+   ANIMAÇÃO DE TEXTO
+   ========================================================= */
+
+function animateText(
+  element,
+  value
+) {
+
+  element.style.opacity = "0";
+
+  setTimeout(() => {
+
+    element.textContent = value;
+
+    element.style.transition =
+      "opacity .25s ease";
+
+    element.style.opacity = "1";
+
+  }, 100);
+
+}
+
+function initializeFeedbackModals() {
+  const confessionModal =
+    document.getElementById("confession-modal");
+
+  const reviewModal =
+    document.getElementById("review-modal");
+
+  const openConfession =
+    document.getElementById("open-confession-modal");
+
+  const openReview =
+    document.getElementById("open-review-modal");
+
+  function openModal(modal) {
+    if (!modal) return;
+    modal.hidden = false;
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeModal(modal) {
+    if (!modal) return;
+    modal.hidden = true;
+    document.body.style.overflow = "";
+  }
+
+  openConfession?.addEventListener("click", () => {
+    openModal(confessionModal);
+  });
+
+  openReview?.addEventListener("click", () => {
+    openModal(reviewModal);
+  });
+
+  document.querySelectorAll(
+    "[data-close-feedback-modal]"
+  ).forEach(element => {
+    element.addEventListener("click", () => {
+      closeModal(
+        element.closest(".feedback-modal")
+      );
+    });
+  });
+
+  document.addEventListener("keydown", event => {
+    if (event.key === "Escape") {
+      closeModal(confessionModal);
+      closeModal(reviewModal);
+    }
+  });
+}
+
+
+/* =========================================================
    INICIALIZAÇÃO
    ========================================================= */
 
 document.addEventListener("DOMContentLoaded", () => {
   registerVisit();
   initializeFeedbackArea();
+  initializeFeedbackModals();
+  loadPublicStats();
 });

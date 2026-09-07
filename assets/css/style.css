@@ -1,3 +1,37 @@
+/* ============================================================
+   CONFITERI — FOLHA DE ESTILOS PRINCIPAL
+   ============================================================
+   Organização do arquivo:
+   00. Design tokens e temas
+   01. Base e acessibilidade
+   02. Layout e cabeçalho
+   03. Progresso e etapas
+   04. Capa e introdução
+   05. Acordeões, catecismo e vídeos
+   06. Seleção de roteiros
+   07. Mandamentos, perguntas e relações
+   08. Botões e navegação
+   09. Revisão, contrição e relatório
+   10. Última Confissão e Modo Confissão
+   11. Privacidade
+   12. Player de meditação
+   13. Rodapé e modais institucionais
+   14. Frutos do Confiteri — mini dashboard
+   15. Feedback — Confissão e avaliação
+   16. Responsividade global
+   17. Impressão
+   18. Preferências de movimento
+
+   Regra de manutenção:
+   - prefira as variáveis de :root em vez de cores fixas;
+   - mantenha estilos de um mesmo recurso na mesma seção;
+   - estilos responsivos específicos podem ficar junto ao recurso;
+   - não armazene regras temporárias no fim do arquivo.
+   ============================================================ */
+
+/* ============================================================
+   00. DESIGN TOKENS E TEMAS
+   ============================================================ */
 :root {
   --ink: #2A1B12;
   --wine: #7A1330;
@@ -722,7 +756,496 @@ body.footer-modal-open { overflow: hidden; }
 }
 
 /* ============================================================
-   14. RESPONSIVIDADE
+   14. FRUTOS DO CONFITERI — MINI DASHBOARD
+   ============================================================ */
+
+.impact-dashboard {
+  margin: 26px 0 30px;
+  padding: 22px 24px 18px;
+
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.04),
+      rgba(255, 255, 255, 0.01)
+    );
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.06);
+
+  overflow: hidden;
+}
+
+
+/* TOPO */
+
+.impact-dashboard-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 18px;
+  margin-bottom: 20px;
+}
+
+.impact-dashboard-kicker {
+  display: block;
+
+  margin-bottom: 5px;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  text-transform: uppercase;
+  letter-spacing: .12em;
+
+  color: var(--muted);
+}
+
+.impact-dashboard-top h2 {
+  margin: 0;
+
+  font-size: 19px;
+  line-height: 1.25;
+
+  color: var(--ink);
+}
+
+.impact-dashboard-badge {
+  flex-shrink: 0;
+
+  padding: 8px 13px;
+
+  border: 1px solid var(--card-border);
+  border-radius: 999px;
+
+  background: rgba(255, 255, 255, 0.04);
+
+  color: var(--muted);
+
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+
+/* MÉTRICAS */
+
+.impact-dashboard-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  border-top: 1px solid var(--card-border);
+  border-bottom: 1px solid var(--card-border);
+
+  padding: 18px 0;
+}
+
+.impact-stat {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  padding: 0 18px;
+  position: relative;
+  transition:
+    transform .18s ease,
+    background .18s ease;
+}
+
+.impact-stat:first-child {
+  padding-left: 0;
+}
+
+.impact-stat:last-child {
+  padding-right: 0;
+}
+
+.impact-stat:not(:last-child)::after {
+  content: "";
+
+  position: absolute;
+
+  right: 0;
+  top: 10%;
+
+  width: 1px;
+  height: 80%;
+
+  background: var(--card-border);
+}
+
+
+/* ÍCONES */
+
+.impact-stat-icon {
+  width: 46px;
+  height: 46px;
+
+  flex: 0 0 46px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  font-size: 20px;
+
+  border: 1px solid var(--card-border);
+}
+
+.impact-icon-visits {
+  background: rgba(74, 144, 226, .10);
+}
+
+.impact-icon-confessions {
+  background: rgba(77, 166, 116, .10);
+}
+
+.impact-icon-countries {
+  background: rgba(214, 160, 54, .10);
+}
+
+.impact-icon-rating {
+  background: rgba(198, 91, 117, .10);
+}
+
+
+/* NÚMEROS */
+
+.impact-stat-content {
+  min-width: 0;
+}
+
+.impact-stat-content strong {
+  display: block;
+
+  margin-bottom: 2px;
+
+  font-size: 23px;
+  line-height: 1;
+
+  color: var(--ink);
+
+  font-variant-numeric: tabular-nums;
+}
+
+.impact-stat-content span {
+  display: block;
+
+  color: var(--muted);
+
+  font-size: 11.5px;
+  line-height: 1.3;
+}
+
+
+/* RODAPÉ */
+
+.impact-dashboard-bottom {
+  display: flex;
+
+  justify-content: space-between;
+  align-items: center;
+
+  gap: 20px;
+
+  padding-top: 14px;
+
+  color: var(--muted);
+
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.impact-dashboard-bottom em {
+  flex-shrink: 0;
+
+  font-family: "Fraunces", serif;
+
+  color: var(--ink);
+
+  opacity: .8;
+
+  white-space: nowrap;
+}
+
+
+/* INTERAÇÃO */
+
+.impact-stat:hover {
+  transform: translateY(-2px);
+}
+
+
+/* RESPONSIVO */
+
+@media (max-width: 760px) {
+
+  .impact-dashboard {
+    padding: 20px 18px;
+  }
+
+  .impact-dashboard-top {
+    flex-direction: column;
+  }
+
+  .impact-dashboard-badge {
+    align-self: flex-start;
+  }
+
+  .impact-dashboard-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
+    gap: 0;
+  }
+
+  .impact-stat {
+    padding: 16px 10px;
+  }
+
+  .impact-stat:first-child {
+    padding-left: 10px;
+  }
+
+  .impact-stat:last-child {
+    padding-right: 10px;
+  }
+
+  .impact-stat:not(:last-child)::after {
+    display: none;
+  }
+
+  .impact-stat:nth-child(1),
+  .impact-stat:nth-child(2) {
+    border-bottom: 1px solid var(--card-border);
+  }
+
+  .impact-dashboard-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+}
+
+
+@media (max-width: 430px) {
+
+  .impact-stat-icon {
+    width: 40px;
+    height: 40px;
+
+    flex-basis: 40px;
+
+    font-size: 17px;
+  }
+
+  .impact-stat-content strong {
+    font-size: 20px;
+  }
+
+  .impact-stat-content span {
+    font-size: 10.5px;
+  }
+
+}
+
+/* ============================================================
+   15. FEEDBACK — CONFISSÃO E AVALIAÇÃO
+   ============================================================
+   Os formulários ficam em modais. O fundo do card usa as
+   variáveis do tema para permanecer opaco em claro e escuro.
+   ============================================================ */
+.final-feedback-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 18px 0 22px;
+}
+
+.feedback-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.feedback-modal[hidden] {
+  display: none !important;
+}
+
+.feedback-modal-card {
+  position: relative;
+  z-index: 2;
+
+  width: min(100%, 460px);
+  max-height: 90vh;
+  overflow-y: auto;
+
+  padding: 28px;
+
+  background: var(--card);
+  color: var(--ink);
+
+  border: 1px solid var(--card-border);
+  border-radius: 22px;
+
+  box-shadow:
+    0 24px 70px rgba(0, 0, 0, 0.35),
+    0 2px 8px rgba(0, 0, 0, 0.10);
+}
+
+
+.feedback-modal-backdrop {
+  position: absolute;
+  inset: 0;
+
+  background: rgba(0, 0, 0, 0.68);
+
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.feedback-modal-card-wide {
+  width: min(100%, 560px);
+}
+
+body.feedback-modal-open {
+  overflow: hidden;
+}
+
+.feedback-modal-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.feedback-modal-icon {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+.feedback-modal-card h2 {
+  margin: 0 0 8px;
+}
+
+.feedback-modal-card > p {
+  color: var(--muted);
+}
+
+.feedback-modal-privacy {
+  margin-top: 16px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+/* Campos do formulário de avaliação */
+.review-field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin-top: 16px;
+}
+
+.review-field label {
+  color: var(--ink);
+  font-size: 13.5px;
+}
+
+.optional-label {
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.review-field input,
+.review-field textarea,
+.review-select {
+  width: 100%;
+  padding: 11px 12px;
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  background: var(--surface-strong);
+  color: var(--ink);
+  font: inherit;
+}
+
+.review-field textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+
+.review-field input:focus,
+.review-field textarea:focus,
+.review-select:focus {
+  outline: none;
+  border-color: var(--wine);
+  box-shadow: 0 0 0 3px var(--surface-soft);
+}
+
+.review-permissions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 18px 0;
+}
+
+.review-permissions label {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.45;
+  cursor: pointer;
+}
+
+.review-permissions input[type="checkbox"] {
+  flex: 0 0 auto;
+  margin-top: 2px;
+  accent-color: var(--wine);
+}
+
+.feedback-success {
+  color: var(--success) !important;
+}
+
+.feedback-error {
+  color: var(--danger) !important;
+}
+
+@media (max-width: 520px) {
+  .final-feedback-actions {
+    flex-direction: column;
+  }
+
+  .final-feedback-actions .btn {
+    width: 100%;
+  }
+
+  .feedback-modal-card {
+    padding: 24px 18px;
+    border-radius: 18px;
+  }
+}
+
+/* ============================================================
+   16. RESPONSIVIDADE GLOBAL
    ============================================================ */
 @media (max-width: 620px) {
   header.top { align-items: center; }
@@ -781,7 +1304,7 @@ body.footer-modal-open { overflow: hidden; }
 }
 
 /* ============================================================
-   15. IMPRESSÃO
+   17. IMPRESSÃO
    ============================================================ */
 #report-print { display: none; }
 #report-print .rp-head { text-align: center; border-bottom: 2px solid var(--wine); padding-bottom: 14px; margin-bottom: 20px; }
@@ -831,149 +1354,419 @@ body.footer-modal-open { overflow: hidden; }
   #report-print .rp-head { border-color: #777 !important; }
 }
 
+/* ============================================================
+   18. PREFERÊNCIAS DE MOVIMENTO
+   ============================================================ */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .step.active { animation: none; }
 }
 
 
+/* Links e botões informativos do rodapé */
+.foot-links button,
+.foot-links a {
+  appearance: none;
+  border: 0;
+  padding: 0;
+
+  background: transparent;
+  color: var(--muted);
+
+  font: inherit;
+  font-size: 12px;
+  line-height: 1.4;
+
+  text-decoration: none;
+  cursor: pointer;
+
+  transition:
+    color 0.18s ease,
+    opacity 0.18s ease;
+}
+
+.foot-links button:hover,
+.foot-links a:hover {
+  color: var(--accent);
+}
+
+.foot-links button:focus-visible,
+.foot-links a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+
 /* =========================================================
-   FRUTOS / CONFISSÃO / AVALIAÇÃO
+   17. PÁGINA — POLÍTICA DE PRIVACIDADE
    ========================================================= */
 
-.feedback-section {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 18px;
-  margin-top: 28px;
+/*
+ * A página reutiliza os tokens globais do Confiteri.
+ * O objetivo é manter leitura confortável sem parecer
+ * uma página jurídica desconectada do restante do site.
+ */
+
+.privacy-page {
+  width: min(100% - 32px, 900px);
+  margin: 0 auto;
+  padding: 32px 0 64px;
 }
 
-.confession-feedback-card,
-.review-feedback-card {
-  border: 1px solid var(--line);
-  background: var(--surface);
-  border-radius: 18px;
-  padding: 22px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+
+/* ---------------------------------------------------------
+   Cabeçalho
+   --------------------------------------------------------- */
+
+.privacy-page-header {
+  margin-bottom: 28px;
+  text-align: center;
 }
 
-.feedback-icon {
-  font-size: 26px;
-  margin-bottom: 8px;
+.privacy-page-logo {
+  display: block;
+
+  width: min(220px, 70%);
+  height: auto;
+
+  margin: 0 auto 26px;
 }
 
-.confession-feedback-card h3,
-.review-feedback-card h3 {
-  margin: 0 0 8px;
-  font-size: 18px;
+.privacy-page-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  margin-bottom: 10px;
+
+  color: var(--accent);
+
+  font-size: 11px;
+  font-weight: 800;
+
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.privacy-page-header h1 {
+  margin: 0 0 12px;
+
   color: var(--ink);
+
+  font-family: "Fraunces", serif;
+  font-size: clamp(30px, 5vw, 46px);
+  line-height: 1.08;
 }
 
-.feedback-privacy {
-  margin-top: 14px;
+.privacy-page-lead {
+  max-width: 650px;
+
+  margin: 0 auto;
+
   color: var(--muted);
-  font-size: 12.5px;
-  line-height: 1.5;
+
+  font-size: 15px;
+  line-height: 1.7;
 }
 
-.review-field {
+
+/* ---------------------------------------------------------
+   Card principal
+   --------------------------------------------------------- */
+
+.privacy-document {
+  padding: clamp(24px, 5vw, 46px);
+
+  background: var(--card);
+
+  border: 1px solid var(--card-border);
+  border-radius: 24px;
+
+  box-shadow: var(--shadow);
+}
+
+
+/* ---------------------------------------------------------
+   Seções
+   --------------------------------------------------------- */
+
+.privacy-section {
+  padding: 28px 0;
+
+  border-bottom: 1px solid var(--card-border);
+}
+
+.privacy-section:first-child {
+  padding-top: 0;
+}
+
+.privacy-section:last-child {
+  padding-bottom: 0;
+
+  border-bottom: 0;
+}
+
+.privacy-section h2 {
   display: flex;
-  flex-direction: column;
-  gap: 7px;
-  margin-top: 16px;
-}
-
-.review-field label {
-  color: var(--ink);
-  font-size: 13.5px;
-}
-
-.optional-label {
-  color: var(--muted);
-  font-weight: 400;
-}
-
-.review-field input,
-.review-field textarea,
-.review-select {
-  width: 100%;
-  box-sizing: border-box;
-  border: 1px solid var(--line);
-  background: var(--bg);
-  color: var(--ink);
-  border-radius: 12px;
-  padding: 11px 12px;
-  font: inherit;
-  transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease;
-}
-
-.review-field textarea {
-  resize: vertical;
-  min-height: 110px;
-}
-
-.review-field input:focus,
-.review-field textarea:focus,
-.review-select:focus {
-  outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(126, 86, 48, 0.10);
-}
-
-.review-field small {
-  color: var(--muted);
-  font-size: 11.5px;
-}
-
-.review-permissions {
-  display: flex;
-  flex-direction: column;
+  align-items: center;
   gap: 10px;
-  margin: 18px 0;
-}
 
-.review-permissions label {
-  display: flex;
-  align-items: flex-start;
-  gap: 9px;
+  margin: 0 0 12px;
+
   color: var(--ink);
+
+  font-family: "Fraunces", serif;
+  font-size: 21px;
+  line-height: 1.3;
+}
+
+.privacy-section h3 {
+  margin: 22px 0 8px;
+
+  color: var(--ink);
+
+  font-size: 15px;
+}
+
+.privacy-section p,
+.privacy-section li {
+  color: var(--muted);
+
+  font-size: 14px;
+  line-height: 1.75;
+}
+
+.privacy-section p {
+  margin: 0 0 12px;
+}
+
+.privacy-section p:last-child {
+  margin-bottom: 0;
+}
+
+.privacy-section ul {
+  margin: 12px 0;
+  padding-left: 22px;
+}
+
+.privacy-section li + li {
+  margin-top: 6px;
+}
+
+.privacy-section strong {
+  color: var(--ink);
+}
+
+
+/* ---------------------------------------------------------
+   Caixas de destaque
+   --------------------------------------------------------- */
+
+.privacy-highlight {
+  margin: 18px 0;
+  padding: 18px 20px;
+
+  background: var(--surface-soft);
+
+  border: 1px solid var(--card-border);
+  border-left: 4px solid var(--accent);
+  border-radius: 14px;
+}
+
+.privacy-highlight strong {
+  display: block;
+
+  margin-bottom: 6px;
+
+  color: var(--ink);
+}
+
+.privacy-highlight p {
+  margin: 0;
+}
+
+
+/* Destaque específico para o conteúdo do exame */
+
+.privacy-sacred-data {
+  position: relative;
+
+  margin: 20px 0;
+  padding: 20px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(154, 92, 74, 0.08),
+      transparent
+    );
+
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+}
+
+.privacy-sacred-data::before {
+  content: "🔒";
+
+  display: block;
+
+  margin-bottom: 8px;
+
+  font-size: 22px;
+}
+
+.privacy-sacred-data strong {
+  display: block;
+
+  margin-bottom: 6px;
+
+  color: var(--ink);
+
+  font-family: "Fraunces", serif;
+  font-size: 17px;
+}
+
+
+/* ---------------------------------------------------------
+   Resumo visual
+   --------------------------------------------------------- */
+
+.privacy-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  gap: 12px;
+
+  margin-top: 18px;
+}
+
+.privacy-summary-item {
+  padding: 16px;
+
+  background: var(--surface-soft);
+
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+}
+
+.privacy-summary-item span {
+  display: block;
+
+  margin-bottom: 5px;
+
+  font-size: 18px;
+}
+
+.privacy-summary-item strong {
+  display: block;
+
+  margin-bottom: 4px;
+
+  color: var(--ink);
+
   font-size: 13px;
-  line-height: 1.45;
-  cursor: pointer;
 }
 
-.review-permissions input[type="checkbox"] {
-  margin-top: 2px;
-  flex: 0 0 auto;
+.privacy-summary-item p {
+  margin: 0;
+
+  font-size: 12px;
+  line-height: 1.55;
 }
 
-#confession-message,
-#review-message {
-  min-height: 20px;
-  margin-top: 10px;
+
+/* ---------------------------------------------------------
+   Metadados da política
+   --------------------------------------------------------- */
+
+.privacy-updated {
+  display: inline-flex;
+
+  margin-top: 16px;
+  padding: 7px 11px;
+
+  background: var(--surface-soft);
+
+  border: 1px solid var(--card-border);
+  border-radius: 999px;
+
+  color: var(--muted);
+
+  font-size: 11px;
 }
 
-.feedback-success {
-  color: #2f7d46;
+
+/* ---------------------------------------------------------
+   Navegação
+   --------------------------------------------------------- */
+
+.privacy-page-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+
+  margin-top: 26px;
 }
 
-.feedback-error {
-  color: #a33a3a;
+.privacy-page-actions a {
+  text-decoration: none;
 }
 
-@media (min-width: 760px) {
-  .feedback-section {
-    grid-template-columns: 1fr 1.15fr;
-    align-items: start;
+
+/* ---------------------------------------------------------
+   Rodapé da política
+   --------------------------------------------------------- */
+
+.privacy-page-footer {
+  margin-top: 32px;
+
+  color: var(--muted);
+
+  text-align: center;
+
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+.privacy-page-footer strong {
+  color: var(--ink);
+}
+
+
+/* ---------------------------------------------------------
+   Responsividade
+   --------------------------------------------------------- */
+
+@media (max-width: 640px) {
+
+  .privacy-page {
+    width: min(100% - 22px, 900px);
+
+    padding-top: 20px;
+    padding-bottom: 40px;
   }
-}
 
-@media (max-width: 600px) {
-  .confession-feedback-card,
-  .review-feedback-card {
-    padding: 18px;
-    border-radius: 16px;
+  .privacy-document {
+    padding: 22px 18px;
+
+    border-radius: 18px;
   }
+
+  .privacy-page-header h1 {
+    font-size: 31px;
+  }
+
+  .privacy-summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .privacy-page-actions {
+    flex-direction: column;
+  }
+
+  .privacy-page-actions .btn {
+    width: 100%;
+  }
+
 }

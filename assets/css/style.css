@@ -59,7 +59,7 @@
   header.top{
     padding:28px 0 18px;
     display:flex;
-    align-items:baseline;
+    align-items:center;
     justify-content:space-between;
     gap:12px;
     border-bottom:1px solid var(--card-border);
@@ -182,7 +182,7 @@
   }
   .cover p.lead{
     font-size:15.5px;
-    color:#fff;
+    color:var(--ink);
     max-width:60ch;
   }
 
@@ -1204,4 +1204,121 @@ html[data-theme="dark"] .question-relation.related{
 .meditation-collapsed[hidden],
 .music-credits-panel[hidden]{
   display:none !important;
+}
+
+
+/* ============================================================
+   IDENTIDADE CONFITERI — LOGO / CABEÇALHO
+   Regra final intencionalmente específica para impedir que
+   estilos genéricos de imagens/flex sobrescrevam a logo.
+   ============================================================ */
+
+header.top {
+  align-items: center;
+}
+
+header.top .site-brand {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  flex: 0 0 auto !important;
+  width: 200px !important;
+  max-width: 200px !important;
+  min-width: 0 !important;
+  height: 64px !important;
+  max-height: 64px !important;
+  overflow: hidden !important;
+  line-height: 0 !important;
+}
+
+/* Protege contra regras globais do tipo img { width:100% } e
+   também funciona se apenas logo-light/logo-dark estiverem no HTML. */
+header.top .site-brand img,
+header.top img.site-logo,
+header.top img.logo-light,
+header.top img.logo-dark,
+header.top img[src*="logo-confiteri"] {
+  display: block;
+  box-sizing: border-box !important;
+  width: 190px !important;
+  inline-size: 190px !important;
+  max-width: 190px !important;
+  min-width: 0 !important;
+  height: 58px !important;
+  block-size: 58px !important;
+  max-height: 58px !important;
+  object-fit: contain !important;
+  object-position: left center !important;
+  flex: 0 0 190px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Tema claro */
+header.top .logo-light {
+  display: block !important;
+}
+
+header.top .logo-dark {
+  display: none !important;
+}
+
+/* Tema escuro */
+html[data-theme="dark"] header.top .logo-light {
+  display: none !important;
+}
+
+html[data-theme="dark"] header.top .logo-dark {
+  display: block !important;
+}
+
+/* Texto introdutório: legível nos dois temas */
+.cover p.lead,
+.intro-text {
+  color: var(--ink) !important;
+}
+
+/* Campos que antes tinham branco fixo passam a seguir o tema */
+.item-note textarea,
+textarea.notes,
+.freq-num,
+.meditation-select {
+  background: var(--surface-strong);
+  color: var(--ink);
+}
+
+@media (max-width: 620px) {
+  header.top {
+    align-items: center;
+  }
+
+  header.top .site-brand {
+    width: 165px !important;
+    max-width: 165px !important;
+    height: 54px !important;
+    max-height: 54px !important;
+  }
+
+  header.top .site-brand img,
+  header.top img.site-logo,
+  header.top img.logo-light,
+  header.top img.logo-dark,
+  header.top img[src*="logo-confiteri"] {
+    width: 155px !important;
+    inline-size: 155px !important;
+    max-width: 155px !important;
+    height: 48px !important;
+    block-size: 48px !important;
+    max-height: 48px !important;
+    flex-basis: 155px !important;
+  }
+}
+
+@media print {
+  header.top .site-brand,
+  header.top .site-logo,
+  header.top .logo-light,
+  header.top .logo-dark {
+    display: none !important;
+  }
 }

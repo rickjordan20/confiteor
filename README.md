@@ -1,4 +1,4 @@
-# Confiteor — Exame de Consciência
+# Confiteri — Exame de Consciência
 
 Site estático e interativo para auxiliar na preparação pessoal ao Sacramento da Reconciliação.
 
@@ -45,7 +45,7 @@ Para adicionar uma música, inclua o MP3 na pasta de áudio e cadastre a faixa n
 ## Estrutura
 
 ```text
-confiteor/
+Confiteri/
 ├── index.html
 ├── assets/
 │   ├── css/

@@ -1397,3 +1397,81 @@ if (!questionsLoaded) {
 }
 
 document.addEventListener('DOMContentLoaded', init);
+
+
+/* ============================================================
+   MODAIS DO RODAPÉ
+   ============================================================ */
+
+(function initFooterModals() {
+
+  const openButtons = document.querySelectorAll('[data-footer-modal]');
+  const closeButtons = document.querySelectorAll('[data-footer-close]');
+  const modals = document.querySelectorAll('.footer-modal');
+
+  let activeModal = null;
+  let lastTrigger = null;
+
+  function openFooterModal(name, trigger) {
+
+    const modal = document.getElementById(`footer-modal-${name}`);
+
+    if (!modal) return;
+
+    lastTrigger = trigger || null;
+    activeModal = modal;
+
+    modal.hidden = false;
+    document.body.classList.add('footer-modal-open');
+
+    const closeButton = modal.querySelector('.footer-modal-close');
+
+    if (closeButton) {
+      requestAnimationFrame(() => closeButton.focus());
+    }
+
+  }
+
+  function closeFooterModal() {
+
+    if (!activeModal) return;
+
+    activeModal.hidden = true;
+    activeModal = null;
+
+    document.body.classList.remove('footer-modal-open');
+
+    if (lastTrigger) {
+      lastTrigger.focus();
+      lastTrigger = null;
+    }
+
+  }
+
+  openButtons.forEach(button => {
+
+    button.addEventListener('click', () => {
+
+      const modalName = button.dataset.footerModal;
+
+      openFooterModal(modalName, button);
+
+    });
+
+  });
+
+  closeButtons.forEach(button => {
+
+    button.addEventListener('click', closeFooterModal);
+
+  });
+
+  document.addEventListener('keydown', event => {
+
+    if (event.key === 'Escape' && activeModal) {
+      closeFooterModal();
+    }
+
+  });
+
+})();

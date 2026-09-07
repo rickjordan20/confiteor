@@ -1,4 +1,4 @@
-# Confiteor — Exame de Consciência
+# Confiteri — Exame de Consciência
 
 O **Confiteor** é uma aplicação web gratuita e interativa criada para auxiliar na preparação pessoal ao **Sacramento da Reconciliação (Confissão)**.
 
@@ -123,7 +123,7 @@ Os créditos e condições de licença de cada gravação devem ser preservados 
 ## 🗂️ Estrutura principal
 
 ```text
-confiteor/
+Confiteri/
 ├── index.html
 │
 ├── assets/

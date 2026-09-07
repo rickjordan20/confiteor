@@ -1,6 +1,6 @@
 {
   "versao": 1,
-  "descricao": "Configuração das perguntas equivalentes e relacionadas do Confiteor. Edite somente este arquivo para acrescentar, remover ou reorganizar relações sem precisar alterar o app.js.",
+  "descricao": "Configuração das perguntas equivalentes e relacionadas do Confiteri. Edite somente este arquivo para acrescentar, remover ou reorganizar relações sem precisar alterar o app.js.",
   "regras": {
     "equivalencias": "Perguntas que tratam essencialmente do mesmo ato/falta. Compartilham resposta, inclusão, frequência e observação e aparecem uma única vez na revisão final.",
     "relacionados": "Perguntas próximas ou do mesmo tema, mas que não são necessariamente a mesma falta. Apenas exibem um aviso de relação; as respostas permanecem independentes."

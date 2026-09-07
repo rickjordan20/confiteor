@@ -837,6 +837,179 @@
           </div>
         </div>
       </div>
+
+            <!-- ================= FRUTOS E AVALIAÇÃO ================= -->
+      <section class="feedback-section no-print">
+
+        <!-- Confissão realizada -->
+        <div class="confession-feedback-card">
+
+          <div class="feedback-icon">✝️</div>
+
+          <h3>Depois da sua Confissão</h3>
+
+          <p class="helper-copy">
+            Quando você realizar sua Confissão, se desejar, volte aqui e registre
+            anonimamente mais um fruto do Confiteri.
+          </p>
+
+          <button
+            class="btn primary"
+            id="btn-confession-completed"
+            type="button">
+            ✝ Sim, já me confessei
+          </button>
+
+          <p
+            id="confession-message"
+            class="helper-copy"
+            aria-live="polite">
+          </p>
+
+          <p class="feedback-privacy">
+            🔒 Esta confirmação é anônima e não é vinculada às respostas
+            do seu exame de consciência.
+          </p>
+
+        </div>
+
+
+        <!-- Avaliação -->
+        <div class="review-feedback-card">
+
+          <div class="feedback-icon">💬</div>
+
+          <h3>Como foi sua experiência com o Confiteri?</h3>
+
+          <p class="helper-copy">
+            Sua avaliação ajuda a melhorar a plataforma.
+          </p>
+
+
+          <!-- Nota -->
+          <div class="review-field">
+
+            <label for="review-rating">
+              <strong>Sua avaliação</strong>
+            </label>
+
+            <select
+              id="review-rating"
+              class="review-select">
+
+              <option value="">
+                Selecione uma nota
+              </option>
+
+              <option value="5">
+                ★★★★★ — Excelente
+              </option>
+
+              <option value="4">
+                ★★★★☆ — Muito bom
+              </option>
+
+              <option value="3">
+                ★★★☆☆ — Bom
+              </option>
+
+              <option value="2">
+                ★★☆☆☆ — Regular
+              </option>
+
+              <option value="1">
+                ★☆☆☆☆ — Ruim
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <!-- Nome -->
+          <div class="review-field">
+
+            <label for="review-name">
+              <strong>Nome</strong>
+              <span class="optional-label">(opcional)</span>
+            </label>
+
+            <input
+              type="text"
+              id="review-name"
+              maxlength="80"
+              placeholder="Como gostaria de ser identificado">
+          </div>
+
+
+          <!-- Comentário -->
+          <div class="review-field">
+
+            <label for="review-comment">
+              <strong>Comentário</strong>
+              <span class="optional-label">(opcional)</span>
+            </label>
+
+            <textarea
+              id="review-comment"
+              maxlength="500"
+              rows="4"
+              placeholder="Conte-nos como foi sua experiência com o Confiteri..."></textarea>
+
+            <small>
+              Máximo de 500 caracteres.
+            </small>
+
+          </div>
+
+
+          <!-- Autorizações -->
+          <div class="review-permissions">
+
+            <label>
+              <input
+                type="checkbox"
+                id="review-publish-comment">
+
+              Autorizo a publicação do meu comentário como depoimento
+              no Confiteri.
+            </label>
+
+
+            <label>
+              <input
+                type="checkbox"
+                id="review-publish-name">
+
+              Autorizo também a publicação do meu nome junto ao depoimento.
+            </label>
+
+          </div>
+
+
+          <button
+            class="btn primary"
+            id="btn-submit-review"
+            type="button">
+            Enviar avaliação
+          </button>
+
+          <p
+            id="review-message"
+            class="helper-copy"
+            aria-live="polite">
+          </p>
+
+
+          <p class="feedback-privacy">
+            🔒 Sua avaliação não é vinculada às respostas,
+            observações ou itens do seu exame de consciência.
+          </p>
+
+        </div>
+
+      </section>
+
       <div class="final-actions no-print"><button class="btn" onclick="goTo(REVIEW_STEP)">← Voltar à
           revisão</button><button class="btn danger-outline" onclick="confirmClearData()">🔒 Limpar meus dados e
           sair</button></div>
@@ -1233,8 +1406,7 @@
     </div>
 
     <script src="assets/js/app.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="assets/js/metrics.js"></script>
+    <script src="assets/js/metrics.js"></script>
 </body>
 
 </html>

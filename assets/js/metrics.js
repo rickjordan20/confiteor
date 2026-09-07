@@ -287,6 +287,236 @@ async function submitReview({
   }
 }
 
+/* =========================================================
+   INTERFACE — CONFISSÃO
+   ========================================================= */
+
+async function handleConfessionButton() {
+  const button = document.getElementById(
+    "btn-confession-completed"
+  );
+
+  const message = document.getElementById(
+    "confession-message"
+  );
+
+  if (!button || !message) {
+    return;
+  }
+
+  if (
+    localStorage.getItem(
+      "confiteri_confession_registered"
+    )
+  ) {
+    button.disabled = true;
+    button.textContent = "✓ Confissão já registrada";
+
+    message.textContent =
+      "Esta Confissão já foi registrada neste dispositivo.";
+
+    message.classList.add("feedback-success");
+
+    return;
+  }
+
+  button.disabled = true;
+
+  const originalText = button.textContent;
+
+  button.textContent = "Registrando...";
+
+  const result = await registerConfession();
+
+  if (result.success) {
+    button.textContent = "✓ Confissão registrada";
+
+    message.textContent =
+      "Obrigado por registrar este fruto do Confiteri.";
+
+    message.classList.remove("feedback-error");
+    message.classList.add("feedback-success");
+
+    return;
+  }
+
+  if (result.alreadyRegistered) {
+    button.textContent = "✓ Confissão já registrada";
+
+    message.textContent =
+      "Esta Confissão já foi registrada neste dispositivo.";
+
+    message.classList.remove("feedback-error");
+    message.classList.add("feedback-success");
+
+    return;
+  }
+
+  button.disabled = false;
+  button.textContent = originalText;
+
+  message.textContent =
+    "Não foi possível registrar agora. Tente novamente.";
+
+  message.classList.remove("feedback-success");
+  message.classList.add("feedback-error");
+}
+
+
+/* =========================================================
+   INTERFACE — AVALIAÇÃO
+   ========================================================= */
+
+async function handleReviewSubmit() {
+  const button =
+    document.getElementById("btn-submit-review");
+
+  const rating =
+    Number(
+      document.getElementById("review-rating")?.value
+    );
+
+  const name =
+    document.getElementById("review-name")?.value || "";
+
+  const comment =
+    document.getElementById("review-comment")?.value || "";
+
+  const publishComment =
+    document.getElementById(
+      "review-publish-comment"
+    )?.checked || false;
+
+  const publishName =
+    document.getElementById(
+      "review-publish-name"
+    )?.checked || false;
+
+  const message =
+    document.getElementById("review-message");
+
+  if (!button || !message) {
+    return;
+  }
+
+  message.classList.remove(
+    "feedback-success",
+    "feedback-error"
+  );
+
+  if (!rating) {
+    message.textContent =
+      "Escolha uma nota antes de enviar.";
+
+    message.classList.add("feedback-error");
+    return;
+  }
+
+  /*
+   * Se a pessoa autorizar o nome,
+   * precisa ter informado um nome.
+   */
+  if (publishName && !name.trim()) {
+    message.textContent =
+      "Informe seu nome ou desmarque a autorização de publicação do nome.";
+
+    message.classList.add("feedback-error");
+    return;
+  }
+
+  /*
+   * Se autorizar publicação do comentário,
+   * precisa existir um comentário.
+   */
+  if (publishComment && !comment.trim()) {
+    message.textContent =
+      "Escreva um comentário ou desmarque a autorização de publicação.";
+
+    message.classList.add("feedback-error");
+    return;
+  }
+
+  button.disabled = true;
+
+  const originalText = button.textContent;
+
+  button.textContent = "Enviando...";
+
+  const result = await submitReview({
+    rating,
+    name,
+    comment,
+    publishComment,
+    publishName
+  });
+
+  if (result.success) {
+    button.textContent = "✓ Avaliação enviada";
+
+    message.textContent =
+      "Obrigado pela sua avaliação. Ela ajuda a melhorar o Confiteri.";
+
+    message.classList.add("feedback-success");
+
+    return;
+  }
+
+  button.disabled = false;
+  button.textContent = originalText;
+
+  message.textContent =
+    result.error ||
+    "Não foi possível enviar sua avaliação.";
+
+  message.classList.add("feedback-error");
+}
+
+
+/* =========================================================
+   EVENTOS
+   ========================================================= */
+
+function initializeFeedbackArea() {
+  const confessionButton =
+    document.getElementById(
+      "btn-confession-completed"
+    );
+
+  const reviewButton =
+    document.getElementById(
+      "btn-submit-review"
+    );
+
+  if (confessionButton) {
+    confessionButton.addEventListener(
+      "click",
+      handleConfessionButton
+    );
+  }
+
+  if (reviewButton) {
+    reviewButton.addEventListener(
+      "click",
+      handleReviewSubmit
+    );
+  }
+
+  /*
+   * Caso a Confissão já tenha sido registrada
+   * anteriormente neste navegador.
+   */
+  if (
+    confessionButton &&
+    localStorage.getItem(
+      "confiteri_confession_registered"
+    )
+  ) {
+    confessionButton.disabled = true;
+
+    confessionButton.textContent =
+      "✓ Confissão já registrada";
+  }
+}
 
 /* =========================================================
    INICIALIZAÇÃO
@@ -294,4 +524,5 @@ async function submitReview({
 
 document.addEventListener("DOMContentLoaded", () => {
   registerVisit();
+  initializeFeedbackArea();
 });

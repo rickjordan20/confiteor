@@ -115,6 +115,7 @@ const FREQ_OPTIONS = [
 const STORAGE_KEY = 'confiteor-exam-state-v2';
 const NOTES_KEY = 'confiteor-general-notes-v2';
 const SELECTION_KEY = 'confiteor-selection-v2';
+const LAST_CONFESSION_KEY = 'confiteri-last-confession-v1';
 const THEME_KEY = 'confiteor-theme';
 const PRIVACY_LOCK_MS = 5 * 60 * 1000;
 const PRIVACY_WARNING_MS = 25 * 60 * 1000;
@@ -617,12 +618,59 @@ function chapterQuestionCount(sections) { let n = 0; sections.forEach(sec => sec
 function getSelection() { return { dez: document.getElementById('sel-dez').checked, capitais: document.getElementById('sel-capitais').checked, igreja: document.getElementById('sel-igreja').checked }; }
 function saveSelection() { try { sessionStorage.setItem(SELECTION_KEY, JSON.stringify(getSelection())); } catch (_) { } }
 function restoreSelection() { try { const s = JSON.parse(sessionStorage.getItem(SELECTION_KEY) || 'null'); if (s) { document.getElementById('sel-dez').checked = !!s.dez; document.getElementById('sel-capitais').checked = !!s.capitais; document.getElementById('sel-igreja').checked = !!s.igreja; } } catch (_) { } }
+
+function getLastConfessionData() {
+  try {
+    const saved = JSON.parse(sessionStorage.getItem(LAST_CONFESSION_KEY) || 'null');
+    if (saved && typeof saved === 'object') return saved;
+  } catch (_) { }
+  return { value: '', other: '' };
+}
+function saveLastConfession() {
+  const select = document.getElementById('last-confession');
+  const other = document.getElementById('last-confession-other');
+  if (!select) return;
+  if (other) other.hidden = select.value !== 'outro';
+  try { sessionStorage.setItem(LAST_CONFESSION_KEY, JSON.stringify({ value: select.value, other: other?.value?.trim() || '' })); } catch (_) { }
+}
+function restoreLastConfession() {
+  const data = getLastConfessionData();
+  const select = document.getElementById('last-confession');
+  const other = document.getElementById('last-confession-other');
+  if (!select) return;
+  select.value = data.value || '';
+  if (other) { other.value = data.other || ''; other.hidden = select.value !== 'outro'; }
+}
+function lastConfessionPhrase() {
+  const data = getLastConfessionData();
+  const map = {
+    poucos_dias: 'Padre, minha última Confissão foi há poucos dias.',
+    algumas_semanas: 'Padre, minha última Confissão foi há algumas semanas.',
+    um_mes: 'Padre, minha última Confissão foi há cerca de um mês.',
+    alguns_meses: 'Padre, minha última Confissão foi há alguns meses.',
+    um_ano: 'Padre, minha última Confissão foi há cerca de um ano.',
+    mais_de_um_ano: 'Padre, minha última Confissão foi há mais de um ano.',
+    nao_lembro: 'Padre, não me lembro exatamente quando foi minha última Confissão.',
+    primeira_confissao: 'Padre, esta é a minha primeira Confissão.'
+  };
+  if (data.value === 'outro' && data.other) return `Padre, minha última Confissão foi ${data.other.replace(/[.]+$/, '')}.`;
+  return map[data.value] || 'Diga ao sacerdote aproximadamente quando foi sua última Confissão.';
+}
+function hasLastConfessionSelection() {
+  const data = getLastConfessionData();
+  return !!data.value && (data.value !== 'outro' || !!data.other);
+}
 function updateSelectionSummary() {
   document.getElementById('count-dez').textContent = chapterQuestionCount(SECTIONS_DEZ) + ' perguntas'; document.getElementById('count-capitais').textContent = chapterQuestionCount(SECTIONS_CAPITAIS) + ' perguntas'; document.getElementById('count-igreja').textContent = chapterQuestionCount(SECTIONS_IGREJA) + ' perguntas';
   const sel = getSelection(); let total = 0, chapters = 0; if (sel.dez) { total += chapterQuestionCount(SECTIONS_DEZ); chapters++; } if (sel.capitais) { total += chapterQuestionCount(SECTIONS_CAPITAIS); chapters++; } if (sel.igreja) { total += chapterQuestionCount(SECTIONS_IGREJA); chapters++; }
-  const summary = document.getElementById('picker-summary'), btn = document.getElementById('btn-start'); if (chapters === 0) { summary.textContent = 'Selecione ao menos um bloco para começar.'; btn.disabled = true; } else { summary.textContent = `${total} perguntas no total, em ${chapters} ${chapters === 1 ? 'bloco' : 'blocos'}.`; btn.disabled = false; } saveSelection();
+  const summary = document.getElementById('picker-summary'), btn = document.getElementById('btn-start');
+  const lastOk = hasLastConfessionSelection();
+  if (chapters === 0) { summary.textContent = 'Selecione ao menos um bloco para começar.'; btn.disabled = true; }
+  else if (!lastOk) { summary.textContent = `${total} perguntas no total. Antes de começar, informe aproximadamente quando foi sua última Confissão.`; btn.disabled = true; }
+  else { summary.textContent = `${total} perguntas no total, em ${chapters} ${chapters === 1 ? 'bloco' : 'blocos'}.`; btn.disabled = false; }
+  saveSelection(); saveLastConfession();
 }
-async function startExam() { const sel = getSelection(); if (!sel.dez && !sel.capitais && !sel.igreja) return updateSelectionSummary(); await loadQuestionRelations(); buildAllSteps(sel); updateTallies(); goTo(1); }
+async function startExam() { const sel = getSelection(); if (!sel.dez && !sel.capitais && !sel.igreja) return updateSelectionSummary(); if (!hasLastConfessionSelection()) { updateSelectionSummary(); document.getElementById('last-confession')?.focus(); return; } await loadQuestionRelations(); buildAllSteps(sel); updateTallies(); goTo(1); }
 
 /* ============================================================
    NAVEGAÇÃO E PROGRESSO
@@ -675,6 +723,29 @@ function getDoubtKeys() {
 
   return result;
 }
+function getDoubtItems() {
+  const out = [];
+
+  getDoubtKeys().forEach(key => {
+    const meta = ITEM_REGISTRY[key];
+    if (!meta || meta.item?.reportable === false) return;
+
+    const state = getItemState(key);
+
+    out.push({
+      key,
+      item: meta.item,
+      state,
+      group: meta.groupName || '',
+      sectionTitle: meta.sectionTitle || '',
+      question: meta.item.t || '',
+      note: state.note || ''
+    });
+  });
+
+  return out;
+}
+
 function renderDoubts() { const body = document.getElementById('doubts-body'); const keys = getDoubtKeys(); if (!keys.length) { body.innerHTML = '<div class="empty-state">Nenhum item ficou pendente. Você pode seguir para a revisão da Confissão.</div>'; return; } body.innerHTML = keys.map(key => { const m = ITEM_REGISTRY[key], s = getItemState(key), g = m.guide; return `<div class="doubt-card"><h4>${m.sectionTitle}</h4><p class="review-sentence">${m.item.t}</p>${g ? `<div class="catechism-box"><div class="catechism-kicker">Referência no Catecismo</div><p>${g.text}</p><div class="catechism-ref">${g.ref}</div></div>` : ''}<div class="review-tools"><button class="btn ${s.includeInConfession ? 'primary' : ''}" onclick="setInclude('${key}',true)">☑ Incluir na Confissão</button><button class="btn" onclick="resolveDoubt('${key}',false)">Não incluir</button><button class="btn ghost" onclick="focusOriginalQuestion('${key}')">Voltar à pergunta</button></div></div>`; }).join(''); }
 function resolveDoubt(key, include) {
   updateItemState(key, {
@@ -822,15 +893,121 @@ function saveGeneralNotes() { try { sessionStorage.setItem(NOTES_KEY, document.g
 /* ============================================================
    PDF / TXT — UMA ÚNICA FONTE DE DADOS
    ============================================================ */
+function buildRoteiroSectionsHtml(items, doubts, notes) {
+  const grouped = {};
+  items.forEach(x => { (grouped[x.group] ??= []).push(x); });
+
+  const sinsHtml = Object.entries(grouped).map(([group, list]) => `
+    <div class="rp-block"><h4>${escapeHtml(group)}</h4><ul>${list.map(x => `<li>${escapeHtml(buildConfessionSentence(x.item.f, x.state.frequency))}${x.state.note ? `<br><small><strong>Observação:</strong> ${escapeHtml(x.state.note)}</small>` : ''}</li>`).join('')}</ul></div>`).join('') || '<p>Nenhum item foi incluído na Confissão.</p>';
+
+  const doubtsHtml = doubts.length
+    ? `<p>Você marcou estas situações como dúvida. Apresente-as ao sacerdote para receber orientação:</p>
+       <ul>${doubts.map(x => `<li><strong>${escapeHtml(x.sectionTitle)}</strong><br>${escapeHtml(x.question)}${x.note ? `<br><small><strong>Observação:</strong> ${escapeHtml(x.note)}</small>` : ''}</li>`).join('')}</ul>`
+    : '<p>Nenhuma dúvida ficou registrada.</p>';
+
+  const notesHtml = notes ? `<div class="rp-notes"><strong>Anotação geral:</strong><br>${escapeHtml(notes)}</div>` : '';
+
+  return `
+    <div class="rp-block"><h4>1. Início</h4><p>Faça o sinal da cruz: <strong>Em nome do Pai, e do Filho, e do Espírito Santo. Amém.</strong></p><p>${escapeHtml(lastConfessionPhrase())}</p></div>
+    <div class="rp-block"><h4>2. Pecados que desejo confessar</h4>${sinsHtml}</div>
+    ${notesHtml}
+    <div class="rp-block"><h4>3. Dúvidas para apresentar ao sacerdote</h4>${doubtsHtml}</div>
+    <div class="rp-block"><h4>4. Para encerrar a acusação</h4><p>Depois de dizer aquilo de que se recorda, você pode concluir: <em>“Por estes pecados e por todos aqueles dos quais não me recordo neste momento, peço perdão a Deus.”</em></p></div>
+    <div class="rp-block"><h4>5. Escute o sacerdote</h4><p>Ouça suas orientações e receba a penitência indicada.</p></div>
+    <div class="rp-block"><h4>6. Ato de Contrição</h4><p class="rp-contrition">“Meu Deus, eu me arrependo de todo o coração de vos ter ofendido, porque sois tão bom e amável. Prometo, com a vossa graça, esforçar-me para ser bom. Meu Jesus, misericórdia! Amém.”</p></div>
+    <div class="rp-block"><h4>7. Absolvição</h4><p>Escute atentamente a absolvição dada pelo sacerdote e, ao final, responda: <strong>Amém.</strong></p></div>
+    <div class="rp-block"><h4>8. Depois da Confissão</h4><p>Cumpra a penitência indicada e faça sua ação de graças a Deus.</p></div>`;
+}
+
 function renderPrintable() {
-  const items = getIncludedItems(), notes = (document.getElementById('notes')?.value || sessionStorage.getItem(NOTES_KEY) || '').trim(); const grouped = {}; items.forEach(x => { (grouped[x.group] ??= []).push(x); }); const print = document.getElementById('report-print');
-  print.innerHTML = `<div class="rp-head"><h1>Minha preparação para a Confissão</h1><p>Exame de Consciência · ${new Date().toLocaleDateString('pt-BR')}<br>Elaboração e organização: Catequista Rickson Jordan</p></div>${Object.entries(grouped).map(([group, list]) => `<div class="rp-block"><h4 style="font-size:15px;border-bottom:2px solid #777;padding-bottom:4px;">${group}</h4><ul>${list.map(x => `<li>${escapeHtml(buildConfessionSentence(x.item.f, x.state.frequency))}${x.state.note ? `<br><small><strong>Observação:</strong> ${escapeHtml(x.state.note)}</small>` : ''}</li>`).join('')}</ul></div>`).join('') || '<p>Nenhum item incluído.</p>'}${notes ? `<div class="rp-notes"><strong>Anotação geral:</strong><br>${escapeHtml(notes)}</div>` : ''}<div class="rp-contrition">“Meu Deus, eu me arrependo de todo o coração de vos ter ofendido, porque sois tão bom e amável. Prometo, com a vossa graça, esforçar-me para ser bom. Meu Jesus, misericórdia! Amém.”</div><p style="font-size:11px;color:#666;">Esta lista é apenas um auxílio pessoal de memória para a Confissão.</p>`;
+  const items = getIncludedItems();
+  const doubts = getDoubtItems();
+  const notes = (document.getElementById('notes')?.value || sessionStorage.getItem(NOTES_KEY) || '').trim();
+  const print = document.getElementById('report-print');
+  print.innerHTML = `<div class="rp-head"><h1>Roteiro para minha Confissão</h1><p>Confiteri · ${new Date().toLocaleDateString('pt-BR')}<br>Elaboração e organização: Catequista Rickson Jordan</p></div>${buildRoteiroSectionsHtml(items, doubts, notes)}<p style="font-size:11px;color:#666;">Este roteiro é apenas um auxílio pessoal de memória e não substitui a orientação do sacerdote.</p>`;
 }
 function printConfession() { renderPrintable(); window.print(); }
 function downloadTxt() {
-  const items = getIncludedItems(), notes = (document.getElementById('notes')?.value || sessionStorage.getItem(NOTES_KEY) || '').trim(); const grouped = {}; items.forEach(x => { (grouped[x.group] ??= []).push(x); }); let out = `MINHA PREPARAÇÃO PARA A CONFISSÃO\nExame de Consciência\nElaboração e organização: Catequista Rickson Jordan\n${new Date().toLocaleDateString('pt-BR')}\n\n`; Object.entries(grouped).forEach(([group, list]) => { out += `${group.toUpperCase()}\n${'='.repeat(group.length)}\n`; list.forEach(x => { out += `- ${buildConfessionSentence(x.item.f, x.state.frequency)}\n`; if (x.state.note) out += `  Observação: ${x.state.note}\n`; }); out += '\n'; }); if (!items.length) out += 'Nenhum item incluído.\n\n'; if (notes) out += `Anotação geral:\n${notes}\n\n`; out += `Ato de Contrição:\n"Meu Deus, eu me arrependo de todo o coração de vos ter ofendido, porque sois tão bom e amável. Prometo, com a vossa graça, esforçar-me para ser bom. Meu Jesus, misericórdia! Amém."\n\nEsta lista é apenas um auxílio pessoal de memória para a Confissão.\n`;
-  const blob = new Blob([out], { type: 'text/plain;charset=utf-8' }), url = URL.createObjectURL(blob), a = document.createElement('a'); a.href = url; a.download = 'minha-preparacao-para-confissao.txt'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+  const items = getIncludedItems();
+  const doubts = getDoubtItems();
+  const notes = (document.getElementById('notes')?.value || sessionStorage.getItem(NOTES_KEY) || '').trim();
+  const grouped = {};
+
+  items.forEach(x => { (grouped[x.group] ??= []).push(x); });
+
+  let out = `ROTEIRO PARA MINHA CONFISSÃO\nConfiteri\n${new Date().toLocaleDateString('pt-BR')}\n\n1. INÍCIO\nFaça o sinal da cruz.\n${lastConfessionPhrase()}\n\n2. PECADOS QUE DESEJO CONFESSAR\n`;
+
+  Object.entries(grouped).forEach(([group, list]) => {
+    out += `\n${group.toUpperCase()}\n`;
+    list.forEach(x => {
+      out += `- ${buildConfessionSentence(x.item.f, x.state.frequency)}\n`;
+      if (x.state.note) out += `  Observação: ${x.state.note}\n`;
+    });
+  });
+
+  if (!items.length) out += 'Nenhum item foi incluído.\n';
+  if (notes) out += `\nAnotação geral:\n${notes}\n`;
+
+  out += `\n3. DÚVIDAS PARA APRESENTAR AO SACERDOTE\n`;
+
+  if (doubts.length) {
+    doubts.forEach(x => {
+      out += `- ${x.sectionTitle}: ${x.question}\n`;
+      if (x.note) out += `  Observação: ${x.note}\n`;
+    });
+  } else {
+    out += 'Nenhuma dúvida ficou registrada.\n';
+  }
+
+  out += `\n4. PARA ENCERRAR A ACUSAÇÃO\nPor estes pecados e por todos aqueles dos quais não me recordo neste momento, peço perdão a Deus.\n\n5. ESCUTE O SACERDOTE\nOuça suas orientações e receba a penitência.\n\n6. ATO DE CONTRIÇÃO\nMeu Deus, eu me arrependo de todo o coração de vos ter ofendido, porque sois tão bom e amável. Prometo, com a vossa graça, esforçar-me para ser bom. Meu Jesus, misericórdia! Amém.\n\n7. ABSOLVIÇÃO\nEscute atentamente e, ao final, responda: Amém.\n\n8. DEPOIS DA CONFISSÃO\nCumpra a penitência e faça sua ação de graças.\n\nEste roteiro é apenas um auxílio pessoal de memória e não substitui a orientação do sacerdote.\n`;
+
+  const blob = new Blob([out], { type: 'text/plain;charset=utf-8' }),
+    url = URL.createObjectURL(blob),
+    a = document.createElement('a');
+
+  a.href = url;
+  a.download = 'roteiro-para-minha-confissao.txt';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
 }
+
+
+/* ============================================================
+   MODO CONFISSÃO — OPCIONAL E SEM NOVO ARMAZENAMENTO
+   ============================================================ */
+let confessionModeIndex = 0;
+function confessionModeSteps() {
+  const items = getIncludedItems();
+  const doubts = getDoubtItems();
+
+  const list = items.length
+    ? `<ul class="confession-sins-list">${items.map(x => `<li><label><input type="checkbox"> <span>${escapeHtml(buildConfessionSentence(x.item.f, x.state.frequency))}${x.state.note ? `<small>${escapeHtml(x.state.note)}</small>` : ''}</span></label></li>`).join('')}</ul>`
+    : '<div class="empty-state">Nenhum item foi incluído no roteiro.</div>';
+
+  const doubtList = doubts.length
+    ? `<ul class="confession-sins-list confession-doubts-list">${doubts.map(x => `<li><span><strong>${escapeHtml(x.sectionTitle)}</strong><br>${escapeHtml(x.question)}${x.note ? `<small>${escapeHtml(x.note)}</small>` : ''}</span></li>`).join('')}</ul>`
+    : '<div class="empty-state">Nenhuma dúvida ficou registrada.</div>';
+
+  return [
+    { title: '1. Inicie a Confissão', body: `<p>Faça o sinal da cruz:</p><div class="confession-mode-quote">Em nome do Pai, e do Filho, e do Espírito Santo. Amém.</div><p>Depois diga ao sacerdote:</p><div class="confession-mode-quote">${escapeHtml(lastConfessionPhrase())}</div>` },
+    { title: '2. Confesse seus pecados', body: `<p>Fale com sinceridade e simplicidade. Use esta lista apenas como auxílio de memória.</p>${list}<p class="field-help">As marcações acima existem somente na tela e não são salvas.</p>` },
+    { title: '3. Apresente suas dúvidas', body: `<p>Estas são as situações que você marcou como dúvida. Apresente-as ao sacerdote para receber orientação.</p>${doubtList}` },
+    { title: '4. Encerre a acusação', body: `<p>Depois de dizer aquilo de que se recorda, você pode concluir:</p><div class="confession-mode-quote">Por estes pecados e por todos aqueles dos quais não me recordo neste momento, peço perdão a Deus.</div>` },
+    { title: '5. Escute o sacerdote', body: `<p>Agora volte sua atenção ao sacerdote. Ele poderá aconselhá-lo, esclarecer alguma dúvida e indicar uma penitência.</p>` },
+    { title: '6. Ato de Contrição', body: `<p>Quando for oportuno, manifeste seu arrependimento:</p><div class="confession-mode-quote">Meu Deus, eu me arrependo de todo o coração de vos ter ofendido, porque sois tão bom e amável. Prometo, com a vossa graça, esforçar-me para ser bom. Meu Jesus, misericórdia! Amém.</div>` },
+    { title: '7. Receba a absolvição', body: `<p class="confession-focus">Agora volte sua atenção ao sacerdote.</p><p>Escute a absolvição e, ao final, responda:</p><div class="confession-mode-amen">Amém.</div>` },
+    { title: '8. Depois da Confissão', body: `<div class="confession-finished">✝️</div><h3>Confissão concluída</h3><p>Dê graças a Deus pelo perdão recebido. Cumpra a penitência indicada assim que for oportuno.</p><div class="post-confession-actions"><button class="btn primary" type="button" onclick="finishConfessionAndClear()">🔒 Encerrar e apagar os dados desta sessão</button><button class="btn" type="button" onclick="closeConfessionMode()">Voltar sem apagar</button></div>` }
+  ];
+}
+
+function openConfessionMode() { confessionModeIndex = 0; const modal = document.getElementById('confession-mode'); if (!modal) return; modal.hidden = false; document.body.style.overflow = 'hidden'; renderConfessionMode(); }
+function closeConfessionMode() { const modal = document.getElementById('confession-mode'); if (modal) modal.hidden = true; document.body.style.overflow = ''; }
+function renderConfessionMode() { const steps = confessionModeSteps(); confessionModeIndex = Math.max(0, Math.min(steps.length - 1, confessionModeIndex)); const currentStep = steps[confessionModeIndex]; const body = document.getElementById('confession-mode-body'); if (body) body.innerHTML = `<div class="confession-mode-step"><h3>${currentStep.title}</h3>${currentStep.body}</div>`; const prev = document.getElementById('confession-mode-prev'); const next = document.getElementById('confession-mode-next'); if (prev) prev.hidden = confessionModeIndex === 0 || confessionModeIndex === steps.length - 1; if (next) { next.hidden = confessionModeIndex === steps.length - 1; next.textContent = confessionModeIndex === steps.length - 2 ? 'Recebi a absolvição ✓' : 'Próximo →'; } const fill = document.getElementById('confession-mode-progress-fill'); if (fill) fill.style.width = `${((confessionModeIndex + 1) / steps.length) * 100}%`; }
+function confessionModeNext() { const steps = confessionModeSteps(); if (confessionModeIndex < steps.length - 1) confessionModeIndex++; renderConfessionMode(); document.querySelector('.confession-mode-shell')?.scrollTo({ top: 0, behavior: 'smooth' }); }
+function confessionModePrev() { if (confessionModeIndex > 0) confessionModeIndex--; renderConfessionMode(); document.querySelector('.confession-mode-shell')?.scrollTo({ top: 0, behavior: 'smooth' }); }
+function finishConfessionAndClear() { if (confirm('Encerrar esta sessão e apagar respostas, observações, frequências e progresso deste exame?')) clearSensitiveData(true); }
 
 /* ============================================================
    VÍDEOS E ACORDEÕES
@@ -854,7 +1031,7 @@ function lockForPrivacy() { if (isPrivacyLocked) return; isPrivacyLocked = true;
 function unlockPrivacy() { isPrivacyLocked = false; lastActivity = Date.now(); document.getElementById('privacy-lock').hidden = true; document.getElementById('privacy-lock-warning').textContent = ''; document.body.style.overflow = ''; }
 function checkInactivity() { const elapsed = Date.now() - lastActivity; if (elapsed >= PRIVACY_LOCK_MS) lockForPrivacy(); if (isPrivacyLocked && elapsed >= PRIVACY_WARNING_MS) { const min = Math.max(0, Math.ceil((PRIVACY_CLEAR_MS - elapsed) / 60000)); document.getElementById('privacy-lock-warning').textContent = `Se a inatividade continuar, os dados desta sessão serão apagados em aproximadamente ${min} ${min === 1 ? 'minuto' : 'minutos'}.`; } if (elapsed >= PRIVACY_CLEAR_MS) { clearSensitiveData(false); } }
 function confirmClearData() { if (confirm('Isso apagará respostas, observações, frequências e progresso desta sessão. Deseja continuar?')) clearSensitiveData(true); }
-function clearSensitiveData(reload = true) { pauseMeditation(); try { sessionStorage.removeItem(STORAGE_KEY); sessionStorage.removeItem(NOTES_KEY); sessionStorage.removeItem(SELECTION_KEY); } catch (_) { } Object.keys(examState).forEach(k => delete examState[k]); if (reload) location.reload(); else location.reload(); }
+function clearSensitiveData(reload = true) { pauseMeditation(); try { sessionStorage.removeItem(STORAGE_KEY); sessionStorage.removeItem(NOTES_KEY); sessionStorage.removeItem(SELECTION_KEY); sessionStorage.removeItem(LAST_CONFESSION_KEY); } catch (_) { } Object.keys(examState).forEach(k => delete examState[k]); if (reload) location.reload(); else location.reload(); }
 
 /* ============================================================
    PLAYER DE MÚSICA PARA REFLEXÃO
@@ -1215,7 +1392,7 @@ if (!questionsLoaded) {
 }
   applyTheme(preferredTheme()); document.getElementById('theme-toggle')?.addEventListener('click', toggleTheme); document.getElementById('clear-data-btn')?.addEventListener('click', confirmClearData); document.getElementById('privacy-continue-btn')?.addEventListener('click', unlockPrivacy);
   ['pointerdown', 'keydown', 'touchstart', 'scroll'].forEach(ev => window.addEventListener(ev, registerActivity, { passive: true })); setInterval(checkInactivity, 15000);
-  initAccordions(); initMeditationPlayer(); loadQuestionRelations(); restoreSelection(); updateSelectionSummary(); buildRail([{ step: 0, char: '•', title: 'Início' }]); updateRail(); updateProgressBar();
+  initAccordions(); initMeditationPlayer(); loadQuestionRelations(); restoreSelection(); restoreLastConfession(); updateSelectionSummary(); buildRail([{ step: 0, char: '•', title: 'Início' }]); updateRail(); updateProgressBar();
   const notes = document.getElementById('notes'); if (notes) { notes.value = sessionStorage.getItem(NOTES_KEY) || ''; notes.dataset.loaded = '1'; }
 }
 

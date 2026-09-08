@@ -202,6 +202,21 @@ html[data-theme="dark"] header.top .site-logo-image {
   background-image: url("../img/capa-confiteri-fundo-escuro.webp");
 }
 
+.site-logo-link {
+  display: block;
+  width: 190px;
+  height: 58px;
+  line-height: 0;
+  text-decoration: none;
+  border-radius: 3px;
+}
+
+.site-logo-link:focus-visible {
+  outline: 2px solid var(--wine-text);
+  outline-offset: 3px;
+}
+
+
 /* ============================================================
    03. PROGRESSO E ETAPAS
    ============================================================ */

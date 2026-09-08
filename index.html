@@ -63,15 +63,12 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-  <link
-    rel="preload"
-    as="style"
+  <link rel="preload" as="style"
     href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&display=swap"
     onload="this.onload=null;this.rel='stylesheet'">
 
   <noscript>
-    <link
-      rel="stylesheet"
+    <link rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&display=swap">
   </noscript>
 
@@ -95,291 +92,292 @@
 
     <main id="main-content">
 
-    <div class="rail-wrap no-print">
-      <div class="rail" id="rail"></div>
-    </div>
-    <div class="progress-shell no-print" aria-live="polite">
-      <div class="progress-meta">
-        <span id="progress-percent">0%</span>
-        <span id="progress-label">Início</span>
-        <span id="progress-remaining">Preparação</span>
+      <div class="rail-wrap no-print">
+        <div class="rail" id="rail"></div>
       </div>
-      <div class="progress-track" title="Progresso geral do exame" role="progressbar" aria-valuemin="0"
-        aria-valuemax="100" aria-valuenow="0">
-        <div class="fill" id="progress-fill"></div>
-      </div>
-    </div>
-
-    <!-- ================= STEP 0: COVER ================= -->
-    <section class="step cover active" data-step="0">
-      <div class="eyebrow">Confissão: encontro com a misericórdia de Deus</div>
-      <h1>Exame de Consciência</h1>
-      <div class="verse">
-        “Se confessarmos os nossos pecados, Ele é fiel e justo para nos perdoar.”
-        <cite>1 Jo 1,9</cite>
-      </div>
-      <p class="lead">Este exame ajuda você a revisar sua vida com sinceridade e preparar, de forma simples, aquilo que
-        deseja levar à Confissão.</p>
-
-      <div class="privacy-note">
-        <strong>🔒 Privacidade</strong>
-
-        <span>
-          O conteúdo do seu exame de consciência permanece no seu dispositivo.
-          Respostas, pecados selecionados, frequências, observações e o roteiro da
-          Confissão não são armazenados no banco de dados do Confiteri.
-          Estatísticas gerais de uso podem ser registradas separadamente, sem acesso
-          ao conteúdo da sua preparação.
-        </span>
-      </div>
-
-      <div class="intro-actions">
-        <button class="btn primary" type="button"
-          onclick="document.getElementById('picker').scrollIntoView({behavior:'smooth'})">🙏 Iniciar exame de
-          consciência</button>
-      </div>
-
-      <!-- ================= FRUTOS DO CONFITERI ================= -->
-
-      <section class="impact-dashboard no-print" id="confiteri-impact">
-
-        <div class="impact-dashboard-top">
-
-          <div>
-            <span class="impact-dashboard-kicker">
-              ✦ Frutos do Confiteri
-            </span>
-
-            <h2>Um pequeno auxílio no caminho da Reconciliação</h2>
-          </div>
-
-          <span class="impact-dashboard-badge">
-            ♡ Mais almas para Deus
-          </span>
-
+      <div class="progress-shell no-print" aria-live="polite">
+        <div class="progress-meta">
+          <span id="progress-percent">0%</span>
+          <span id="progress-label">Início</span>
+          <span id="progress-remaining">Preparação</span>
         </div>
-
-
-        <div class="impact-dashboard-grid">
-
-          <div class="impact-stat">
-
-            <div class="impact-stat-icon impact-icon-visits">
-              👥
-            </div>
-
-            <div class="impact-stat-content">
-              <strong id="stat-visits">—</strong>
-              <span>visitas</span>
-            </div>
-
-          </div>
-
-
-          <div class="impact-stat">
-
-            <div class="impact-stat-icon impact-icon-confessions">
-              ✝
-            </div>
-
-            <div class="impact-stat-content">
-              <strong id="stat-confessions">—</strong>
-              <span>confissões registradas</span>
-            </div>
-
-          </div>
-
-
-          <div class="impact-stat">
-
-            <div class="impact-stat-icon impact-icon-countries">
-              🌎
-            </div>
-
-            <div class="impact-stat-content">
-              <strong id="stat-countries">—</strong>
-              <span>países alcançados</span>
-            </div>
-
-          </div>
-
-
-          <div class="impact-stat">
-
-            <div class="impact-stat-icon impact-icon-rating">
-              ★
-            </div>
-
-            <div class="impact-stat-content">
-              <strong id="stat-rating">—</strong>
-              <span>avaliação média</span>
-            </div>
-
-          </div>
-
+        <div class="progress-track" title="Progresso geral do exame" role="progressbar" aria-valuemin="0"
+          aria-valuemax="100" aria-valuenow="0">
+          <div class="fill" id="progress-fill"></div>
         </div>
+      </div>
 
+      <!-- ================= STEP 0: COVER ================= -->
+      <section class="step cover active" data-step="0">
+        <div class="eyebrow">Confissão: encontro com a misericórdia de Deus</div>
+        <h1>Exame de Consciência</h1>
+        <div class="verse">
+          “Se confessarmos os nossos pecados, Ele é fiel e justo para nos perdoar.”
+          <cite>1 Jo 1,9</cite>
+        </div>
+        <p class="lead">Este exame ajuda você a revisar sua vida com sinceridade e preparar, de forma simples, aquilo
+          que
+          deseja levar à Confissão.</p>
 
-        <div class="impact-dashboard-bottom">
+        <div class="privacy-note">
+          <strong>🔒 Privacidade</strong>
 
           <span>
-            🔒 Nenhuma resposta, pecado, frequência ou observação
-            do seu exame é utilizada nestas estatísticas.
+            O conteúdo do seu exame de consciência permanece no seu dispositivo.
+            Respostas, pecados selecionados, frequências, observações e o roteiro da
+            Confissão não são armazenados no banco de dados do Confiteri.
+            Estatísticas gerais de uso podem ser registradas separadamente, sem acesso
+            ao conteúdo da sua preparação.
           </span>
-
-          <em>
-            “Tudo para a maior glória de Deus.”
-          </em>
-
         </div>
 
-      </section>
-      <section class="help-center" aria-labelledby="help-center-title">
-        <div class="help-center-head">
-          <span class="help-center-kicker">DÚVIDAS?</span>
-          <h3 id="help-center-title">Estamos aqui para ajudar!</h3>
-          <p>Escolha o tema da sua dúvida e encontre respostas de forma simples e confiável.</p>
+        <div class="intro-actions">
+          <button class="btn primary" type="button" onclick="openConsentModal()">
+            🙏 Iniciar exame de consciência
+          </button></button>
         </div>
 
-        <div class="help-columns">
-          <article class="help-card help-card-platform" aria-labelledby="help-platform-title">
-            <div class="help-card-header">
-              <div class="help-card-icon" aria-hidden="true">⚙️</div>
-              <div class="help-card-heading">
-                <h4 id="help-platform-title">Sobre a Plataforma</h4>
-                <p>Saiba como usar o Confiteri e aproveitar seus recursos de forma simples e segura.</p>
-              </div>
-              <div class="help-card-badge">
-                <span>🖥️ Passo a passo</span>
-                <small>5 dúvidas</small>
-              </div>
+        <!-- ================= FRUTOS DO CONFITERI ================= -->
+
+        <section class="impact-dashboard no-print" id="confiteri-impact">
+
+          <div class="impact-dashboard-top">
+
+            <div>
+              <span class="impact-dashboard-kicker">
+                ✦ Frutos do Confiteri
+              </span>
+
+              <h2>Um pequeno auxílio no caminho da Reconciliação</h2>
             </div>
-            <div class="help-card-divider"></div>
-            <div class="accordion-stack help-accordion-stack" data-help-group="platform">
-<div class="accordion">
-          <button class="accordion-trigger" type="button" aria-expanded="false" aria-controls="intro-platform">
-            <span>🧭 Como usar esta plataforma?</span>
-            <span class="accordion-chevron">⌄</span>
-          </button>
 
-          <div class="accordion-panel" id="intro-platform" hidden>
-            <p class="helper-copy">
-              O Confiteri foi pensado para ajudar você a preparar sua Confissão de forma simples,
-              privada e no seu próprio ritmo.
-            </p>
+            <span class="impact-dashboard-badge">
+              ♡ Mais almas para Deus
+            </span>
 
-            <ol class="steps-list compact-steps">
-
-              <li>
-                <span class="num">1</span>
-                <div class="body">
-                  <div class="t">Selecione os roteiros</div>
-                  <div class="d">
-                    Escolha os Dez Mandamentos, os 7 Pecados Capitais e/ou os
-                    5 Mandamentos da Igreja. Você pode selecionar mais de um.
-                  </div>
-                </div>
-              </li>
-
-              <li>
-                <span class="num">2</span>
-                <div class="body">
-                  <div class="t">Informe quando foi sua última Confissão</div>
-                  <div class="d">
-                    Indique aproximadamente quando você se confessou pela última vez.
-                    Essa informação será usada depois para preparar seu roteiro.
-                  </div>
-                </div>
-              </li>
-
-              <li>
-                <span class="num">3</span>
-                <div class="body">
-                  <div class="t">Faça seu exame de consciência</div>
-                  <div class="d">
-                    Leia cada pergunta com calma e responda
-                    <strong>Sim</strong>, <strong>Não</strong> ou <strong>Tenho dúvida</strong>.
-                  </div>
-                </div>
-              </li>
-
-              <li>
-                <span class="num">4</span>
-                <div class="body">
-                  <div class="t">Prepare o que deseja confessar</div>
-                  <div class="d">
-                    Você pode incluir os itens que deseja levar à Confissão e, opcionalmente,
-                    informar a frequência aproximada e adicionar uma observação para ajudá-lo
-                    a se lembrar.
-                  </div>
-                </div>
-              </li>
-
-              <li>
-                <span class="num">5</span>
-                <div class="body">
-                  <div class="t">Use as ajudas quando precisar</div>
-                  <div class="d">
-                    Consulte explicações, referências do Catecismo e outras orientações
-                    disponíveis ao longo do exame. Esses conteúdos ficam recolhidos para
-                    não atrapalhar quem prefere seguir diretamente pelas perguntas.
-                  </div>
-                </div>
-              </li>
-
-              <li>
-                <span class="num">6</span>
-                <div class="body">
-                  <div class="t">Revise suas dúvidas e sua Confissão</div>
-                  <div class="d">
-                    Ao final, revise o que marcou como <strong>Tenho dúvida</strong> e confira
-                    os itens que decidiu confessar. As dúvidas que permanecerem poderão ser
-                    apresentadas ao sacerdote para orientação.
-                  </div>
-                </div>
-              </li>
-
-              <li>
-                <span class="num">7</span>
-                <div class="body">
-                  <div class="t">Escolha como deseja levar seu roteiro</div>
-                  <div class="d">
-                    Use o <strong>Modo Confissão</strong> opcional para acompanhar um passo a
-                    passo pelo celular ou gere seu roteiro em <strong>PDF, impressão ou TXT</strong>.
-                  </div>
-                </div>
-              </li>
-
-              <li>
-                <span class="num">8</span>
-                <div class="body">
-                  <div class="t">Use o roteiro apenas como auxílio</div>
-                  <div class="d">
-                    O Confiteri ajuda você a recordar sua preparação, mas durante o Sacramento
-                    dê prioridade ao diálogo, às orientações e à absolvição do sacerdote.
-                  </div>
-                </div>
-              </li>
-
-              <li>
-                <span class="num">9</span>
-                <div class="body">
-                  <div class="t">Encerre sua sessão com privacidade</div>
-                  <div class="d">
-                    Depois da Confissão, cumpra a penitência e dê graças a Deus.
-                    Ao terminar, você poderá encerrar a sessão e apagar os dados do exame.
-                  </div>
-                </div>
-              </li>
-
-            </ol>
-
-            <p class="helper-copy" style="margin-top:10px;">
-              Se você já conhece o processo, não precisa abrir todas as explicações:
-              basta responder às perguntas e avançar.
-            </p>
           </div>
-        </div>
+
+
+          <div class="impact-dashboard-grid">
+
+            <div class="impact-stat">
+
+              <div class="impact-stat-icon impact-icon-visits">
+                👥
+              </div>
+
+              <div class="impact-stat-content">
+                <strong id="stat-visits">—</strong>
+                <span>visitas</span>
+              </div>
+
+            </div>
+
+
+            <div class="impact-stat">
+
+              <div class="impact-stat-icon impact-icon-confessions">
+                ✝
+              </div>
+
+              <div class="impact-stat-content">
+                <strong id="stat-confessions">—</strong>
+                <span>confissões registradas</span>
+              </div>
+
+            </div>
+
+
+            <div class="impact-stat">
+
+              <div class="impact-stat-icon impact-icon-countries">
+                🌎
+              </div>
+
+              <div class="impact-stat-content">
+                <strong id="stat-countries">—</strong>
+                <span>países alcançados</span>
+              </div>
+
+            </div>
+
+
+            <div class="impact-stat">
+
+              <div class="impact-stat-icon impact-icon-rating">
+                ★
+              </div>
+
+              <div class="impact-stat-content">
+                <strong id="stat-rating">—</strong>
+                <span>avaliação média</span>
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <div class="impact-dashboard-bottom">
+
+            <span>
+              🔒 Nenhuma resposta, pecado, frequência ou observação
+              do seu exame é utilizada nestas estatísticas.
+            </span>
+
+            <em>
+              “Tudo para a maior glória de Deus.”
+            </em>
+
+          </div>
+
+        </section>
+        <section class="help-center" aria-labelledby="help-center-title">
+          <div class="help-center-head">
+            <span class="help-center-kicker">DÚVIDAS?</span>
+            <h3 id="help-center-title">Estamos aqui para ajudar!</h3>
+            <p>Escolha o tema da sua dúvida e encontre respostas de forma simples e confiável.</p>
+          </div>
+
+          <div class="help-columns">
+            <article class="help-card help-card-platform" aria-labelledby="help-platform-title">
+              <div class="help-card-header">
+                <div class="help-card-icon" aria-hidden="true">⚙️</div>
+                <div class="help-card-heading">
+                  <h4 id="help-platform-title">Sobre a Plataforma</h4>
+                  <p>Saiba como usar o Confiteri e aproveitar seus recursos de forma simples e segura.</p>
+                </div>
+                <div class="help-card-badge">
+                  <span>🖥️ Passo a passo</span>
+                  <small>5 dúvidas</small>
+                </div>
+              </div>
+              <div class="help-card-divider"></div>
+              <div class="accordion-stack help-accordion-stack" data-help-group="platform">
+                <div class="accordion">
+                  <button class="accordion-trigger" type="button" aria-expanded="false" aria-controls="intro-platform">
+                    <span>🧭 Como usar esta plataforma?</span>
+                    <span class="accordion-chevron">⌄</span>
+                  </button>
+
+                  <div class="accordion-panel" id="intro-platform" hidden>
+                    <p class="helper-copy">
+                      O Confiteri foi pensado para ajudar você a preparar sua Confissão de forma simples,
+                      privada e no seu próprio ritmo.
+                    </p>
+
+                    <ol class="steps-list compact-steps">
+
+                      <li>
+                        <span class="num">1</span>
+                        <div class="body">
+                          <div class="t">Selecione os roteiros</div>
+                          <div class="d">
+                            Escolha os Dez Mandamentos, os 7 Pecados Capitais e/ou os
+                            5 Mandamentos da Igreja. Você pode selecionar mais de um.
+                          </div>
+                        </div>
+                      </li>
+
+                      <li>
+                        <span class="num">2</span>
+                        <div class="body">
+                          <div class="t">Informe quando foi sua última Confissão</div>
+                          <div class="d">
+                            Indique aproximadamente quando você se confessou pela última vez.
+                            Essa informação será usada depois para preparar seu roteiro.
+                          </div>
+                        </div>
+                      </li>
+
+                      <li>
+                        <span class="num">3</span>
+                        <div class="body">
+                          <div class="t">Faça seu exame de consciência</div>
+                          <div class="d">
+                            Leia cada pergunta com calma e responda
+                            <strong>Sim</strong>, <strong>Não</strong> ou <strong>Tenho dúvida</strong>.
+                          </div>
+                        </div>
+                      </li>
+
+                      <li>
+                        <span class="num">4</span>
+                        <div class="body">
+                          <div class="t">Prepare o que deseja confessar</div>
+                          <div class="d">
+                            Você pode incluir os itens que deseja levar à Confissão e, opcionalmente,
+                            informar a frequência aproximada e adicionar uma observação para ajudá-lo
+                            a se lembrar.
+                          </div>
+                        </div>
+                      </li>
+
+                      <li>
+                        <span class="num">5</span>
+                        <div class="body">
+                          <div class="t">Use as ajudas quando precisar</div>
+                          <div class="d">
+                            Consulte explicações, referências do Catecismo e outras orientações
+                            disponíveis ao longo do exame. Esses conteúdos ficam recolhidos para
+                            não atrapalhar quem prefere seguir diretamente pelas perguntas.
+                          </div>
+                        </div>
+                      </li>
+
+                      <li>
+                        <span class="num">6</span>
+                        <div class="body">
+                          <div class="t">Revise suas dúvidas e sua Confissão</div>
+                          <div class="d">
+                            Ao final, revise o que marcou como <strong>Tenho dúvida</strong> e confira
+                            os itens que decidiu confessar. As dúvidas que permanecerem poderão ser
+                            apresentadas ao sacerdote para orientação.
+                          </div>
+                        </div>
+                      </li>
+
+                      <li>
+                        <span class="num">7</span>
+                        <div class="body">
+                          <div class="t">Escolha como deseja levar seu roteiro</div>
+                          <div class="d">
+                            Use o <strong>Modo Confissão</strong> opcional para acompanhar um passo a
+                            passo pelo celular ou gere seu roteiro em <strong>PDF, impressão ou TXT</strong>.
+                          </div>
+                        </div>
+                      </li>
+
+                      <li>
+                        <span class="num">8</span>
+                        <div class="body">
+                          <div class="t">Use o roteiro apenas como auxílio</div>
+                          <div class="d">
+                            O Confiteri ajuda você a recordar sua preparação, mas durante o Sacramento
+                            dê prioridade ao diálogo, às orientações e à absolvição do sacerdote.
+                          </div>
+                        </div>
+                      </li>
+
+                      <li>
+                        <span class="num">9</span>
+                        <div class="body">
+                          <div class="t">Encerre sua sessão com privacidade</div>
+                          <div class="d">
+                            Depois da Confissão, cumpra a penitência e dê graças a Deus.
+                            Ao terminar, você poderá encerrar a sessão e apagar os dados do exame.
+                          </div>
+                        </div>
+                      </li>
+
+                    </ol>
+
+                    <p class="helper-copy" style="margin-top:10px;">
+                      Se você já conhece o processo, não precisa abrir todas as explicações:
+                      basta responder às perguntas e avançar.
+                    </p>
+                  </div>
+                </div>
 
                 <div class="accordion">
                   <button class="accordion-trigger" type="button" aria-expanded="false" aria-controls="faq-mobile">
@@ -387,7 +385,8 @@
                     <span class="accordion-chevron">⌄</span>
                   </button>
                   <div class="accordion-panel" id="faq-mobile" hidden>
-                    <p>Sim. O Confiteri funciona diretamente pelo navegador em celulares, tablets e computadores, sem precisar instalar nada.</p>
+                    <p>Sim. O Confiteri funciona diretamente pelo navegador em celulares, tablets e computadores, sem
+                      precisar instalar nada.</p>
                   </div>
                 </div>
 
@@ -397,7 +396,8 @@
                     <span class="accordion-chevron">⌄</span>
                   </button>
                   <div class="accordion-panel" id="faq-privacy" hidden>
-                    <p>O conteúdo do seu exame permanece no seu navegador. Respostas, pecados selecionados, frequências e observações pessoais não são armazenados no banco de dados do Confiteri.</p>
+                    <p>O conteúdo do seu exame permanece no seu navegador. Respostas, pecados selecionados, frequências
+                      e observações pessoais não são armazenados no banco de dados do Confiteri.</p>
                   </div>
                 </div>
 
@@ -407,7 +407,8 @@
                     <span class="accordion-chevron">⌄</span>
                   </button>
                   <div class="accordion-panel" id="faq-export" hidden>
-                    <p>Sim. Na etapa final você pode exportar seu roteiro em TXT ou usar a impressão do navegador para imprimir ou salvar em PDF.</p>
+                    <p>Sim. Na etapa final você pode exportar seu roteiro em TXT ou usar a impressão do navegador para
+                      imprimir ou salvar em PDF.</p>
                   </div>
                 </div>
 
@@ -417,698 +418,712 @@
                     <span class="accordion-chevron">⌄</span>
                   </button>
                   <div class="accordion-panel" id="faq-theme" hidden>
-                    <p>Sim. Use o botão de tema no canto superior da página para alternar entre o modo claro e o modo escuro.</p>
+                    <p>Sim. Use o botão de tema no canto superior da página para alternar entre o modo claro e o modo
+                      escuro.</p>
                   </div>
                 </div>
-            </div>
-          </article>
+              </div>
+            </article>
 
-          <article class="help-card help-card-formation" aria-labelledby="help-formation-title">
-            <div class="help-card-header">
-              <div class="help-card-icon" aria-hidden="true">📖</div>
-              <div class="help-card-heading">
-                <h4 id="help-formation-title">Perguntas Formativas</h4>
-                <p>Entenda melhor a Confissão e os ensinamentos da Igreja Católica com respostas baseadas na doutrina.</p>
+            <article class="help-card help-card-formation" aria-labelledby="help-formation-title">
+              <div class="help-card-header">
+                <div class="help-card-icon" aria-hidden="true">📖</div>
+                <div class="help-card-heading">
+                  <h4 id="help-formation-title">Perguntas Formativas</h4>
+                  <p>Entenda melhor a Confissão e os ensinamentos da Igreja Católica com respostas baseadas na doutrina.
+                  </p>
+                </div>
+                <div class="help-card-badge">
+                  <span>✝️ Doutrina e Fé</span>
+                  <small>5 dúvidas</small>
+                </div>
               </div>
-              <div class="help-card-badge">
-                <span>✝️ Doutrina e Fé</span>
-                <small>5 dúvidas</small>
-              </div>
-            </div>
-            <div class="help-card-divider"></div>
-            <div class="accordion-stack help-accordion-stack" data-help-group="formation">
-<div class="accordion">
-          <button class="accordion-trigger" type="button" aria-expanded="false" aria-controls="intro-confession-steps">
-            <span>🙏 Como funciona a Confissão?</span>
-            <span class="accordion-chevron">⌄</span>
-          </button>
-          <div class="accordion-panel" id="intro-confession-steps" hidden>
-            <ol class="steps-list compact-steps">
-              <li><span class="num">1</span>
-                <div class="body">
-                  <div class="t">Exame de consciência</div>
-                  <div class="d">Reflita com sinceridade sobre sua vida e reconheça seus pecados.</div>
-                </div>
-              </li>
-              <li><span class="num">2</span>
-                <div class="body">
-                  <div class="t">Arrependimento (contrição)</div>
-                  <div class="d">Arrependa-se sinceramente dos pecados e volte o coração para Deus.</div>
-                </div>
-              </li>
-              <li><span class="num">3</span>
-                <div class="body">
-                  <div class="t">Propósito de emenda</div>
-                  <div class="d">Decida, com a graça de Deus, evitar o pecado e buscar mudança de vida.</div>
-                </div>
-              </li>
-              <li><span class="num">4</span>
-                <div class="body">
-                  <div class="t">Confissão</div>
-                  <div class="d">Confesse ao sacerdote os pecados graves de que se recordar, indicando espécie e número,
-                    na medida do possível. A confissão dos pecados veniais também é vivamente recomendada. (CIC
-                    1456–1458)</div>
-                </div>
-              </li>
-              <li><span class="num">5</span>
-                <div class="body">
-                  <div class="t">Penitência (satisfação)</div>
-                  <div class="d">Cumpra a penitência recebida e, quando necessário, procure reparar o dano causado. (CIC
-                    1459–1460)</div>
-                </div>
-              </li>
-              <li><span class="num">6</span>
-                <div class="body">
-                  <div class="t">Absolvição</div>
-                  <div class="d">Receba com fé o perdão e a paz de Deus pela absolvição do sacerdote. (CIC 1449; 1461)
+              <div class="help-card-divider"></div>
+              <div class="accordion-stack help-accordion-stack" data-help-group="formation">
+                <div class="accordion">
+                  <button class="accordion-trigger" type="button" aria-expanded="false"
+                    aria-controls="intro-confession-steps">
+                    <span>🙏 Como funciona a Confissão?</span>
+                    <span class="accordion-chevron">⌄</span>
+                  </button>
+                  <div class="accordion-panel" id="intro-confession-steps" hidden>
+                    <ol class="steps-list compact-steps">
+                      <li><span class="num">1</span>
+                        <div class="body">
+                          <div class="t">Exame de consciência</div>
+                          <div class="d">Reflita com sinceridade sobre sua vida e reconheça seus pecados.</div>
+                        </div>
+                      </li>
+                      <li><span class="num">2</span>
+                        <div class="body">
+                          <div class="t">Arrependimento (contrição)</div>
+                          <div class="d">Arrependa-se sinceramente dos pecados e volte o coração para Deus.</div>
+                        </div>
+                      </li>
+                      <li><span class="num">3</span>
+                        <div class="body">
+                          <div class="t">Propósito de emenda</div>
+                          <div class="d">Decida, com a graça de Deus, evitar o pecado e buscar mudança de vida.</div>
+                        </div>
+                      </li>
+                      <li><span class="num">4</span>
+                        <div class="body">
+                          <div class="t">Confissão</div>
+                          <div class="d">Confesse ao sacerdote os pecados graves de que se recordar, indicando espécie e
+                            número,
+                            na medida do possível. A confissão dos pecados veniais também é vivamente recomendada. (CIC
+                            1456–1458)</div>
+                        </div>
+                      </li>
+                      <li><span class="num">5</span>
+                        <div class="body">
+                          <div class="t">Penitência (satisfação)</div>
+                          <div class="d">Cumpra a penitência recebida e, quando necessário, procure reparar o dano
+                            causado. (CIC
+                            1459–1460)</div>
+                        </div>
+                      </li>
+                      <li><span class="num">6</span>
+                        <div class="body">
+                          <div class="t">Absolvição</div>
+                          <div class="d">Receba com fé o perdão e a paz de Deus pela absolvição do sacerdote. (CIC 1449;
+                            1461)
+                          </div>
+                        </div>
+                      </li>
+                    </ol>
                   </div>
                 </div>
-              </li>
-            </ol>
+                <div class="accordion">
+                  <button class="accordion-trigger" type="button" aria-expanded="false" aria-controls="intro-sin-types">
+                    <span>❓ Qual a diferença entre pecado mortal e pecado venial?</span>
+                    <span class="accordion-chevron">⌄</span>
+                  </button>
+
+                  <div class="accordion-panel" id="intro-sin-types" hidden>
+
+                    <p>
+                      Nem todo pecado possui a mesma gravidade. A Igreja distingue os
+                      pecados em <strong>mortais</strong> e <strong>veniais</strong>.
+                    </p>
+
+
+                    <h4>🔴 Pecado mortal</h4>
+
+                    <p>
+                      É uma falta grave que <strong>rompe a comunhão com Deus e faz
+                        perder a graça santificante</strong>.
+                    </p>
+
+                    <p>
+                      Para que um pecado seja mortal, três condições precisam estar
+                      presentes <strong>ao mesmo tempo</strong>:
+                    </p>
+
+                    <ol>
+                      <li>
+                        <strong>Matéria grave</strong> — aquilo que foi feito é
+                        gravemente contrário à lei de Deus;
+                      </li>
+
+                      <li>
+                        <strong>Pleno conhecimento</strong> — a pessoa sabe que aquilo
+                        é gravemente errado;
+                      </li>
+
+                      <li>
+                        <strong>Consentimento deliberado</strong> — mesmo sabendo disso,
+                        escolhe livremente praticá-lo.
+                      </li>
+                    </ol>
+
+                    <div class="catechism-box">
+                      <div class="catechism-kicker">
+                        Catecismo da Igreja Católica
+                      </div>
+
+                      <p>
+                        Para que um pecado seja mortal, devem estar presentes matéria
+                        grave, pleno conhecimento e consentimento deliberado.
+                      </p>
+
+                      <div class="catechism-ref">
+                        CIC 1857–1859
+                      </div>
+                    </div>
+
+
+                    <h4>🟡 Pecado venial</h4>
+
+                    <p>
+                      O pecado venial também é uma ofensa a Deus e não deve ser tratado
+                      com indiferença, mas <strong>não rompe a comunhão com Ele nem faz
+                        perder a graça santificante</strong>.
+                    </p>
+
+                    <p>
+                      O pecado é venial quando a matéria não é grave ou quando, mesmo
+                      havendo matéria grave, faltam pleno conhecimento ou consentimento
+                      completo.
+                    </p>
+
+                    <div class="catechism-box">
+                      <div class="catechism-kicker">
+                        Catecismo da Igreja Católica
+                      </div>
+
+                      <p>
+                        O pecado venial fere e enfraquece a caridade, mas não rompe a
+                        Aliança com Deus.
+                      </p>
+
+                      <div class="catechism-ref">
+                        CIC 1862–1863
+                      </div>
+                    </div>
+
+
+                    <div class="footer-info-box">
+                      <strong>Em resumo</strong>
+
+                      <p>
+                        🔴 <strong>Mortal:</strong> matéria grave + pleno conhecimento +
+                        consentimento deliberado → rompe a comunhão com Deus.
+                      </p>
+
+                      <p>
+                        🟡 <strong>Venial:</strong> fere a amizade com Deus e enfraquece
+                        a caridade, mas não rompe essa comunhão.
+                      </p>
+                    </div>
+
+                    <p class="helper-copy">
+                      A ignorância, o medo, a coação, os hábitos, as paixões e outros
+                      fatores podem diminuir a responsabilidade pessoal. Se tiver dúvida
+                      sobre a gravidade de um pecado ou sobre sua responsabilidade,
+                      converse com o sacerdote.
+                    </p>
+
+                    <p class="helper-copy">
+                      <strong>Para saber mais:</strong>
+                      1Jo 5,16-17; CIC 1854–1864.
+                    </p>
+
+                  </div>
+                </div>
+                <div class="accordion">
+                  <button class="accordion-trigger" type="button" aria-expanded="false"
+                    aria-controls="intro-why-confession">
+                    <span>
+                      ❓ Se posso pedir perdão diretamente a Deus, por que confessar os pecados mortais ao sacerdote?
+                    </span>
+                    <span class="accordion-chevron">⌄</span>
+                  </button>
+
+                  <div class="accordion-panel" id="intro-why-confession" hidden>
+
+                    <p>
+                      <strong>Você pode e deve pedir perdão diretamente a Deus.</strong>
+                      Mas Jesus quis nos dar também o
+                      <strong>Sacramento da Reconciliação</strong> como meio concreto
+                      de receber seu perdão.
+                    </p>
+
+                    <div class="verse">
+                      “Recebei o Espírito Santo. Àqueles a quem perdoardes os pecados,
+                      ser-lhes-ão perdoados; àqueles a quem os retiverdes,
+                      ser-lhes-ão retidos.”
+                      <cite>Jo 20,22-23</cite>
+                    </div>
+
+                    <p>
+                      Por isso, na Confissão,
+                      <strong>não estamos escolhendo o sacerdote no lugar de Deus</strong>.
+                      É Deus quem perdoa; o sacerdote exerce o ministério que Cristo
+                      confiou à Igreja.
+                    </p>
+
+                    <p>
+                      Para quem cometeu <strong>pecado mortal</strong>, a Confissão
+                      sacramental é o caminho ordinário para reconciliar-se plenamente
+                      com Deus e com a Igreja.
+                    </p>
+
+
+                    <div class="catechism-box">
+                      <div class="catechism-kicker">
+                        E se eu ainda não puder me confessar?
+                      </div>
+
+                      <p>
+                        A <strong>contrição perfeita</strong> — arrependimento por amor
+                        a Deus acima de todas as coisas — pode obter o perdão dos pecados
+                        mortais, desde que inclua o firme propósito de
+                        <strong>se confessar assim que possível</strong>.
+                      </p>
+
+                      <div class="catechism-ref">
+                        CIC 1452
+                      </div>
+                    </div>
+
+
+                    <div class="footer-info-box">
+                      <strong>Em resumo</strong>
+
+                      <p>
+                        Peça perdão a Deus sempre. Se houver pecado mortal, procure também
+                        a Confissão. Uma coisa não se opõe à outra:
+                        <strong>o próprio Cristo nos deixou esse sacramento.</strong>
+                      </p>
+                    </div>
+
+                    <p class="helper-copy">
+                      <strong>Para saber mais:</strong>
+                      Jo 20,22-23; 2Cor 5,18-20; CIC 1441–1442, 1452, 1456–1457, 1461;
+                      São João Paulo II, <em>Reconciliatio et Paenitentia</em>, 28;
+                      Concílio de Trento, Sessão XIV.
+                    </p>
+
+                  </div>
+                </div>
+                <div class="accordion">
+                  <button class="accordion-trigger" type="button" aria-expanded="false"
+                    aria-controls="intro-venial-forgiveness">
+                    <span>❓ Como os pecados veniais podem ser perdoados?</span>
+                    <span class="accordion-chevron">⌄</span>
+                  </button>
+
+                  <div class="accordion-panel" id="intro-venial-forgiveness" hidden>
+
+                    <p>
+                      Os pecados veniais podem ser perdoados de várias maneiras na vida
+                      cristã, quando há <strong>verdadeiro arrependimento e conversão</strong>.
+                    </p>
+
+                    <ul>
+                      <li>🙏 oração e pedido sincero de perdão;</li>
+
+                      <li>🥖 participação digna na Eucaristia;</li>
+
+                      <li>❤️ obras de caridade e misericórdia;</li>
+
+                      <li>📖 oração e escuta da Palavra de Deus;</li>
+
+                      <li>🕊️ atos de penitência, como jejum e esmola;</li>
+
+                      <li>✝️ Confissão sacramental.</li>
+                    </ul>
+
+
+                    <div class="verse">
+                      “Perdoai-nos as nossas ofensas...”
+                      <cite>Mt 6,12</cite>
+                    </div>
+
+
+                    <h4>Preciso confessar os pecados veniais?</h4>
+
+                    <p>
+                      <strong>Não é obrigatório confessar cada pecado venial</strong>,
+                      mas a Igreja recomenda vivamente sua confissão regular.
+                    </p>
+
+                    <p>
+                      A Confissão frequente ajuda a formar a consciência, combater
+                      hábitos ruins, deixar-se curar por Cristo e crescer na vida
+                      espiritual.
+                    </p>
+
+
+                    <div class="catechism-box">
+                      <div class="catechism-kicker">
+                        Catecismo da Igreja Católica
+                      </div>
+
+                      <p>
+                        A confissão regular dos pecados veniais ajuda a formar a
+                        consciência, combater as más inclinações, deixar-se curar
+                        por Cristo e progredir na vida do Espírito.
+                      </p>
+
+                      <div class="catechism-ref">
+                        CIC 1458
+                      </div>
+                    </div>
+
+
+                    <div class="footer-info-box">
+                      <strong>Atenção</strong>
+
+                      <p>
+                        A Eucaristia apaga os <strong>pecados veniais</strong>,
+                        mas não substitui a Confissão quando existe
+                        <strong>pecado mortal</strong>.
+                      </p>
+
+                      <p>
+                        Quem tem consciência de pecado mortal deve procurar a
+                        Reconciliação sacramental antes de comungar, conforme ensina
+                        a Igreja.
+                      </p>
+                    </div>
+
+                    <p class="helper-copy">
+                      <strong>Para saber mais:</strong>
+                      Mt 6,12; 1Pd 4,8; CIC 1393–1395, 1434–1437, 1458;
+                      São João Paulo II, <em>Reconciliatio et Paenitentia</em>, 17 e 28;
+                      Bento XVI, <em>Sacramentum Caritatis</em>, 20.
+                    </p>
+
+                  </div>
+                </div>
+                <div class="accordion">
+                  <button class="accordion-trigger" type="button" aria-expanded="false"
+                    aria-controls="intro-first-confession">
+                    <span>❓ Primeira Confissão ou faz muito tempo?</span>
+                    <span class="accordion-chevron">⌄</span>
+                  </button>
+
+                  <div class="accordion-panel" id="intro-first-confession" hidden>
+
+                    <p>
+                      <strong>O que é a Confissão?</strong>
+                      É o Sacramento da Reconciliação, no qual o fiel confessa seus
+                      pecados ao sacerdote e recebe, pela absolvição, o perdão de Deus.
+                    </p>
+
+                    <p>
+                      <strong>Como fazer o exame?</strong>
+                      Leia as perguntas com sinceridade, sem buscar uma contagem
+                      obsessiva. Reconheça os atos e omissões de que se recorda.
+                    </p>
+
+                    <p>
+                      <strong>Como falar na Confissão?</strong>
+                      Fale com simplicidade. Para os pecados graves de que se recordar,
+                      indique a espécie e o número aproximado, na medida do possível.
+                    </p>
+
+
+                    <div class="catechism-box">
+                      <div class="catechism-kicker">
+                        Catecismo da Igreja Católica
+                      </div>
+
+                      <p>
+                        <strong>Contrição:</strong> é o arrependimento do pecado
+                        cometido acompanhado do propósito de não voltar a pecar.
+                      </p>
+
+                      <div class="catechism-ref">
+                        CIC 1451
+                      </div>
+                    </div>
+
+
+                    <p class="helper-copy">
+                      Se você não lembrar a quantidade exata, indique uma frequência
+                      aproximada quando conseguir. Não invente uma precisão que não possui.
+                    </p>
+
+                  </div>
+                </div>
+              </div>
+            </article>
           </div>
-        </div>
-<div class="accordion">
-          <button class="accordion-trigger" type="button" aria-expanded="false" aria-controls="intro-sin-types">
-            <span>❓ Qual a diferença entre pecado mortal e pecado venial?</span>
-            <span class="accordion-chevron">⌄</span>
-          </button>
 
-          <div class="accordion-panel" id="intro-sin-types" hidden>
-
-            <p>
-              Nem todo pecado possui a mesma gravidade. A Igreja distingue os
-              pecados em <strong>mortais</strong> e <strong>veniais</strong>.
-            </p>
-
-
-            <h4>🔴 Pecado mortal</h4>
-
-            <p>
-              É uma falta grave que <strong>rompe a comunhão com Deus e faz
-                perder a graça santificante</strong>.
-            </p>
-
-            <p>
-              Para que um pecado seja mortal, três condições precisam estar
-              presentes <strong>ao mesmo tempo</strong>:
-            </p>
-
-            <ol>
-              <li>
-                <strong>Matéria grave</strong> — aquilo que foi feito é
-                gravemente contrário à lei de Deus;
-              </li>
-
-              <li>
-                <strong>Pleno conhecimento</strong> — a pessoa sabe que aquilo
-                é gravemente errado;
-              </li>
-
-              <li>
-                <strong>Consentimento deliberado</strong> — mesmo sabendo disso,
-                escolhe livremente praticá-lo.
-              </li>
-            </ol>
-
-            <div class="catechism-box">
-              <div class="catechism-kicker">
-                Catecismo da Igreja Católica
-              </div>
-
-              <p>
-                Para que um pecado seja mortal, devem estar presentes matéria
-                grave, pleno conhecimento e consentimento deliberado.
-              </p>
-
-              <div class="catechism-ref">
-                CIC 1857–1859
+          <div class="help-search-row">
+            <div class="help-search-copy">
+              <span class="help-search-icon" aria-hidden="true">💡</span>
+              <div>
+                <strong>Não encontrou o que procura?</strong>
+                <p>Pesquise entre as dúvidas acima para encontrar uma resposta mais rapidamente.</p>
               </div>
             </div>
-
-
-            <h4>🟡 Pecado venial</h4>
-
-            <p>
-              O pecado venial também é uma ofensa a Deus e não deve ser tratado
-              com indiferença, mas <strong>não rompe a comunhão com Ele nem faz
-                perder a graça santificante</strong>.
-            </p>
-
-            <p>
-              O pecado é venial quando a matéria não é grave ou quando, mesmo
-              havendo matéria grave, faltam pleno conhecimento ou consentimento
-              completo.
-            </p>
-
-            <div class="catechism-box">
-              <div class="catechism-kicker">
-                Catecismo da Igreja Católica
-              </div>
-
-              <p>
-                O pecado venial fere e enfraquece a caridade, mas não rompe a
-                Aliança com Deus.
-              </p>
-
-              <div class="catechism-ref">
-                CIC 1862–1863
-              </div>
-            </div>
-
-
-            <div class="footer-info-box">
-              <strong>Em resumo</strong>
-
-              <p>
-                🔴 <strong>Mortal:</strong> matéria grave + pleno conhecimento +
-                consentimento deliberado → rompe a comunhão com Deus.
-              </p>
-
-              <p>
-                🟡 <strong>Venial:</strong> fere a amizade com Deus e enfraquece
-                a caridade, mas não rompe essa comunhão.
-              </p>
-            </div>
-
-            <p class="helper-copy">
-              A ignorância, o medo, a coação, os hábitos, as paixões e outros
-              fatores podem diminuir a responsabilidade pessoal. Se tiver dúvida
-              sobre a gravidade de um pecado ou sobre sua responsabilidade,
-              converse com o sacerdote.
-            </p>
-
-            <p class="helper-copy">
-              <strong>Para saber mais:</strong>
-              1Jo 5,16-17; CIC 1854–1864.
-            </p>
-
+            <label class="help-search-box">
+              <span aria-hidden="true">⌕</span>
+              <input id="help-search" type="search" placeholder="Buscar nas dúvidas..." aria-label="Buscar nas dúvidas">
+            </label>
           </div>
-        </div>
-<div class="accordion">
-          <button class="accordion-trigger" type="button" aria-expanded="false" aria-controls="intro-why-confession">
-            <span>
-              ❓ Se posso pedir perdão diretamente a Deus, por que confessar os pecados mortais ao sacerdote?
-            </span>
-            <span class="accordion-chevron">⌄</span>
-          </button>
 
-          <div class="accordion-panel" id="intro-why-confession" hidden>
+          <p class="help-verse">
+            <span aria-hidden="true"></span>
+            <em>“A verdade vos libertará.”</em>
+            <cite>Jo 8,32</cite>
+            <span aria-hidden="true"></span>
+          </p>
+        </section>
+        <h3 style="font-size:15px; margin-top:30px;">Selecione os roteiros</h3>
+        <p class="helper-copy" style="margin:4px 0 0;">Escolha um ou mais blocos para começar.</p>
 
-            <p>
-              <strong>Você pode e deve pedir perdão diretamente a Deus.</strong>
-              Mas Jesus quis nos dar também o
-              <strong>Sacramento da Reconciliação</strong> como meio concreto
-              de receber seu perdão.
-            </p>
 
-            <div class="verse">
-              “Recebei o Espírito Santo. Àqueles a quem perdoardes os pecados,
-              ser-lhes-ão perdoados; àqueles a quem os retiverdes,
-              ser-lhes-ão retidos.”
-              <cite>Jo 20,22-23</cite>
+        <div class="picker" id="picker">
+          <label class="picker-item">
+            <input type="checkbox" id="sel-dez" checked onchange="updateSelectionSummary()">
+            <div class="picker-body">
+              <div class="picker-title">Dez Mandamentos</div>
+              <div class="picker-desc">O exame clássico, à luz dos dez mandamentos.</div>
             </div>
-
-            <p>
-              Por isso, na Confissão,
-              <strong>não estamos escolhendo o sacerdote no lugar de Deus</strong>.
-              É Deus quem perdoa; o sacerdote exerce o ministério que Cristo
-              confiou à Igreja.
-            </p>
-
-            <p>
-              Para quem cometeu <strong>pecado mortal</strong>, a Confissão
-              sacramental é o caminho ordinário para reconciliar-se plenamente
-              com Deus e com a Igreja.
-            </p>
-
-
-            <div class="catechism-box">
-              <div class="catechism-kicker">
-                E se eu ainda não puder me confessar?
-              </div>
-
-              <p>
-                A <strong>contrição perfeita</strong> — arrependimento por amor
-                a Deus acima de todas as coisas — pode obter o perdão dos pecados
-                mortais, desde que inclua o firme propósito de
-                <strong>se confessar assim que possível</strong>.
-              </p>
-
-              <div class="catechism-ref">
-                CIC 1452
-              </div>
+            <div class="picker-count" id="count-dez"></div>
+          </label>
+          <label class="picker-item">
+            <input type="checkbox" id="sel-capitais" checked onchange="updateSelectionSummary()">
+            <div class="picker-body">
+              <div class="picker-title">7 Pecados Capitais</div>
+              <div class="picker-desc">Soberba, avareza, luxúria, ira, gula, inveja e preguiça.</div>
             </div>
-
-
-            <div class="footer-info-box">
-              <strong>Em resumo</strong>
-
-              <p>
-                Peça perdão a Deus sempre. Se houver pecado mortal, procure também
-                a Confissão. Uma coisa não se opõe à outra:
-                <strong>o próprio Cristo nos deixou esse sacramento.</strong>
-              </p>
+            <div class="picker-count" id="count-capitais"></div>
+          </label>
+          <label class="picker-item">
+            <input type="checkbox" id="sel-igreja" checked onchange="updateSelectionSummary()">
+            <div class="picker-body">
+              <div class="picker-title">5 Mandamentos da Igreja</div>
+              <div class="picker-desc">Missa, confissão, comunhão, jejum e ajuda à Igreja.</div>
             </div>
-
-            <p class="helper-copy">
-              <strong>Para saber mais:</strong>
-              Jo 20,22-23; 2Cor 5,18-20; CIC 1441–1442, 1452, 1456–1457, 1461;
-              São João Paulo II, <em>Reconciliatio et Paenitentia</em>, 28;
-              Concílio de Trento, Sessão XIV.
-            </p>
-
-          </div>
-        </div>
-<div class="accordion">
-          <button class="accordion-trigger" type="button" aria-expanded="false"
-            aria-controls="intro-venial-forgiveness">
-            <span>❓ Como os pecados veniais podem ser perdoados?</span>
-            <span class="accordion-chevron">⌄</span>
-          </button>
-
-          <div class="accordion-panel" id="intro-venial-forgiveness" hidden>
-
-            <p>
-              Os pecados veniais podem ser perdoados de várias maneiras na vida
-              cristã, quando há <strong>verdadeiro arrependimento e conversão</strong>.
-            </p>
-
-            <ul>
-              <li>🙏 oração e pedido sincero de perdão;</li>
-
-              <li>🥖 participação digna na Eucaristia;</li>
-
-              <li>❤️ obras de caridade e misericórdia;</li>
-
-              <li>📖 oração e escuta da Palavra de Deus;</li>
-
-              <li>🕊️ atos de penitência, como jejum e esmola;</li>
-
-              <li>✝️ Confissão sacramental.</li>
-            </ul>
-
-
-            <div class="verse">
-              “Perdoai-nos as nossas ofensas...”
-              <cite>Mt 6,12</cite>
-            </div>
-
-
-            <h4>Preciso confessar os pecados veniais?</h4>
-
-            <p>
-              <strong>Não é obrigatório confessar cada pecado venial</strong>,
-              mas a Igreja recomenda vivamente sua confissão regular.
-            </p>
-
-            <p>
-              A Confissão frequente ajuda a formar a consciência, combater
-              hábitos ruins, deixar-se curar por Cristo e crescer na vida
-              espiritual.
-            </p>
-
-
-            <div class="catechism-box">
-              <div class="catechism-kicker">
-                Catecismo da Igreja Católica
-              </div>
-
-              <p>
-                A confissão regular dos pecados veniais ajuda a formar a
-                consciência, combater as más inclinações, deixar-se curar
-                por Cristo e progredir na vida do Espírito.
-              </p>
-
-              <div class="catechism-ref">
-                CIC 1458
-              </div>
-            </div>
-
-
-            <div class="footer-info-box">
-              <strong>Atenção</strong>
-
-              <p>
-                A Eucaristia apaga os <strong>pecados veniais</strong>,
-                mas não substitui a Confissão quando existe
-                <strong>pecado mortal</strong>.
-              </p>
-
-              <p>
-                Quem tem consciência de pecado mortal deve procurar a
-                Reconciliação sacramental antes de comungar, conforme ensina
-                a Igreja.
-              </p>
-            </div>
-
-            <p class="helper-copy">
-              <strong>Para saber mais:</strong>
-              Mt 6,12; 1Pd 4,8; CIC 1393–1395, 1434–1437, 1458;
-              São João Paulo II, <em>Reconciliatio et Paenitentia</em>, 17 e 28;
-              Bento XVI, <em>Sacramentum Caritatis</em>, 20.
-            </p>
-
-          </div>
-        </div>
-<div class="accordion">
-          <button class="accordion-trigger" type="button" aria-expanded="false" aria-controls="intro-first-confession">
-            <span>❓ Primeira Confissão ou faz muito tempo?</span>
-            <span class="accordion-chevron">⌄</span>
-          </button>
-
-          <div class="accordion-panel" id="intro-first-confession" hidden>
-
-            <p>
-              <strong>O que é a Confissão?</strong>
-              É o Sacramento da Reconciliação, no qual o fiel confessa seus
-              pecados ao sacerdote e recebe, pela absolvição, o perdão de Deus.
-            </p>
-
-            <p>
-              <strong>Como fazer o exame?</strong>
-              Leia as perguntas com sinceridade, sem buscar uma contagem
-              obsessiva. Reconheça os atos e omissões de que se recorda.
-            </p>
-
-            <p>
-              <strong>Como falar na Confissão?</strong>
-              Fale com simplicidade. Para os pecados graves de que se recordar,
-              indique a espécie e o número aproximado, na medida do possível.
-            </p>
-
-
-            <div class="catechism-box">
-              <div class="catechism-kicker">
-                Catecismo da Igreja Católica
-              </div>
-
-              <p>
-                <strong>Contrição:</strong> é o arrependimento do pecado
-                cometido acompanhado do propósito de não voltar a pecar.
-              </p>
-
-              <div class="catechism-ref">
-                CIC 1451
-              </div>
-            </div>
-
-
-            <p class="helper-copy">
-              Se você não lembrar a quantidade exata, indique uma frequência
-              aproximada quando conseguir. Não invente uma precisão que não possui.
-            </p>
-
-          </div>
-        </div>
-            </div>
-          </article>
-        </div>
-
-        <div class="help-search-row">
-          <div class="help-search-copy">
-            <span class="help-search-icon" aria-hidden="true">💡</span>
-            <div>
-              <strong>Não encontrou o que procura?</strong>
-              <p>Pesquise entre as dúvidas acima para encontrar uma resposta mais rapidamente.</p>
-            </div>
-          </div>
-          <label class="help-search-box">
-            <span aria-hidden="true">⌕</span>
-            <input id="help-search" type="search" placeholder="Buscar nas dúvidas..." aria-label="Buscar nas dúvidas">
+            <div class="picker-count" id="count-igreja"></div>
           </label>
         </div>
+        <p id="picker-summary" style="color:var(--muted); font-size:13px; margin-top:10px;"></p>
 
-        <p class="help-verse">
-          <span aria-hidden="true"></span>
-          <em>“A verdade vos libertará.”</em>
-          <cite>Jo 8,32</cite>
-          <span aria-hidden="true"></span>
-        </p>
+        <div class="last-confession-card">
+          <div class="last-confession-head">
+            <strong>🕊️ Quando foi sua última Confissão?</strong>
+            <span>Essa informação será usada automaticamente no seu roteiro final.</span>
+          </div>
+          <label class="sr-only" for="last-confession">Quando foi sua última Confissão?</label>
+          <select id="last-confession" class="last-confession-select"
+            onchange="saveLastConfession(); updateSelectionSummary()">
+            <option value="">Selecione uma opção</option>
+            <option value="poucos_dias">Há poucos dias</option>
+            <option value="algumas_semanas">Há algumas semanas</option>
+            <option value="um_mes">Há cerca de 1 mês</option>
+            <option value="alguns_meses">Há alguns meses</option>
+            <option value="um_ano">Há cerca de 1 ano</option>
+            <option value="mais_de_um_ano">Há mais de 1 ano</option>
+            <option value="nao_lembro">Não me lembro</option>
+            <option value="primeira_confissao">Esta será minha primeira Confissão</option>
+            <option value="outro">Outro período</option>
+          </select>
+          <input id="last-confession-other" class="last-confession-other" type="text" maxlength="80"
+            placeholder="Ex.: há cerca de 2 anos" hidden oninput="saveLastConfession(); updateSelectionSummary()">
+          <p class="field-help">Não precisa lembrar a data exata. Uma referência aproximada é suficiente.</p>
+        </div>
+
+        <div class="nav-buttons">
+          <span></span>
+          <button class="btn primary" id="btn-start" onclick="startExam()">Iniciar o exame →</button>
+        </div>
+
+        <div class="accordion video-accordion">
+          <button class="accordion-trigger" type="button" aria-expanded="false" aria-controls="intro-videos"><span>▶
+              Quer
+              ver vídeos explicativos sobre a Confissão?</span><span class="accordion-chevron">⌄</span></button>
+          <div class="accordion-panel" id="intro-videos" hidden>
+            <p class="helper-copy">Os vídeos são opcionais e ficam fora do fluxo principal do exame.</p>
+            <div class="video-grid" id="video-grid">
+              <a class="video-card" href="https://www.youtube.com/watch?v=1uBufZ8ThBM" data-yt="1uBufZ8ThBM"
+                onclick="return playVideo(event,this)">
+                <div class="video-thumb"><img src="https://img.youtube.com/vi/1uBufZ8ThBM/hqdefault.jpg" alt=""
+                    loading="lazy"></div>
+                <div class="video-info">
+                  <div class="video-title">Como fazer uma boa confissão?</div>
+                  <div class="video-channel">Padre Paulo Ricardo</div>
+                </div>
+              </a>
+              <a class="video-card" href="https://www.youtube.com/watch?v=VFdBMS84r8g" data-yt="VFdBMS84r8g"
+                onclick="return playVideo(event,this)">
+                <div class="video-thumb"><img src="https://img.youtube.com/vi/VFdBMS84r8g/hqdefault.jpg" alt=""
+                    loading="lazy"></div>
+                <div class="video-info">
+                  <div class="video-title">O passo a passo para fazer uma Santa Confissão!</div>
+                  <div class="video-channel">Padre Leonardo</div>
+                </div>
+              </a>
+              <a class="video-card" href="https://www.youtube.com/watch?v=CAslTOIJXjY" data-yt="CAslTOIJXjY"
+                onclick="return playVideo(event,this)">
+                <div class="video-thumb"><img src="https://img.youtube.com/vi/CAslTOIJXjY/hqdefault.jpg" alt=""
+                    loading="lazy"></div>
+                <div class="video-info">
+                  <div class="video-title">Exame de Consciência para Confissão — Parte 1</div>
+                  <div class="video-channel">Padre Leonardo</div>
+                </div>
+              </a>
+              <a class="video-card" href="https://www.youtube.com/watch?v=IiVEudMHKYI" data-yt="IiVEudMHKYI"
+                onclick="return playVideo(event,this)">
+                <div class="video-thumb"><img src="https://img.youtube.com/vi/IiVEudMHKYI/hqdefault.jpg" alt=""
+                    loading="lazy"></div>
+                <div class="video-info">
+                  <div class="video-title">Como se confessar na prática? — O Guia da Confissão, ep. 5</div>
+                  <div class="video-channel">Padre Felipe Konzen</div>
+                </div>
+              </a>
+            </div>
+            <a class="video-more"
+              href="https://www.youtube.com/results?search_query=como+se+confessar+padre+exame+de+consci%C3%AAncia"
+              target="_blank" rel="noopener">Ver mais vídeos sobre confissão no YouTube →</a>
+          </div>
+        </div>
       </section>
-      <h3 style="font-size:15px; margin-top:30px;">Selecione os roteiros</h3>
-      <p class="helper-copy" style="margin:4px 0 0;">Escolha um ou mais blocos para começar.</p>
 
+      <!-- Etapas selecionadas do exame são inseridas aqui pelo JavaScript -->
+      <div id="cmd-steps"></div>
 
-      <div class="picker" id="picker">
-        <label class="picker-item">
-          <input type="checkbox" id="sel-dez" checked onchange="updateSelectionSummary()">
-          <div class="picker-body">
-            <div class="picker-title">Dez Mandamentos</div>
-            <div class="picker-desc">O exame clássico, à luz dos dez mandamentos.</div>
-          </div>
-          <div class="picker-count" id="count-dez"></div>
-        </label>
-        <label class="picker-item">
-          <input type="checkbox" id="sel-capitais" checked onchange="updateSelectionSummary()">
-          <div class="picker-body">
-            <div class="picker-title">7 Pecados Capitais</div>
-            <div class="picker-desc">Soberba, avareza, luxúria, ira, gula, inveja e preguiça.</div>
-          </div>
-          <div class="picker-count" id="count-capitais"></div>
-        </label>
-        <label class="picker-item">
-          <input type="checkbox" id="sel-igreja" checked onchange="updateSelectionSummary()">
-          <div class="picker-body">
-            <div class="picker-title">5 Mandamentos da Igreja</div>
-            <div class="picker-desc">Missa, confissão, comunhão, jejum e ajuda à Igreja.</div>
-          </div>
-          <div class="picker-count" id="count-igreja"></div>
-        </label>
-      </div>
-      <p id="picker-summary" style="color:var(--muted); font-size:13px; margin-top:10px;"></p>
-
-      <div class="last-confession-card">
-        <div class="last-confession-head">
-          <strong>🕊️ Quando foi sua última Confissão?</strong>
-          <span>Essa informação será usada automaticamente no seu roteiro final.</span>
+      <!-- ================= CONTRITION (step number assigned dynamically) ================= -->
+      <section class="step" id="page-contrition">
+        <div class="cmd-head-top">
+          <div class="cmd-num"><span class="n">C</span> antes de confessar</div>
+          <div class="cmd-progress" id="contrition-progress"></div>
         </div>
-        <label class="sr-only" for="last-confession">Quando foi sua última Confissão?</label>
-        <select id="last-confession" class="last-confession-select"
-          onchange="saveLastConfession(); updateSelectionSummary()">
-          <option value="">Selecione uma opção</option>
-          <option value="poucos_dias">Há poucos dias</option>
-          <option value="algumas_semanas">Há algumas semanas</option>
-          <option value="um_mes">Há cerca de 1 mês</option>
-          <option value="alguns_meses">Há alguns meses</option>
-          <option value="um_ano">Há cerca de 1 ano</option>
-          <option value="mais_de_um_ano">Há mais de 1 ano</option>
-          <option value="nao_lembro">Não me lembro</option>
-          <option value="primeira_confissao">Esta será minha primeira Confissão</option>
-          <option value="outro">Outro período</option>
-        </select>
-        <input id="last-confession-other" class="last-confession-other" type="text" maxlength="80"
-          placeholder="Ex.: há cerca de 2 anos" hidden oninput="saveLastConfession(); updateSelectionSummary()">
-        <p class="field-help">Não precisa lembrar a data exata. Uma referência aproximada é suficiente.</p>
-      </div>
+        <h2>Arrependimento</h2>
+        <p style="color:var(--ink); font-size:14.5px; max-width:58ch; margin-top:14px;">Depois de reconhecer suas
+          faltas,
+          volte o coração para Deus com arrependimento sincero e propósito de emenda, confiando na sua misericórdia. Uma
+          oração simples para isso é o Ato de Contrição:</p>
+        <div class="contrition-card">
+          <h3>Ato de Contrição</h3>
+          <p>Meu Deus, eu me arrependo de todo o coração de vos ter ofendido, porque sois tão bom e amável. Prometo, com
+            a
+            vossa graça, esforçar-me para ser bom. Meu Jesus, misericórdia! Amém.</p>
+        </div>
+        <div class="verse" style="margin-top:24px;">
+          “Volta para casa. O Pai sempre te espera.”
+          <cite>cf. Lc 15,20</cite>
+        </div>
+        <p style="color:var(--muted); font-size:13px;">Quando estiver pronto, veja o seu relatório reunindo tudo o que
+          você marcou ao longo do exame.</p>
+        <div class="nav-buttons">
+          <button class="btn ghost" id="btn-contrition-back">← Voltar</button>
+          <button class="btn primary" id="btn-contrition-next">Ver relatório →</button>
+        </div>
+      </section>
 
-      <div class="nav-buttons">
-        <span></span>
-        <button class="btn primary" id="btn-start" onclick="startExam()">Iniciar o exame →</button>
-      </div>
+      <!-- ================= REVISÃO DE DÚVIDAS ================= -->
+      <section class="step" id="page-doubts">
+        <div class="cmd-head-top">
+          <div class="cmd-num"><span class="n">?</span> revisão de dúvidas</div>
+          <div class="cmd-progress" id="doubts-progress"></div>
+        </div>
+        <h2>Itens que ficaram em dúvida</h2>
+        <p class="helper-copy">Revise somente o que marcou como “Tenho dúvida” ou “Decidir depois”. Nada aqui é
+          classificado automaticamente como pecado.</p>
+        <div id="doubts-body"></div>
+        <div class="nav-buttons"><button class="btn ghost" id="btn-doubts-back">← Voltar</button><button
+            class="btn primary" id="btn-doubts-next">Revisar minha Confissão →</button></div>
+      </section>
 
-      <div class="accordion video-accordion">
-        <button class="accordion-trigger" type="button" aria-expanded="false" aria-controls="intro-videos"><span>▶ Quer
-            ver vídeos explicativos sobre a Confissão?</span><span class="accordion-chevron">⌄</span></button>
-        <div class="accordion-panel" id="intro-videos" hidden>
-          <p class="helper-copy">Os vídeos são opcionais e ficam fora do fluxo principal do exame.</p>
-          <div class="video-grid" id="video-grid">
-            <a class="video-card" href="https://www.youtube.com/watch?v=1uBufZ8ThBM" data-yt="1uBufZ8ThBM"
-              onclick="return playVideo(event,this)">
-              <div class="video-thumb"><img src="https://img.youtube.com/vi/1uBufZ8ThBM/hqdefault.jpg" alt=""
-                  loading="lazy"></div>
-              <div class="video-info">
-                <div class="video-title">Como fazer uma boa confissão?</div>
-                <div class="video-channel">Padre Paulo Ricardo</div>
-              </div>
-            </a>
-            <a class="video-card" href="https://www.youtube.com/watch?v=VFdBMS84r8g" data-yt="VFdBMS84r8g"
-              onclick="return playVideo(event,this)">
-              <div class="video-thumb"><img src="https://img.youtube.com/vi/VFdBMS84r8g/hqdefault.jpg" alt=""
-                  loading="lazy"></div>
-              <div class="video-info">
-                <div class="video-title">O passo a passo para fazer uma Santa Confissão!</div>
-                <div class="video-channel">Padre Leonardo</div>
-              </div>
-            </a>
-            <a class="video-card" href="https://www.youtube.com/watch?v=CAslTOIJXjY" data-yt="CAslTOIJXjY"
-              onclick="return playVideo(event,this)">
-              <div class="video-thumb"><img src="https://img.youtube.com/vi/CAslTOIJXjY/hqdefault.jpg" alt=""
-                  loading="lazy"></div>
-              <div class="video-info">
-                <div class="video-title">Exame de Consciência para Confissão — Parte 1</div>
-                <div class="video-channel">Padre Leonardo</div>
-              </div>
-            </a>
-            <a class="video-card" href="https://www.youtube.com/watch?v=IiVEudMHKYI" data-yt="IiVEudMHKYI"
-              onclick="return playVideo(event,this)">
-              <div class="video-thumb"><img src="https://img.youtube.com/vi/IiVEudMHKYI/hqdefault.jpg" alt=""
-                  loading="lazy"></div>
-              <div class="video-info">
-                <div class="video-title">Como se confessar na prática? — O Guia da Confissão, ep. 5</div>
-                <div class="video-channel">Padre Felipe Konzen</div>
-              </div>
-            </a>
+      <!-- ================= REVISÃO PARA A CONFISSÃO ================= -->
+      <section class="step" id="page-review">
+        <div class="cmd-head-top">
+          <div class="cmd-num"><span class="n">R</span> revisão</div>
+          <div class="cmd-progress" id="review-progress"></div>
+        </div>
+        <h2>🙏 Revisão para a Confissão</h2>
+        <p class="helper-copy">Aqui aparecem somente os itens que você decidiu incluir. Você pode editar frequência,
+          observação ou remover qualquer item antes de exportar.</p>
+        <div class="report-meta">
+          <div class="big-count" id="rp-total">0<span>itens incluídos</span></div>
+          <div class="report-actions no-print"><button class="btn" onclick="downloadTxt()">📝 Gerar TXT</button><button
+              class="btn primary" onclick="printConfession()">📄 Gerar PDF</button></div>
+        </div>
+        <div id="review-body"></div>
+        <div class="report-block">
+          <h4>Anotação geral (opcional)</h4><textarea class="notes" id="notes"
+            placeholder="Alguma lembrança geral que você queira levar para a Confissão..."
+            oninput="saveGeneralNotes()"></textarea>
+        </div>
+        <div class="nav-buttons"><button class="btn ghost" id="btn-review-back">← Voltar</button><button
+            class="btn primary" id="btn-review-next">Orientação final →</button></div>
+      </section>
+
+      <!-- ================= ORIENTAÇÃO FINAL / ESCOLHA DE USO ================= -->
+      <section class="step" id="page-final">
+        <div class="cmd-head-top">
+          <div class="cmd-num"><span class="n">✓</span> conclusão</div>
+          <div class="cmd-progress" id="final-progress"></div>
+        </div>
+        <h2>🙏 Sua preparação está pronta</h2>
+        <p class="lead">Seu roteiro já está organizado. Agora escolha como deseja levá-lo para a Confissão.</p>
+
+        <div class="final-feedback-actions no-print">
+          <button class="btn primary" type="button" id="open-confession-modal">
+            ✝ Registrar minha Confissão
+          </button>
+
+          <button class="btn" type="button" id="open-review-modal">
+            ★ Avaliar o Confiteri
+          </button>
+        </div>
+
+        <div class="confession-choice-grid no-print">
+          <div class="confession-choice-card">
+            <div class="choice-icon">📱</div>
+            <h3>Modo Confissão</h3>
+            <p>Use um passo a passo simples no celular durante a Confissão. É totalmente opcional.</p>
+            <button class="btn primary" type="button" onclick="openConfessionMode()">🙏 Entrar no Modo
+              Confissão</button>
           </div>
-          <a class="video-more"
-            href="https://www.youtube.com/results?search_query=como+se+confessar+padre+exame+de+consci%C3%AAncia"
-            target="_blank" rel="noopener">Ver mais vídeos sobre confissão no YouTube →</a>
+          <div class="confession-choice-card">
+            <div class="choice-icon">📄</div>
+            <h3>Levar o roteiro pronto</h3>
+            <p>Prefere não usar o celular? Gere o mesmo roteiro completo para PDF, impressão ou TXT.</p>
+            <div class="choice-actions">
+              <button class="btn primary" type="button" onclick="printConfession()">📄 Gerar PDF / Imprimir</button>
+              <button class="btn" type="button" onclick="downloadTxt()">📝 Gerar TXT</button>
+            </div>
+          </div>
         </div>
-      </div>
-    </section>
 
-    <!-- Etapas selecionadas do exame são inseridas aqui pelo JavaScript -->
-    <div id="cmd-steps"></div>
-
-    <!-- ================= CONTRITION (step number assigned dynamically) ================= -->
-    <section class="step" id="page-contrition">
-      <div class="cmd-head-top">
-        <div class="cmd-num"><span class="n">C</span> antes de confessar</div>
-        <div class="cmd-progress" id="contrition-progress"></div>
-      </div>
-      <h2>Arrependimento</h2>
-      <p style="color:var(--ink); font-size:14.5px; max-width:58ch; margin-top:14px;">Depois de reconhecer suas faltas,
-        volte o coração para Deus com arrependimento sincero e propósito de emenda, confiando na sua misericórdia. Uma
-        oração simples para isso é o Ato de Contrição:</p>
-      <div class="contrition-card">
-        <h3>Ato de Contrição</h3>
-        <p>Meu Deus, eu me arrependo de todo o coração de vos ter ofendido, porque sois tão bom e amável. Prometo, com a
-          vossa graça, esforçar-me para ser bom. Meu Jesus, misericórdia! Amém.</p>
-      </div>
-      <div class="verse" style="margin-top:24px;">
-        “Volta para casa. O Pai sempre te espera.”
-        <cite>cf. Lc 15,20</cite>
-      </div>
-      <p style="color:var(--muted); font-size:13px;">Quando estiver pronto, veja o seu relatório reunindo tudo o que
-        você marcou ao longo do exame.</p>
-      <div class="nav-buttons">
-        <button class="btn ghost" id="btn-contrition-back">← Voltar</button>
-        <button class="btn primary" id="btn-contrition-next">Ver relatório →</button>
-      </div>
-    </section>
-
-    <!-- ================= REVISÃO DE DÚVIDAS ================= -->
-    <section class="step" id="page-doubts">
-      <div class="cmd-head-top">
-        <div class="cmd-num"><span class="n">?</span> revisão de dúvidas</div>
-        <div class="cmd-progress" id="doubts-progress"></div>
-      </div>
-      <h2>Itens que ficaram em dúvida</h2>
-      <p class="helper-copy">Revise somente o que marcou como “Tenho dúvida” ou “Decidir depois”. Nada aqui é
-        classificado automaticamente como pecado.</p>
-      <div id="doubts-body"></div>
-      <div class="nav-buttons"><button class="btn ghost" id="btn-doubts-back">← Voltar</button><button
-          class="btn primary" id="btn-doubts-next">Revisar minha Confissão →</button></div>
-    </section>
-
-    <!-- ================= REVISÃO PARA A CONFISSÃO ================= -->
-    <section class="step" id="page-review">
-      <div class="cmd-head-top">
-        <div class="cmd-num"><span class="n">R</span> revisão</div>
-        <div class="cmd-progress" id="review-progress"></div>
-      </div>
-      <h2>🙏 Revisão para a Confissão</h2>
-      <p class="helper-copy">Aqui aparecem somente os itens que você decidiu incluir. Você pode editar frequência,
-        observação ou remover qualquer item antes de exportar.</p>
-      <div class="report-meta">
-        <div class="big-count" id="rp-total">0<span>itens incluídos</span></div>
-        <div class="report-actions no-print"><button class="btn" onclick="downloadTxt()">📝 Gerar TXT</button><button
-            class="btn primary" onclick="printConfession()">📄 Gerar PDF</button></div>
-      </div>
-      <div id="review-body"></div>
-      <div class="report-block">
-        <h4>Anotação geral (opcional)</h4><textarea class="notes" id="notes"
-          placeholder="Alguma lembrança geral que você queira levar para a Confissão..."
-          oninput="saveGeneralNotes()"></textarea>
-      </div>
-      <div class="nav-buttons"><button class="btn ghost" id="btn-review-back">← Voltar</button><button
-          class="btn primary" id="btn-review-next">Orientação final →</button></div>
-    </section>
-
-    <!-- ================= ORIENTAÇÃO FINAL / ESCOLHA DE USO ================= -->
-    <section class="step" id="page-final">
-      <div class="cmd-head-top">
-        <div class="cmd-num"><span class="n">✓</span> conclusão</div>
-        <div class="cmd-progress" id="final-progress"></div>
-      </div>
-      <h2>🙏 Sua preparação está pronta</h2>
-      <p class="lead">Seu roteiro já está organizado. Agora escolha como deseja levá-lo para a Confissão.</p>
-
-      <div class="final-feedback-actions no-print">
-        <button class="btn primary" type="button" id="open-confession-modal">
-          ✝ Registrar minha Confissão
-        </button>
-
-        <button class="btn" type="button" id="open-review-modal">
-          ★ Avaliar o Confiteri
-        </button>
-      </div>
-
-      <div class="confession-choice-grid no-print">
-        <div class="confession-choice-card">
-          <div class="choice-icon">📱</div>
-          <h3>Modo Confissão</h3>
-          <p>Use um passo a passo simples no celular durante a Confissão. É totalmente opcional.</p>
-          <button class="btn primary" type="button" onclick="openConfessionMode()">🙏 Entrar no Modo Confissão</button>
+        <div class="accordion-stack" style="margin-top:20px;">
+          <div class="accordion"><button class="accordion-trigger" type="button" aria-expanded="false"
+              aria-controls="final-how-talk"><span>❓ Como falar com o padre?</span><span
+                class="accordion-chevron">⌄</span></button>
+            <div class="accordion-panel" id="final-how-talk" hidden>
+              <p>Comece fazendo o sinal da cruz e diga aproximadamente quando foi sua última Confissão. Depois apresente
+                com simplicidade os pecados que preparou. Se tiver alguma dúvida, pergunte ao sacerdote.</p>
+            </div>
+          </div>
+          <div class="accordion"><button class="accordion-trigger" type="button" aria-expanded="false"
+              aria-controls="final-prep"><span>🙏 Preparação final</span><span
+                class="accordion-chevron">⌄</span></button>
+            <div class="accordion-panel" id="final-prep" hidden>
+              <p>Confie na misericórdia de Deus. O roteiro é apenas um auxílio de memória e não substitui o diálogo com
+                o
+                sacerdote.</p>
+            </div>
+          </div>
         </div>
-        <div class="confession-choice-card">
-          <div class="choice-icon">📄</div>
-          <h3>Levar o roteiro pronto</h3>
-          <p>Prefere não usar o celular? Gere o mesmo roteiro completo para PDF, impressão ou TXT.</p>
-          <div class="choice-actions">
-            <button class="btn primary" type="button" onclick="printConfession()">📄 Gerar PDF / Imprimir</button>
-            <button class="btn" type="button" onclick="downloadTxt()">📝 Gerar TXT</button>
+
+
+        <div class="final-actions no-print"><button class="btn" onclick="goTo(REVIEW_STEP)">← Voltar à
+            revisão</button><button class="btn danger-outline" onclick="confirmClearData()">🔒 Limpar meus dados e
+            sair</button></div>
+      </section>
+
+      <!-- ================= MODO CONFISSÃO OPCIONAL ================= -->
+      <div class="confession-mode no-print" id="confession-mode" hidden role="dialog" aria-modal="true"
+        aria-labelledby="confession-mode-title">
+        <div class="confession-mode-shell">
+          <div class="confession-mode-top">
+            <div>
+              <span class="confession-mode-kicker">Modo Confissão</span>
+              <h2 id="confession-mode-title">Roteiro guiado</h2>
+            </div>
+            <button class="icon-btn" type="button" onclick="closeConfessionMode()"
+              aria-label="Fechar Modo Confissão">✕</button>
+          </div>
+          <div class="confession-mode-progress">
+            <div id="confession-mode-progress-fill"></div>
+          </div>
+          <div id="confession-mode-body"></div>
+          <div class="confession-mode-nav">
+            <button class="btn ghost" id="confession-mode-prev" type="button" onclick="confessionModePrev()">←
+              Voltar</button>
+            <button class="btn primary" id="confession-mode-next" type="button" onclick="confessionModeNext()">Próximo
+              →</button>
           </div>
         </div>
       </div>
-
-      <div class="accordion-stack" style="margin-top:20px;">
-        <div class="accordion"><button class="accordion-trigger" type="button" aria-expanded="false"
-            aria-controls="final-how-talk"><span>❓ Como falar com o padre?</span><span
-              class="accordion-chevron">⌄</span></button>
-          <div class="accordion-panel" id="final-how-talk" hidden>
-            <p>Comece fazendo o sinal da cruz e diga aproximadamente quando foi sua última Confissão. Depois apresente
-              com simplicidade os pecados que preparou. Se tiver alguma dúvida, pergunte ao sacerdote.</p>
-          </div>
-        </div>
-        <div class="accordion"><button class="accordion-trigger" type="button" aria-expanded="false"
-            aria-controls="final-prep"><span>🙏 Preparação final</span><span class="accordion-chevron">⌄</span></button>
-          <div class="accordion-panel" id="final-prep" hidden>
-            <p>Confie na misericórdia de Deus. O roteiro é apenas um auxílio de memória e não substitui o diálogo com o
-              sacerdote.</p>
-          </div>
-        </div>
-      </div>
-
-
-      <div class="final-actions no-print"><button class="btn" onclick="goTo(REVIEW_STEP)">← Voltar à
-          revisão</button><button class="btn danger-outline" onclick="confirmClearData()">🔒 Limpar meus dados e
-          sair</button></div>
-    </section>
-
-    <!-- ================= MODO CONFISSÃO OPCIONAL ================= -->
-    <div class="confession-mode no-print" id="confession-mode" hidden role="dialog" aria-modal="true"
-      aria-labelledby="confession-mode-title">
-      <div class="confession-mode-shell">
-        <div class="confession-mode-top">
-          <div>
-            <span class="confession-mode-kicker">Modo Confissão</span>
-            <h2 id="confession-mode-title">Roteiro guiado</h2>
-          </div>
-          <button class="icon-btn" type="button" onclick="closeConfessionMode()"
-            aria-label="Fechar Modo Confissão">✕</button>
-        </div>
-        <div class="confession-mode-progress">
-          <div id="confession-mode-progress-fill"></div>
-        </div>
-        <div id="confession-mode-body"></div>
-        <div class="confession-mode-nav">
-          <button class="btn ghost" id="confession-mode-prev" type="button" onclick="confessionModePrev()">←
-            Voltar</button>
-          <button class="btn primary" id="confession-mode-next" type="button" onclick="confessionModeNext()">Próximo
-            →</button>
-        </div>
-      </div>
-    </div>
 
     </main>
 
@@ -1157,6 +1172,97 @@
       </div>
 
     </footer>
+
+    <!-- ============================================================
+     CONSENTIMENTO INICIAL
+     ============================================================ -->
+
+    <div class="consent-modal no-print" id="consent-modal" hidden role="dialog" aria-modal="true"
+      aria-labelledby="consent-title">
+      <div class="consent-backdrop" onclick="closeConsentModal()"></div>
+
+      <div class="consent-card">
+
+        <div class="consent-head">
+          <div>
+            <span class="consent-kicker">Antes de começar</span>
+            <h2 id="consent-title">Privacidade e uso responsável</h2>
+          </div>
+
+          <button type="button" class="consent-close" onclick="closeConsentModal()" aria-label="Fechar">
+            ✕
+          </button>
+        </div>
+
+        <div class="consent-content">
+
+          <p>
+            O <strong>Confiteri</strong> foi criado para auxiliar sua preparação
+            pessoal para o Sacramento da Reconciliação.
+          </p>
+
+          <div class="consent-summary">
+
+            <div>
+              <span aria-hidden="true">🔒</span>
+              <p>
+                <strong>Seus dados do exame permanecem no navegador.</strong><br>
+                Respostas, dúvidas, frequências e observações não são armazenadas
+                no banco de dados do Confiteri.
+              </p>
+            </div>
+
+            <div>
+              <span aria-hidden="true">✝️</span>
+              <p>
+                <strong>O Confiteri é apenas um auxílio.</strong><br>
+                A plataforma não substitui a Confissão, o discernimento moral
+                nem a orientação do sacerdote.
+              </p>
+            </div>
+
+          </div>
+
+          <label class="consent-check">
+            <input type="checkbox" id="consent-privacy" onchange="updateConsentButton()">
+
+            <span>
+              Li e estou de acordo com as informações sobre
+              <button type="button" class="consent-link" onclick="openPrivacyFromConsent(event)">
+                Privacidade
+              </button>.
+            </span>
+          </label>
+
+          <label class="consent-check">
+            <input type="checkbox" id="consent-pastoral" onchange="updateConsentButton()">
+
+            <span>
+              Entendo que o Confiteri é uma ferramenta de preparação e
+              <strong>não substitui a orientação do sacerdote ou a Confissão sacramental</strong>.
+            </span>
+          </label>
+
+          <div class="consent-actions">
+
+            <button type="button" class="btn ghost" onclick="closeConsentModal()">
+              Agora não
+            </button>
+
+            <button type="button" class="btn primary" id="consent-continue" onclick="acceptConsent()" disabled>
+              Aceitar e continuar →
+            </button>
+
+          </div>
+
+          <p class="consent-note">
+            Este aceite é válido somente para a sessão atual do navegador.
+          </p>
+
+        </div>
+
+      </div>
+    </div>
     <!-- ================= INFORMAÇÕES DO RODAPÉ ================= -->
 
     <!-- ================= SOBRE O CONFITERI ================= -->

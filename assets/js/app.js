@@ -116,6 +116,7 @@ const STORAGE_KEY = 'confiteor-exam-state-v2';
 const NOTES_KEY = 'confiteor-general-notes-v2';
 const SELECTION_KEY = 'confiteor-selection-v2';
 const LAST_CONFESSION_KEY = 'confiteri-last-confession-v1';
+const CONSENT_KEY = 'confiteri-consent-v1'; // altere para v2 se o texto do aceite mudar substancialmente
 const THEME_KEY = 'confiteor-theme';
 const PRIVACY_LOCK_MS = 5 * 60 * 1000;
 const PRIVACY_WARNING_MS = 25 * 60 * 1000;
@@ -670,7 +671,23 @@ function updateSelectionSummary() {
   else { summary.textContent = `${total} perguntas no total, em ${chapters} ${chapters === 1 ? 'bloco' : 'blocos'}.`; btn.disabled = false; }
   saveSelection(); saveLastConfession();
 }
-async function startExam() { const sel = getSelection(); if (!sel.dez && !sel.capitais && !sel.igreja) return updateSelectionSummary(); if (!hasLastConfessionSelection()) { updateSelectionSummary(); document.getElementById('last-confession')?.focus(); return; } await loadQuestionRelations(); buildAllSteps(sel); updateTallies(); goTo(1); }
+async function startExam() {
+  if (!hasAcceptedConsent()) return openConsentModal();
+
+  const sel = getSelection();
+  if (!sel.dez && !sel.capitais && !sel.igreja) return updateSelectionSummary();
+
+  if (!hasLastConfessionSelection()) {
+    updateSelectionSummary();
+    document.getElementById('last-confession')?.focus();
+    return;
+  }
+
+  await loadQuestionRelations();
+  buildAllSteps(sel);
+  updateTallies();
+  goTo(1);
+}
 
 /* ============================================================
    NAVEGAÇÃO E PROGRESSO
@@ -1031,7 +1048,16 @@ function lockForPrivacy() { if (isPrivacyLocked) return; isPrivacyLocked = true;
 function unlockPrivacy() { isPrivacyLocked = false; lastActivity = Date.now(); document.getElementById('privacy-lock').hidden = true; document.getElementById('privacy-lock-warning').textContent = ''; document.body.style.overflow = ''; }
 function checkInactivity() { const elapsed = Date.now() - lastActivity; if (elapsed >= PRIVACY_LOCK_MS) lockForPrivacy(); if (isPrivacyLocked && elapsed >= PRIVACY_WARNING_MS) { const min = Math.max(0, Math.ceil((PRIVACY_CLEAR_MS - elapsed) / 60000)); document.getElementById('privacy-lock-warning').textContent = `Se a inatividade continuar, os dados desta sessão serão apagados em aproximadamente ${min} ${min === 1 ? 'minuto' : 'minutos'}.`; } if (elapsed >= PRIVACY_CLEAR_MS) { clearSensitiveData(false); } }
 function confirmClearData() { if (confirm('Isso apagará respostas, observações, frequências e progresso desta sessão. Deseja continuar?')) clearSensitiveData(true); }
-function clearSensitiveData(reload = true) { pauseMeditation(); try { sessionStorage.removeItem(STORAGE_KEY); sessionStorage.removeItem(NOTES_KEY); sessionStorage.removeItem(SELECTION_KEY); sessionStorage.removeItem(LAST_CONFESSION_KEY); } catch (_) { } Object.keys(examState).forEach(k => delete examState[k]); if (reload) location.reload(); else location.reload(); }
+function clearSensitiveData() {
+  pauseMeditation();
+  try {
+    [STORAGE_KEY, NOTES_KEY, SELECTION_KEY, LAST_CONFESSION_KEY, CONSENT_KEY]
+      .forEach(key => sessionStorage.removeItem(key));
+  } catch (_) { }
+
+  Object.keys(examState).forEach(key => delete examState[key]);
+  location.reload();
+}
 
 /* ============================================================
    PLAYER DE MÚSICA PARA REFLEXÃO
@@ -1360,118 +1386,190 @@ expand?.addEventListener(
 }
 
 /* ============================================================
-   RESET VISUAL E INICIALIZAÇÃO
-   ============================================================ */
-function resetAll() { confirmClearData(); }
-async function init() {
-  const questionsLoaded =
-  await loadQuestionDatabase();
-
-if (!questionsLoaded) {
-
-  console.error(
-    'Inicialização interrompida: perguntas não carregadas.'
-  );
-
-  const startButton =
-    document.getElementById('btn-start');
-
-  if (startButton) {
-    startButton.disabled = true;
-  }
-
-  const summary =
-    document.getElementById('picker-summary');
-
-  if (summary) {
-    summary.textContent =
-      'Não foi possível carregar o conteúdo do exame. Atualize a página e tente novamente.';
-  }
-
-  return;
-}
-  applyTheme(preferredTheme()); document.getElementById('theme-toggle')?.addEventListener('click', toggleTheme); document.getElementById('clear-data-btn')?.addEventListener('click', confirmClearData); document.getElementById('privacy-continue-btn')?.addEventListener('click', unlockPrivacy);
-  ['pointerdown', 'keydown', 'touchstart', 'scroll'].forEach(ev => window.addEventListener(ev, registerActivity, { passive: true })); setInterval(checkInactivity, 15000);
-  initAccordions(); initMeditationPlayer(); loadQuestionRelations(); restoreSelection(); restoreLastConfession(); updateSelectionSummary(); buildRail([{ step: 0, char: '•', title: 'Início' }]); updateRail(); updateProgressBar();
-  const notes = document.getElementById('notes'); if (notes) { notes.value = sessionStorage.getItem(NOTES_KEY) || ''; notes.dataset.loaded = '1'; }
-}
-
-document.addEventListener('DOMContentLoaded', init);
-
-
-/* ============================================================
    MODAIS DO RODAPÉ
    ============================================================ */
 
-(function initFooterModals() {
+let activeFooterModal = null;
+let lastFooterTrigger = null;
 
-  const openButtons = document.querySelectorAll('[data-footer-modal]');
-  const closeButtons = document.querySelectorAll('[data-footer-close]');
-  const modals = document.querySelectorAll('.footer-modal');
+function openFooterModal(name, trigger = null) {
+  const modal = document.getElementById(`footer-modal-${name}`);
+  if (!modal) return;
 
-  let activeModal = null;
-  let lastTrigger = null;
+  if (activeFooterModal && activeFooterModal !== modal) activeFooterModal.hidden = true;
 
-  function openFooterModal(name, trigger) {
+  activeFooterModal = modal;
+  lastFooterTrigger = trigger;
+  modal.hidden = false;
+  document.body.classList.add('footer-modal-open');
 
-    const modal = document.getElementById(`footer-modal-${name}`);
+  requestAnimationFrame(() => modal.querySelector('.footer-modal-close')?.focus());
+}
 
-    if (!modal) return;
+function closeFooterModal() {
+  if (!activeFooterModal) return;
 
-    lastTrigger = trigger || null;
-    activeModal = modal;
+  activeFooterModal.hidden = true;
+  activeFooterModal = null;
+  document.body.classList.remove('footer-modal-open');
 
-    modal.hidden = false;
-    document.body.classList.add('footer-modal-open');
+  lastFooterTrigger?.focus();
+  lastFooterTrigger = null;
+}
 
-    const closeButton = modal.querySelector('.footer-modal-close');
+function initFooterModals() {
+  document.querySelectorAll('[data-footer-modal]').forEach(button => {
+    button.addEventListener('click', () => openFooterModal(button.dataset.footerModal, button));
+  });
 
-    if (closeButton) {
-      requestAnimationFrame(() => closeButton.focus());
-    }
-
-  }
-
-  function closeFooterModal() {
-
-    if (!activeModal) return;
-
-    activeModal.hidden = true;
-    activeModal = null;
-
-    document.body.classList.remove('footer-modal-open');
-
-    if (lastTrigger) {
-      lastTrigger.focus();
-      lastTrigger = null;
-    }
-
-  }
-
-  openButtons.forEach(button => {
-
+  document.querySelectorAll('[data-footer-close]').forEach(button => {
     button.addEventListener('click', () => {
-
-      const modalName = button.dataset.footerModal;
-
-      openFooterModal(modalName, button);
-
+      if (button.closest('.footer-modal')) closeFooterModal();
     });
-
   });
+}
 
-  closeButtons.forEach(button => {
+/* ============================================================
+   CONSENTIMENTO INICIAL
+   Vale apenas para a sessão atual do navegador.
+   ============================================================ */
 
-    button.addEventListener('click', closeFooterModal);
+function hasAcceptedConsent() {
+  try { return sessionStorage.getItem(CONSENT_KEY) === 'accepted'; }
+  catch (_) { return false; }
+}
 
+function openConsentModal() {
+  if (hasAcceptedConsent()) return goToExamStart();
+
+  const modal = document.getElementById('consent-modal');
+  if (!modal) return;
+
+  const privacy = document.getElementById('consent-privacy');
+  const pastoral = document.getElementById('consent-pastoral');
+
+  if (privacy) privacy.checked = false;
+  if (pastoral) pastoral.checked = false;
+
+  modal.hidden = false;
+  document.body.classList.add('consent-open');
+  updateConsentButton();
+
+  requestAnimationFrame(() => privacy?.focus());
+}
+
+function closeConsentModal() {
+  const modal = document.getElementById('consent-modal');
+  if (!modal) return;
+
+  modal.hidden = true;
+  document.body.classList.remove('consent-open');
+}
+
+function updateConsentButton() {
+  const privacy = document.getElementById('consent-privacy');
+  const pastoral = document.getElementById('consent-pastoral');
+  const button = document.getElementById('consent-continue');
+
+  if (!privacy || !pastoral || !button) return;
+  button.disabled = !(privacy.checked && pastoral.checked);
+}
+
+function acceptConsent() {
+  const privacy = document.getElementById('consent-privacy');
+  const pastoral = document.getElementById('consent-pastoral');
+
+  if (!privacy?.checked || !pastoral?.checked) return;
+
+  try { sessionStorage.setItem(CONSENT_KEY, 'accepted'); } catch (_) { }
+  closeConsentModal();
+  goToExamStart();
+}
+
+function goToExamStart() {
+  document.getElementById('picker')?.scrollIntoView({
+    behavior: 'smooth',
+    block: 'start'
   });
+}
 
+function openPrivacyFromConsent(event) {
+  event?.preventDefault();
+  event?.stopPropagation();
+
+  closeConsentModal();
+  openFooterModal('privacy');
+}
+
+/* ============================================================
+   ACESSIBILIDADE DOS MODAIS
+   ============================================================ */
+
+function initModalKeyboard() {
   document.addEventListener('keydown', event => {
+    if (event.key !== 'Escape') return;
 
-    if (event.key === 'Escape' && activeModal) {
-      closeFooterModal();
-    }
+    const consent = document.getElementById('consent-modal');
+    if (consent && !consent.hidden) return closeConsentModal();
 
+    if (activeFooterModal) closeFooterModal();
   });
+}
 
-})();
+/* ============================================================
+   INICIALIZAÇÃO
+   ============================================================ */
+
+function resetAll() { confirmClearData(); }
+
+async function init() {
+  const questionsLoaded = await loadQuestionDatabase();
+
+  if (!questionsLoaded) {
+    console.error('Inicialização interrompida: perguntas não carregadas.');
+    const startButton = document.getElementById('btn-start');
+    const summary = document.getElementById('picker-summary');
+
+    if (startButton) startButton.disabled = true;
+    if (summary) summary.textContent =
+      'Não foi possível carregar o conteúdo do exame. Atualize a página e tente novamente.';
+    return;
+  }
+
+  // Tema e ações globais
+  applyTheme(preferredTheme());
+  document.getElementById('theme-toggle')?.addEventListener('click', toggleTheme);
+  document.getElementById('clear-data-btn')?.addEventListener('click', confirmClearData);
+  document.getElementById('privacy-continue-btn')?.addEventListener('click', unlockPrivacy);
+
+  // Proteção por inatividade
+  ['pointerdown', 'keydown', 'touchstart', 'scroll'].forEach(eventName =>
+    window.addEventListener(eventName, registerActivity, { passive: true })
+  );
+  setInterval(checkInactivity, 15000);
+
+  // Componentes
+  initAccordions();
+  initMeditationPlayer();
+  initFooterModals();
+  initModalKeyboard();
+
+  // Dados e estado da sessão
+  loadQuestionRelations();
+  restoreSelection();
+  restoreLastConfession();
+  updateSelectionSummary();
+
+  // Navegação inicial
+  buildRail([{ step: 0, char: '•', title: 'Início' }]);
+  updateRail();
+  updateProgressBar();
+
+  const notes = document.getElementById('notes');
+  if (notes) {
+    notes.value = sessionStorage.getItem(NOTES_KEY) || '';
+    notes.dataset.loaded = '1';
+  }
+}
+
+document.addEventListener('DOMContentLoaded', init);

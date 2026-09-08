@@ -1,109 +1,48 @@
-# Confiteri — Exame de Consciência
+<div align="center">
 
-O **Confiteri** é uma aplicação web gratuita e interativa criada para auxiliar na preparação pessoal ao **Sacramento da Reconciliação (Confissão)**.
+# Confiteri
 
-A proposta é oferecer uma experiência simples para quem já conhece o processo, mas também orientativa e catequética para quem está começando, voltou a se confessar depois de algum tempo ou deseja aprofundar seu exame de consciência.
+### Exame de Consciência para preparação ao Sacramento da Reconciliação
 
-> **Simples para quem já sabe. Explicativo para quem precisa. Profundo para quem quiser aprofundar.**
+**Simples para quem já sabe. Explicativo para quem precisa. Profundo para quem quiser se aprofundar.**
 
-## 🌐 Acessar o Confiteri
+🌐 **Site oficial:** https://www.confiteri.com.br/
 
-**Site oficial:**  
-[https://www.confiteri.com.br/](https://www.confiteri.com.br/)
-
-Não é necessário instalar nada. O Confiteri funciona diretamente pelo navegador em celular, tablet ou computador.
+</div>
 
 ---
 
-## ✨ Recursos principais
+## ✝️ Sobre o Confiteri
 
-### 🧭 Preparação para a Confissão
+O **Confiteri** é uma aplicação web gratuita e interativa criada para auxiliar na preparação pessoal para o **Sacramento da Reconciliação (Confissão)**.
 
-- seleção de um ou mais roteiros para o exame de consciência;
-- registro aproximado de **quando foi a última Confissão**;
-- opção para quem **não se lembra** ou fará a **primeira Confissão**;
-- exame baseado nos **Dez Mandamentos**, **Sete Pecados Capitais** e **Cinco Mandamentos da Igreja**;
-- respostas **Sim / Não / Tenho dúvida**;
-- inclusão independente dos itens que o usuário deseja levar à Confissão;
-- frequência ou número aproximado por item;
-- observações pessoais opcionais;
-- relações entre perguntas que tratam do mesmo pecado ou situação.
+A proposta é oferecer um exame de consciência simples para quem já conhece o processo, mas também orientativo e catequético para quem está começando, está há muito tempo sem se confessar ou deseja aprofundar sua preparação.
 
-### ❓ Orientação e aprofundamento
+O Confiteri ajuda o usuário a refletir, organizar aquilo que deseja confessar e preparar seu próprio roteiro, mantendo o Sacramento e a orientação do sacerdote no centro de todo o processo.
 
-- revisão específica dos itens marcados como **Tenho dúvida**;
-- possibilidade de levar dúvidas não resolvidas ao sacerdote;
-- explicações adicionais para auxiliar no discernimento;
-- conteúdo catequético apresentado de forma progressiva;
-- referências à **Sagrada Escritura** e ao **Catecismo da Igreja Católica (CIC)**;
-- vídeos explicativos opcionais;
-- conteúdos adicionais recolhidos por padrão para manter a interface simples.
-
-### 🙏 Preparação final
-
-Ao concluir o exame, o usuário pode revisar:
-
-- os itens escolhidos para a Confissão;
-- a frequência aproximada;
-- as observações pessoais;
-- as dúvidas que deseja apresentar ao sacerdote.
-
-A partir dessa preparação, o Confiteri monta um **Roteiro para a Confissão**.
-
-### 📱 Modo Confissão
-
-O **Modo Confissão** é opcional e oferece uma interface simplificada para acompanhar as principais etapas do Sacramento pelo celular.
-
-O roteiro auxilia o usuário a recordar:
-
-1. início e Sinal da Cruz;
-2. quando foi sua última Confissão;
-3. pecados preparados;
-4. dúvidas para apresentar ao sacerdote;
-5. encerramento da acusação dos pecados;
-6. orientações e penitência dadas pelo sacerdote;
-7. Ato de Contrição;
-8. absolvição e ação de graças.
-
-O modo funciona apenas como **auxílio de memória**, dando prioridade ao diálogo e às orientações do sacerdote durante o Sacramento.
-
-### 📄 Roteiro, PDF, impressão e TXT
-
-O usuário **não precisa utilizar o Modo Confissão**.
-
-A preparação também pode ser:
-
-- impressa;
-- salva em **PDF**;
-- exportada em **TXT**.
-
-O roteiro gerado organiza os itens preparados para a Confissão e apresenta separadamente as situações que permaneceram como dúvida.
-
-### 🎵 Oração e meditação
-
-- player opcional de música para oração e reflexão;
-- playlist configurável por JSON;
-- reprodução e pausa;
-- troca de faixa;
-- controle de volume;
-- player minimizável;
-- informações da música atual;
-- créditos, fontes e informações de licença das gravações.
-
-### 🎨 Experiência e acessibilidade
-
-- tema claro e escuro;
-- interface responsiva para celular, tablet e computador;
-- conteúdo catequético progressivo, sem sobrecarregar quem já conhece o processo;
-- proteção da tela após período de inatividade;
-- opção **🔒 Limpar meus dados e sair**;
-- encerramento do Modo Confissão com opção de apagar os dados da sessão.
+> **O Confiteri ajuda a preparar a Confissão. Não substitui a Confissão nem a orientação do sacerdote.**
 
 ---
 
-## 🔄 Como funciona
+## 🌐 Acessar
 
-O fluxo principal da plataforma é:
+**Site oficial:**
+
+https://www.confiteri.com.br/
+
+Não é necessário instalar nada.
+
+O Confiteri funciona diretamente pelo navegador em:
+
+- 📱 celular;
+- 💻 computador;
+- 📲 tablet.
+
+---
+
+# 🧭 Como funciona
+
+O fluxo principal foi desenvolvido para acompanhar a preparação do usuário desde o início do exame até o encerramento da sessão.
 
 ```text
 Selecione os roteiros
@@ -130,221 +69,589 @@ Penitência e ação de graças
 Encerramento e limpeza da sessão
 ```
 
-O Confiteri procura acompanhar a preparação sem substituir o papel do sacerdote ou transformar a ferramenta em um julgamento automático da consciência do usuário.
+Os conteúdos de **formação catequética e apoio espiritual** são opcionais e ficam fora do fluxo principal.
+
+Assim, quem já conhece o processo pode avançar rapidamente, enquanto quem precisa de orientação encontra explicações ao longo da plataforma.
 
 ---
 
-## 🔐 Privacidade
+# ✨ Principais recursos
 
-O Confiteri foi desenvolvido priorizando a privacidade do usuário, especialmente por lidar com informações pessoais relacionadas ao exame de consciência.
+## 📚 Seleção dos roteiros
 
-As respostas, dúvidas, frequências, observações e itens selecionados são processados no próprio navegador e **não são enviados para um servidor pelo código da aplicação**.
+O usuário pode selecionar **um ou mais roteiros de exame de consciência**:
 
-O andamento do exame utiliza:
+- **Dez Mandamentos**;
+- **Sete Pecados Capitais**;
+- **Cinco Mandamentos da Igreja**.
+
+Os roteiros podem ser combinados conforme a necessidade de cada pessoa.
+
+---
+
+## 🕊️ Última Confissão
+
+Antes de iniciar o exame, o usuário pode informar aproximadamente quando ocorreu sua última Confissão.
+
+Entre as possibilidades estão períodos aproximados, primeira Confissão, não se lembrar da data ou informar outro período.
+
+Essa informação auxilia na preparação do roteiro final.
+
+---
+
+## ✅ Exame de consciência interativo
+
+Cada pergunta pode receber uma resposta como:
+
+- **Sim**;
+- **Não**;
+- **Tenho dúvida**.
+
+A seleção daquilo que será levado à Confissão permanece independente da resposta dada à pergunta.
+
+Isso permite, por exemplo, refletir sobre determinada situação sem obrigatoriamente incluí-la no roteiro final.
+
+> O Confiteri não determina automaticamente se determinada situação constitui pecado.
+
+---
+
+## 📝 Frequência e observações
+
+Para os itens que deseja levar à Confissão, o usuário pode acrescentar informações opcionais, como:
+
+- frequência ou quantidade aproximada;
+- observação pessoal;
+- contexto que considere importante;
+- inclusão ou retirada do roteiro.
+
+Essas informações permanecem sob controle do próprio usuário.
+
+---
+
+## ❓ Revisão das dúvidas
+
+Os itens marcados como dúvida podem ser revistos separadamente antes da preparação final.
+
+O usuário pode:
+
+- reconsiderar a situação;
+- decidir incluí-la ou não;
+- manter a dúvida;
+- levar a própria dúvida ao sacerdote.
+
+A plataforma procura evitar decisões automáticas sobre situações que dependam de contexto, conhecimento, liberdade ou outras circunstâncias pessoais.
+
+---
+
+## 🙏 Revisão da Confissão
+
+Antes de finalizar, o Confiteri apresenta somente os itens que o usuário decidiu levar à Confissão.
+
+Nessa etapa é possível:
+
+- conferir o roteiro;
+- alterar frequências;
+- editar observações;
+- retirar itens;
+- acrescentar uma anotação geral.
+
+---
+
+# 📱 Modo Confissão
+
+O **Modo Confissão** é um recurso opcional pensado principalmente para quem deseja consultar o roteiro pelo celular durante o Sacramento.
+
+Ele apresenta o conteúdo de maneira simplificada e discreta para facilitar a consulta.
+
+O usuário não é obrigado a utilizar o celular durante a Confissão.
+
+---
+
+# 📄 PDF, impressão e TXT
+
+Quem preferir utilizar outro formato pode preparar seu roteiro por meio de:
+
+- 📄 **PDF**;
+- 🖨️ **impressão**;
+- 📝 **arquivo TXT**.
+
+Assim, cada pessoa pode escolher a forma mais confortável e adequada para levar sua preparação.
+
+---
+
+# 📖 Formação catequética
+
+O Confiteri não foi pensado apenas como uma lista de perguntas.
+
+A plataforma possui conteúdos catequéticos opcionais para ajudar especialmente quem está começando ou possui dúvidas sobre a Confissão.
+
+Esses conteúdos são apresentados em **acordeões**, evitando excesso de informações na tela principal.
+
+Atualmente são abordados temas como:
+
+### 🙏 Como funciona a Confissão?
+
+Apresenta de maneira simples as principais etapas do Sacramento:
+
+1. acolhida;
+2. confissão dos pecados;
+3. orientação do sacerdote;
+4. penitência;
+5. ato de contrição;
+6. absolvição;
+7. ação de graças.
+
+---
+
+### 🧭 Como usar esta plataforma?
+
+Explica o funcionamento do Confiteri e como utilizar os roteiros, respostas, dúvidas, observações e revisão final.
+
+---
+
+### 🔴🟡 Qual a diferença entre pecado mortal e pecado venial?
+
+Apresenta de maneira comparativa os dois conceitos.
+
+Para que um pecado seja mortal, devem estar presentes simultaneamente:
+
+1. **matéria grave**;
+2. **pleno conhecimento**;
+3. **consentimento deliberado**.
+
+O conteúdo também explica o pecado venial e lembra que fatores como ignorância, medo, coação, hábitos e outras circunstâncias podem diminuir a responsabilidade pessoal.
+
+**Referências principais:** CIC 1854–1864; 1Jo 5,16-17.
+
+---
+
+### ✝️ Se posso pedir perdão diretamente a Deus, por que confessar os pecados mortais ao sacerdote?
+
+O conteúdo esclarece que o cristão **pode e deve pedir perdão diretamente a Deus**, mas que o próprio Cristo confiou à Igreja o ministério sacramental da Reconciliação.
+
+> “Recebei o Espírito Santo. Àqueles a quem perdoardes os pecados, ser-lhes-ão perdoados; àqueles a quem os retiverdes, ser-lhes-ão retidos.”
+>
+> **Jo 20,22-23**
+
+Também é apresentada de maneira introdutória a doutrina da **contrição perfeita**: o arrependimento motivado pelo amor a Deus acima de todas as coisas pode obter o perdão dos pecados mortais quando inclui o firme propósito de recorrer à Confissão sacramental assim que possível.
+
+**Referências principais:** Jo 20,22-23; 2Cor 5,18-20; CIC 1441–1442, 1452, 1456–1457 e 1461; São João Paulo II, *Reconciliatio et Paenitentia*; Concílio de Trento.
+
+---
+
+### 🟡 Como os pecados veniais podem ser perdoados?
+
+O conteúdo explica que os pecados veniais podem ser perdoados de diferentes maneiras na vida cristã quando existe verdadeiro arrependimento e conversão.
+
+Entre elas:
+
+- oração e pedido sincero de perdão;
+- participação digna na Eucaristia;
+- obras de caridade e misericórdia;
+- oração e escuta da Palavra de Deus;
+- atos de penitência;
+- jejum e esmola;
+- Confissão sacramental.
+
+A plataforma também esclarece que a confissão dos pecados veniais não é estritamente obrigatória, mas é **vivamente recomendada pela Igreja**.
+
+**Referências principais:** Mt 6,12; 1Pd 4,8; CIC 1393–1395, 1434–1437 e 1458; São João Paulo II, *Reconciliatio et Paenitentia*; Bento XVI, *Sacramentum Caritatis*.
+
+---
+
+### ❓ Primeira Confissão ou faz muito tempo?
+
+Há também orientações específicas para quem:
+
+- fará sua primeira Confissão;
+- está há muito tempo sem se confessar;
+- não sabe exatamente como realizar um exame de consciência;
+- não sabe como apresentar os pecados ao sacerdote;
+- não se lembra da quantidade exata de determinadas situações.
+
+A orientação é sempre falar com simplicidade e não inventar uma precisão que a pessoa não possui.
+
+---
+
+# 📚 Base catequética e doutrinal
+
+O conteúdo do Confiteri procura permanecer em conformidade com a doutrina e a prática da **Igreja Católica**.
+
+Entre as principais referências utilizadas ou consultadas estão:
+
+- 📖 **Sagrada Escritura**;
+- 📕 **Catecismo da Igreja Católica (CIC)**;
+- 📘 **Compêndio do Catecismo da Igreja Católica**;
+- ⚖️ **Código de Direito Canônico**;
+- ⛪ **Sagrado Magistério da Igreja**;
+- 🕊️ **Sagrada Tradição**;
+- documentos conciliares;
+- documentos pontifícios;
+- ensinamentos dos Papas;
+- ensinamentos dos Santos Padres;
+- ensinamentos dos Santos Doutores da Igreja;
+- materiais catequéticos utilizados como referência pastoral.
+
+Entre os documentos e autores utilizados para aprofundamento de determinados temas estão referências ao:
+
+- Concílio de Trento;
+- São João Paulo II;
+- Bento XVI;
+- Santo Agostinho;
+- São Tomás de Aquino;
+- outros documentos e testemunhos da tradição católica quando pertinentes ao conteúdo abordado.
+
+> **Importante:** a relação completa de fontes, referências, créditos e permissões encontra-se atualmente em revisão antes de sua publicação definitiva.
+
+---
+
+# 🎵 Formação e apoio espiritual
+
+Além do exame de consciência, o Confiteri possui recursos opcionais destinados ao recolhimento e à preparação espiritual.
+
+Esses recursos permanecem separados do fluxo principal para não dificultar a experiência de quem deseja apenas realizar o exame.
+
+Entre eles está o player de músicas para reflexão.
+
+O player oferece:
+
+- reprodução e pausa;
+- música anterior e seguinte;
+- controle de volume;
+- seleção de faixa;
+- minimização;
+- informações sobre fonte e licença das gravações quando aplicável.
+
+---
+
+# 🔒 Privacidade
+
+A privacidade é um dos princípios centrais do Confiteri, especialmente porque o exame de consciência pode envolver informações pessoais e espiritualmente sensíveis.
+
+## Respostas do exame
+
+As informações pessoais utilizadas durante a preparação, como:
+
+- respostas;
+- dúvidas;
+- frequências;
+- observações;
+- itens selecionados;
+- roteiro da Confissão;
+
+são processadas no próprio navegador e **não são armazenadas no banco de dados da aplicação**.
+
+---
+
+## Armazenamento da sessão
+
+O andamento do exame utiliza recursos locais do navegador, incluindo:
 
 ```text
 sessionStorage
 ```
 
-Dessa forma, os dados permanecem associados à sessão atual do navegador.
+Isso mantém os dados associados à sessão atual.
 
-A preferência de tema pode ser armazenada localmente para preservar apenas a escolha visual do usuário.
-
-Como proteção adicional:
-
-- o conteúdo sensível pode ser ocultado após um período de inatividade;
-- após um período maior, o usuário é avisado antes da limpeza automática da sessão;
-- o Modo Confissão não cria um histórico permanente dos itens marcados durante seu uso;
-- o usuário pode encerrar a sessão e apagar os dados do exame.
-
-Também está disponível a opção:
-
-**🔒 Limpar meus dados e sair**
-
-O objetivo é evitar a criação de um histórico permanente das informações pessoais utilizadas durante a preparação.
+Preferências exclusivamente visuais, como o tema escolhido, podem utilizar armazenamento local do navegador.
 
 ---
 
-## 📖 Cadastro das perguntas
+## 🛡️ Proteções adicionais
 
-O conteúdo do exame é mantido separadamente da lógica principal da aplicação:
+A plataforma possui recursos como:
 
-```text
-data/perguntas.json
-```
-
-Esse arquivo concentra conteúdos relacionados aos:
-
-- Dez Mandamentos;
-- Sete Pecados Capitais;
-- Cinco Mandamentos da Igreja;
-- perguntas do exame;
-- frases utilizadas na preparação para a Confissão;
-- fundamentações e informações associadas aos itens.
-
-Essa separação facilita a revisão e manutenção do conteúdo catequético sem misturá-lo com a lógica JavaScript da aplicação.
-
-As relações entre perguntas equivalentes ou relacionadas são mantidas separadamente em:
-
-```text
-data/relacoes-perguntas.json
-```
+- proteção da tela após período de inatividade;
+- aviso antes da limpeza automática da sessão;
+- opção para limpar os dados manualmente;
+- possibilidade de apagar a sessão ao finalizar o Modo Confissão;
+- ausência de histórico permanente do conteúdo pessoal do exame no banco da aplicação.
 
 ---
 
-## 🎵 Música para oração e meditação
+## 📊 Métricas gerais
 
-O Confiteri possui um player opcional com músicas adequadas ao momento de oração e reflexão.
+O site pode registrar separadamente informações gerais e anônimas de utilização, como estatísticas agregadas de acesso, além de avaliações ou registros enviados voluntariamente pelo usuário.
 
-A música **não é iniciada automaticamente**.
+Essas informações são tratadas separadamente do conteúdo privado do exame de consciência.
 
-A playlist é configurada em:
-
-```text
-data/musicas.json
-```
-
-Os arquivos de áudio utilizados localmente ficam em:
-
-```text
-assets/audio/
-```
-
-O player permite, conforme a configuração disponível:
-
-- reproduzir e pausar;
-- trocar de faixa;
-- controlar o volume;
-- minimizar o player;
-- visualizar a música atual;
-- consultar créditos, fonte e licença.
-
-As gravações devem possuir licença compatível com sua utilização no projeto, como domínio público, CC0, CC BY, CC BY-SA ou autorização expressa.
-
-Os créditos e condições de licença de cada gravação devem ser preservados conforme a respectiva fonte.
+> As respostas, pecados selecionados, observações e roteiro pessoal da Confissão não são utilizados para formar essas métricas gerais.
 
 ---
 
-## 🗂️ Estrutura principal
+## 🌐 Conteúdos externos
+
+Recursos externos utilizados pela plataforma, como fontes, vídeos, músicas ou serviços incorporados, podem realizar suas próprias requisições de rede.
+
+Isso não significa que as respostas do exame de consciência sejam enviadas a esses serviços.
+
+---
+
+# 🌗 Interface
+
+O Confiteri possui uma interface responsiva preparada para diferentes dispositivos.
+
+Entre os recursos estão:
+
+- tema claro;
+- tema escuro;
+- layout responsivo;
+- navegação por etapas;
+- barra de progresso;
+- acordeões;
+- cards;
+- interface adaptada para celular;
+- componentes preparados para impressão;
+- identidade visual própria.
+
+---
+
+# 🎨 Identidade visual
+
+O projeto passou por uma reformulação de identidade visual.
+
+Entre as mudanças estão:
+
+- adoção definitiva do nome **Confiteri**;
+- nova logo;
+- nova capa;
+- paleta baseada principalmente em vinho, dourado e tons neutros;
+- revisão de contraste;
+- adaptação para tema claro e escuro;
+- reorganização do cabeçalho;
+- reorganização do rodapé;
+- melhoria da experiência em dispositivos móveis.
+
+O domínio oficial passou a ser:
+
+**www.confiteri.com.br**
+
+---
+
+# ℹ️ Rodapé e informações institucionais
+
+O rodapé foi simplificado para manter a página principal mais limpa.
+
+As informações detalhadas são apresentadas em modais independentes:
+
+- **Sobre**;
+- **Fontes e Créditos**;
+- **Privacidade**.
+
+---
+
+## Sobre
+
+Apresenta:
+
+- o propósito do Confiteri;
+- como a plataforma ajuda;
+- público a que se destina;
+- relação entre a ferramenta e o Sacramento;
+- caráter opcional dos recursos formativos.
+
+---
+
+## Fontes e Créditos
+
+A seção encontra-se atualmente marcada como:
+
+> **Em revisão**
+
+A publicação completa será realizada após a conclusão das verificações relacionadas a:
+
+- referências;
+- revisão catequética;
+- créditos;
+- atribuições;
+- permissões de uso aplicáveis.
+
+---
+
+## Privacidade
+
+Apresenta de maneira acessível como:
+
+- as respostas são tratadas;
+- a sessão funciona;
+- os dados pessoais do exame permanecem locais;
+- funcionam as proteções por inatividade;
+- conteúdos externos podem realizar requisições independentes.
+
+---
+
+# 🆕 Principais evoluções recentes
+
+O Confiteri passou recentemente por uma ampla evolução funcional, visual e catequética.
+
+Entre as principais melhorias estão:
+
+- novo nome e identidade visual;
+- novo domínio oficial;
+- nova logo e capa;
+- reorganização do fluxo completo da preparação;
+- possibilidade de selecionar múltiplos roteiros;
+- registro aproximado da última Confissão;
+- opção específica para primeira Confissão;
+- novo sistema de revisão de dúvidas;
+- revisão final dos itens escolhidos;
+- frequência aproximada por item;
+- observações pessoais opcionais;
+- preparação automática do roteiro;
+- Modo Confissão;
+- PDF;
+- impressão;
+- exportação TXT;
+- proteção por inatividade;
+- limpeza manual e automática da sessão;
+- melhorias de privacidade;
+- separação entre conteúdo privado e métricas gerais;
+- reorganização da formação catequética;
+- explicação conjunta de pecado mortal e venial;
+- formação sobre a Confissão sacramental dos pecados mortais;
+- formação sobre o perdão dos pecados veniais;
+- referências à Escritura, Tradição e Magistério;
+- utilização de ensinamentos de Papas, Santos Padres e Doutores da Igreja para aprofundamento;
+- reorganização do rodapé;
+- modais de Sobre, Fontes e Créditos e Privacidade;
+- seção de Fontes e Créditos temporariamente em revisão;
+- melhorias de responsividade;
+- revisão dos temas claro e escuro;
+- consolidação e organização do CSS;
+- melhorias gerais de segurança, estrutura e experiência do usuário.
+
+---
+
+# 🤝 Revisão, testes e colaboração
+
+O Confiteri vem sendo aperfeiçoado por meio de:
+
+- revisão catequética;
+- revisão pastoral;
+- testes técnicos;
+- testes de utilização;
+- sugestões de experiência do usuário;
+- revisão das fontes e referências.
+
+A relação completa de revisores, testadores, colaboradores, agradecimentos e respectivas contribuições será publicada na seção **Fontes e Créditos** após a conclusão da revisão atualmente em andamento.
+
+---
+
+# ⚠️ Limites da plataforma
+
+O Confiteri é uma ferramenta de **auxílio à preparação pessoal para o Sacramento da Reconciliação**.
+
+A plataforma:
+
+- não substitui o sacerdote;
+- não substitui a Confissão sacramental;
+- não determina automaticamente se determinada situação constitui pecado;
+- não determina automaticamente a culpa subjetiva da pessoa;
+- não substitui o discernimento moral;
+- não substitui acompanhamento espiritual;
+- não substitui orientação pastoral.
+
+Circunstâncias como conhecimento, intenção, liberdade, medo, coação, hábito e outras condições podem influenciar a responsabilidade moral.
+
+Por isso, quando houver dúvida, a orientação é simples:
+
+> **Converse com o sacerdote.**
+
+---
+
+# 🛠️ Tecnologias
+
+O Confiteri é desenvolvido como uma aplicação web com foco em simplicidade, desempenho e facilidade de acesso.
+
+Entre as tecnologias e recursos utilizados estão:
+
+- HTML5;
+- CSS3;
+- JavaScript;
+- armazenamento local de sessão no navegador;
+- JSON para conteúdos estruturados;
+- design responsivo;
+- geração de PDF;
+- impressão pelo navegador;
+- exportação TXT.
+
+---
+
+# 📁 Estrutura geral
+
+A organização do projeto inclui arquivos separados para interface, estilos, scripts, conteúdos e recursos visuais.
+
+Exemplo simplificado:
 
 ```text
 confiteri/
+│
 ├── index.html
+│
+├── README.md
 │
 ├── assets/
 │   ├── css/
-│   │   └── style.css
-│   │
 │   ├── js/
-│   │   └── app.js
-│   │
-│   ├── img/
-│   │   └── identidade visual e imagens
-│   │
-│   └── audio/
-│       └── arquivos de áudio
+│   └── img/
 │
 ├── data/
-│   ├── perguntas.json
-│   ├── relacoes-perguntas.json
-│   └── musicas.json
+│   └── ...
 │
-├── README.md
-├── LICENSE
-└── .gitignore
+└── ...
 ```
 
----
-
-## 💻 Execução local
-
-Como conteúdos como perguntas, relações e playlist são carregados utilizando `fetch()`, não é recomendado simplesmente abrir o `index.html` pelo sistema de arquivos.
-
-Utilize um servidor local.
-
-### Com Python
-
-Na pasta do projeto:
-
-```bash
-python -m http.server 8000
-```
-
-Depois acesse:
-
-```text
-http://localhost:8000
-```
-
-Também é possível utilizar extensões como **Live Server** no VS Code.
+A estrutura pode evoluir conforme novas funcionalidades forem implementadas.
 
 ---
 
-## ☁️ Publicação
+# 🚧 Projeto em evolução
 
-A versão pública do Confiteri está hospedada na **Vercel** e utiliza domínio próprio:
+O Confiteri permanece em desenvolvimento e revisão contínua.
 
-**[https://www.confiteri.com.br/](https://www.confiteri.com.br/)**
+Novas versões podem incluir:
 
-A publicação é integrada ao repositório do projeto no GitHub. Atualizações incorporadas à branch de produção podem gerar automaticamente uma nova implantação na Vercel.
+- aprimoramentos de acessibilidade;
+- melhorias de experiência do usuário;
+- revisão e ampliação dos conteúdos catequéticos;
+- aperfeiçoamentos de segurança e privacidade;
+- novos recursos de formação;
+- melhorias no Modo Confissão;
+- revisão das fontes e referências;
+- novos testes em diferentes dispositivos.
 
----
+Toda nova funcionalidade deve preservar três princípios:
 
-## 🙏 Finalidade catequética
-
-O Confiteri é um **auxílio pessoal e catequético para a preparação ao Sacramento da Reconciliação**.
-
-A aplicação não substitui:
-
-- o Sacramento da Confissão;
-- a orientação de um sacerdote ou confessor;
-- o acompanhamento pastoral;
-- a formação da consciência segundo o ensinamento da Igreja.
-
-O sistema também **não determina automaticamente a culpabilidade moral do usuário** e não declara automaticamente se determinada situação constitui pecado mortal ou venial.
-
-Situações marcadas como **Tenho dúvida** são apresentadas separadamente para que possam ser examinadas com maior atenção e, quando necessário, levadas ao sacerdote.
-
-Seu objetivo é ajudar a pessoa a:
-
-- examinar sua consciência;
-- compreender melhor os ensinamentos da Igreja;
-- recordar aquilo que deseja apresentar na Confissão;
-- organizar sua preparação;
-- chegar ao Sacramento com maior tranquilidade e consciência.
+1. **simplicidade de uso**;
+2. **fidelidade doutrinal**;
+3. **privacidade do usuário**.
 
 ---
 
-## 📚 Fontes e referências
+# 🎯 Propósito
 
-O conteúdo utiliza como referências, conforme indicado no próprio material:
+O Confiteri procura unir tecnologia, catequese e preparação pessoal sem transformar a Confissão em um processo automático.
 
-- **Sagrada Escritura**;
-- **Catecismo da Igreja Católica (CIC)**;
-- **Compêndio do Catecismo da Igreja Católica**;
-- **Código de Direito Canônico**;
-- documentos e normas eclesiais citados no próprio conteúdo.
+A tecnologia deve ajudar a pessoa a:
 
-As citações e referências doutrinais devem ser preservadas e revisadas com atenção para evitar alterações no sentido dos textos oficiais.
+**examinar → refletir → organizar → preparar → confessar.**
 
----
+E então sair de cena para que aconteça aquilo que realmente importa:
 
-## 👥 Créditos
-
-**Idealização, elaboração e organização:**  
-Catequista **Rickson Jordan**
-
-**Revisão catequética:**  
-Catequistas **Vito** e **Maria Clara**
-
-As citações bíblicas, doutrinais, orações tradicionais, documentos e demais conteúdos de terceiros pertencem às respectivas fontes, autores e instituições.
-
-As gravações musicais utilizadas possuem seus respectivos créditos e informações de licença indicados no próprio projeto.
+> **o encontro com Cristo no Sacramento da Reconciliação.**
 
 ---
 
-## ⚠️ Aviso
+<div align="center">
 
-O Confiteri é um auxílio catequético e pessoal para a preparação ao Sacramento da Reconciliação.
+## Confiteri
 
-**Não substitui a orientação, o discernimento pastoral ou a absolvição do sacerdote.**
+**Exame de Consciência para preparação ao Sacramento da Reconciliação**
+
+🌐 **https://www.confiteri.com.br/**
+
+**Simples para quem já sabe.**  
+**Explicativo para quem precisa.**  
+**Profundo para quem quiser se aprofundar.**
+
+</div>

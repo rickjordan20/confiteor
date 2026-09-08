@@ -134,104 +134,66 @@
         <div class="intro-actions">
           <button class="btn primary" type="button" onclick="openConsentModal()">
             🙏 Iniciar exame de consciência
-          </button></button>
+          </button>
         </div>
 
         <!-- ================= FRUTOS DO CONFITERI ================= -->
 
-        <section class="impact-dashboard no-print" id="confiteri-impact">
-
+        <section class="impact-dashboard no-print" id="confiteri-impact" aria-labelledby="impact-title">
           <div class="impact-dashboard-top">
-
             <div>
-              <span class="impact-dashboard-kicker">
-                ✦ Frutos do Confiteri
-              </span>
-
-              <h2>Um pequeno auxílio no caminho da Reconciliação</h2>
+              <span class="impact-dashboard-kicker">✦ Frutos do Confiteri</span>
+              <h2 id="impact-title">Um pequeno auxílio no caminho da Reconciliação</h2>
             </div>
-
-            <span class="impact-dashboard-badge">
-              ♡ Mais almas para Deus
-            </span>
-
+            <span class="impact-dashboard-badge">♡ Mais almas para Deus</span>
           </div>
 
-
           <div class="impact-dashboard-grid">
-
             <div class="impact-stat">
-
-              <div class="impact-stat-icon impact-icon-visits">
-                👥
-              </div>
-
+              <div class="impact-stat-icon impact-icon-visits" aria-hidden="true">👥</div>
               <div class="impact-stat-content">
                 <strong id="stat-visits">—</strong>
                 <span>visitas</span>
               </div>
-
             </div>
 
-
             <div class="impact-stat">
-
-              <div class="impact-stat-icon impact-icon-confessions">
-                ✝
-              </div>
-
+              <div class="impact-stat-icon impact-icon-confessions" aria-hidden="true">✝</div>
               <div class="impact-stat-content">
                 <strong id="stat-confessions">—</strong>
                 <span>confissões registradas</span>
               </div>
-
             </div>
 
-
             <div class="impact-stat">
-
-              <div class="impact-stat-icon impact-icon-countries">
-                🌎
-              </div>
-
+              <div class="impact-stat-icon impact-icon-countries" aria-hidden="true">🌎</div>
               <div class="impact-stat-content">
                 <strong id="stat-countries">—</strong>
                 <span>países alcançados</span>
               </div>
-
             </div>
 
-
-            <div class="impact-stat">
-
-              <div class="impact-stat-icon impact-icon-rating">
-                ★
-              </div>
-
+            <button class="impact-stat impact-stat-button" type="button" id="open-testimonials-modal"
+              aria-label="Ver avaliações do Confiteri">
+              <div class="impact-stat-icon impact-icon-rating" aria-hidden="true">★</div>
               <div class="impact-stat-content">
                 <strong id="stat-rating">—</strong>
-                <span>avaliação média</span>
+                <span id="stat-rating-label">avaliação média</span>
               </div>
-
-            </div>
-
+            </button>
           </div>
-
 
           <div class="impact-dashboard-bottom">
-
-            <span>
-              🔒 Nenhuma resposta, pecado, frequência ou observação
-              do seu exame é utilizada nestas estatísticas.
+            <span class="impact-privacy">
+              🔒 Nenhuma resposta, pecado, frequência ou observação do seu exame é utilizada nestas estatísticas.
             </span>
-
-            <em>
-              “Tudo para a maior glória de Deus.”
-            </em>
-
+            <div class="impact-dashboard-actions">
+              <button type="button" class="impact-reviews-btn" id="open-testimonials-button">★ Ver avaliações</button>
+              <em>“Tudo para a maior glória de Deus.”</em>
+            </div>
           </div>
-
         </section>
+
         <section class="help-center" aria-labelledby="help-center-title">
           <div class="help-center-head">
             <span class="help-center-kicker">DÚVIDAS?</span>
@@ -249,7 +211,7 @@
                 </div>
                 <div class="help-card-badge">
                   <span>🖥️ Passo a passo</span>
-                  <small>5 dúvidas</small>
+                  <small>5 respostas</small>
                 </div>
               </div>
               <div class="help-card-divider"></div>
@@ -435,7 +397,7 @@
                 </div>
                 <div class="help-card-badge">
                   <span>✝️ Doutrina e Fé</span>
-                  <small>5 dúvidas</small>
+                  <small>5 respostas</small>
                 </div>
               </div>
               <div class="help-card-divider"></div>
@@ -854,116 +816,121 @@
             <span aria-hidden="true"></span>
           </p>
         </section>
-        <h3 style="font-size:15px; margin-top:30px;">Selecione os roteiros</h3>
-        <p class="helper-copy" style="margin:4px 0 0;">Escolha um ou mais blocos para começar.</p>
-
-
-        <div class="picker" id="picker">
-          <label class="picker-item">
-            <input type="checkbox" id="sel-dez" checked onchange="updateSelectionSummary()">
-            <div class="picker-body">
-              <div class="picker-title">Dez Mandamentos</div>
-              <div class="picker-desc">O exame clássico, à luz dos dez mandamentos.</div>
-            </div>
-            <div class="picker-count" id="count-dez"></div>
-          </label>
-          <label class="picker-item">
-            <input type="checkbox" id="sel-capitais" checked onchange="updateSelectionSummary()">
-            <div class="picker-body">
-              <div class="picker-title">7 Pecados Capitais</div>
-              <div class="picker-desc">Soberba, avareza, luxúria, ira, gula, inveja e preguiça.</div>
-            </div>
-            <div class="picker-count" id="count-capitais"></div>
-          </label>
-          <label class="picker-item">
-            <input type="checkbox" id="sel-igreja" checked onchange="updateSelectionSummary()">
-            <div class="picker-body">
-              <div class="picker-title">5 Mandamentos da Igreja</div>
-              <div class="picker-desc">Missa, confissão, comunhão, jejum e ajuda à Igreja.</div>
-            </div>
-            <div class="picker-count" id="count-igreja"></div>
-          </label>
-        </div>
-        <p id="picker-summary" style="color:var(--muted); font-size:13px; margin-top:10px;"></p>
-
-        <div class="last-confession-card">
-          <div class="last-confession-head">
-            <strong>🕊️ Quando foi sua última Confissão?</strong>
-            <span>Essa informação será usada automaticamente no seu roteiro final.</span>
+        <section class="exam-start-section" id="exam-start" aria-labelledby="exam-start-title">
+          <div class="exam-start-head">
+            <span class="eyebrow">Sua preparação</span>
+            <h3 id="exam-start-title" style="font-size:15px; margin-top:8px;">Selecione os roteiros</h3>
+            <p class="helper-copy" style="margin:4px 0 0;">Escolha um ou mais blocos para começar.</p>
           </div>
-          <label class="sr-only" for="last-confession">Quando foi sua última Confissão?</label>
-          <select id="last-confession" class="last-confession-select"
-            onchange="saveLastConfession(); updateSelectionSummary()">
-            <option value="">Selecione uma opção</option>
-            <option value="poucos_dias">Há poucos dias</option>
-            <option value="algumas_semanas">Há algumas semanas</option>
-            <option value="um_mes">Há cerca de 1 mês</option>
-            <option value="alguns_meses">Há alguns meses</option>
-            <option value="um_ano">Há cerca de 1 ano</option>
-            <option value="mais_de_um_ano">Há mais de 1 ano</option>
-            <option value="nao_lembro">Não me lembro</option>
-            <option value="primeira_confissao">Esta será minha primeira Confissão</option>
-            <option value="outro">Outro período</option>
-          </select>
-          <input id="last-confession-other" class="last-confession-other" type="text" maxlength="80"
-            placeholder="Ex.: há cerca de 2 anos" hidden oninput="saveLastConfession(); updateSelectionSummary()">
-          <p class="field-help">Não precisa lembrar a data exata. Uma referência aproximada é suficiente.</p>
-        </div>
 
-        <div class="nav-buttons">
-          <span></span>
-          <button class="btn primary" id="btn-start" onclick="startExam()">Iniciar o exame →</button>
-        </div>
 
-        <div class="accordion video-accordion">
-          <button class="accordion-trigger" type="button" aria-expanded="false" aria-controls="intro-videos"><span>▶
-              Quer
-              ver vídeos explicativos sobre a Confissão?</span><span class="accordion-chevron">⌄</span></button>
-          <div class="accordion-panel" id="intro-videos" hidden>
-            <p class="helper-copy">Os vídeos são opcionais e ficam fora do fluxo principal do exame.</p>
-            <div class="video-grid" id="video-grid">
-              <a class="video-card" href="https://www.youtube.com/watch?v=1uBufZ8ThBM" data-yt="1uBufZ8ThBM"
-                onclick="return playVideo(event,this)">
-                <div class="video-thumb"><img src="https://img.youtube.com/vi/1uBufZ8ThBM/hqdefault.jpg" alt=""
-                    loading="lazy"></div>
-                <div class="video-info">
-                  <div class="video-title">Como fazer uma boa confissão?</div>
-                  <div class="video-channel">Padre Paulo Ricardo</div>
-                </div>
-              </a>
-              <a class="video-card" href="https://www.youtube.com/watch?v=VFdBMS84r8g" data-yt="VFdBMS84r8g"
-                onclick="return playVideo(event,this)">
-                <div class="video-thumb"><img src="https://img.youtube.com/vi/VFdBMS84r8g/hqdefault.jpg" alt=""
-                    loading="lazy"></div>
-                <div class="video-info">
-                  <div class="video-title">O passo a passo para fazer uma Santa Confissão!</div>
-                  <div class="video-channel">Padre Leonardo</div>
-                </div>
-              </a>
-              <a class="video-card" href="https://www.youtube.com/watch?v=CAslTOIJXjY" data-yt="CAslTOIJXjY"
-                onclick="return playVideo(event,this)">
-                <div class="video-thumb"><img src="https://img.youtube.com/vi/CAslTOIJXjY/hqdefault.jpg" alt=""
-                    loading="lazy"></div>
-                <div class="video-info">
-                  <div class="video-title">Exame de Consciência para Confissão — Parte 1</div>
-                  <div class="video-channel">Padre Leonardo</div>
-                </div>
-              </a>
-              <a class="video-card" href="https://www.youtube.com/watch?v=IiVEudMHKYI" data-yt="IiVEudMHKYI"
-                onclick="return playVideo(event,this)">
-                <div class="video-thumb"><img src="https://img.youtube.com/vi/IiVEudMHKYI/hqdefault.jpg" alt=""
-                    loading="lazy"></div>
-                <div class="video-info">
-                  <div class="video-title">Como se confessar na prática? — O Guia da Confissão, ep. 5</div>
-                  <div class="video-channel">Padre Felipe Konzen</div>
-                </div>
-              </a>
-            </div>
-            <a class="video-more"
-              href="https://www.youtube.com/results?search_query=como+se+confessar+padre+exame+de+consci%C3%AAncia"
-              target="_blank" rel="noopener">Ver mais vídeos sobre confissão no YouTube →</a>
+          <div class="picker" id="picker">
+            <label class="picker-item">
+              <input type="checkbox" id="sel-dez" checked onchange="updateSelectionSummary()">
+              <div class="picker-body">
+                <div class="picker-title">Dez Mandamentos</div>
+                <div class="picker-desc">O exame clássico, à luz dos dez mandamentos.</div>
+              </div>
+              <div class="picker-count" id="count-dez"></div>
+            </label>
+            <label class="picker-item">
+              <input type="checkbox" id="sel-capitais" checked onchange="updateSelectionSummary()">
+              <div class="picker-body">
+                <div class="picker-title">7 Pecados Capitais</div>
+                <div class="picker-desc">Soberba, avareza, luxúria, ira, gula, inveja e preguiça.</div>
+              </div>
+              <div class="picker-count" id="count-capitais"></div>
+            </label>
+            <label class="picker-item">
+              <input type="checkbox" id="sel-igreja" checked onchange="updateSelectionSummary()">
+              <div class="picker-body">
+                <div class="picker-title">5 Mandamentos da Igreja</div>
+                <div class="picker-desc">Missa, confissão, comunhão, jejum e ajuda à Igreja.</div>
+              </div>
+              <div class="picker-count" id="count-igreja"></div>
+            </label>
           </div>
-        </div>
+          <p id="picker-summary" style="color:var(--muted); font-size:13px; margin-top:10px;"></p>
+
+          <div class="last-confession-card">
+            <div class="last-confession-head">
+              <strong>🕊️ Quando foi sua última Confissão?</strong>
+              <span>Essa informação será usada automaticamente no seu roteiro final.</span>
+            </div>
+            <label class="sr-only" for="last-confession">Quando foi sua última Confissão?</label>
+            <select id="last-confession" class="last-confession-select"
+              onchange="saveLastConfession(); updateSelectionSummary()">
+              <option value="">Selecione uma opção</option>
+              <option value="poucos_dias">Há poucos dias</option>
+              <option value="algumas_semanas">Há algumas semanas</option>
+              <option value="um_mes">Há cerca de 1 mês</option>
+              <option value="alguns_meses">Há alguns meses</option>
+              <option value="um_ano">Há cerca de 1 ano</option>
+              <option value="mais_de_um_ano">Há mais de 1 ano</option>
+              <option value="nao_lembro">Não me lembro</option>
+              <option value="primeira_confissao">Esta será minha primeira Confissão</option>
+              <option value="outro">Outro período</option>
+            </select>
+            <input id="last-confession-other" class="last-confession-other" type="text" maxlength="80"
+              placeholder="Ex.: há cerca de 2 anos" hidden oninput="saveLastConfession(); updateSelectionSummary()">
+            <p class="field-help">Não precisa lembrar a data exata. Uma referência aproximada é suficiente.</p>
+          </div>
+
+          <div class="nav-buttons">
+            <span></span>
+            <button class="btn primary" id="btn-start" onclick="startExam()">Iniciar o exame →</button>
+          </div>
+
+          <div class="accordion video-accordion">
+            <button class="accordion-trigger" type="button" aria-expanded="false" aria-controls="intro-videos"><span>▶
+                Quer
+                ver vídeos explicativos sobre a Confissão?</span><span class="accordion-chevron">⌄</span></button>
+            <div class="accordion-panel" id="intro-videos" hidden>
+              <p class="helper-copy">Os vídeos são opcionais e ficam fora do fluxo principal do exame.</p>
+              <div class="video-grid" id="video-grid">
+                <a class="video-card" href="https://www.youtube.com/watch?v=1uBufZ8ThBM" data-yt="1uBufZ8ThBM"
+                  onclick="return playVideo(event,this)">
+                  <div class="video-thumb"><img src="https://img.youtube.com/vi/1uBufZ8ThBM/hqdefault.jpg" alt=""
+                      loading="lazy"></div>
+                  <div class="video-info">
+                    <div class="video-title">Como fazer uma boa confissão?</div>
+                    <div class="video-channel">Padre Paulo Ricardo</div>
+                  </div>
+                </a>
+                <a class="video-card" href="https://www.youtube.com/watch?v=VFdBMS84r8g" data-yt="VFdBMS84r8g"
+                  onclick="return playVideo(event,this)">
+                  <div class="video-thumb"><img src="https://img.youtube.com/vi/VFdBMS84r8g/hqdefault.jpg" alt=""
+                      loading="lazy"></div>
+                  <div class="video-info">
+                    <div class="video-title">O passo a passo para fazer uma Santa Confissão!</div>
+                    <div class="video-channel">Padre Leonardo</div>
+                  </div>
+                </a>
+                <a class="video-card" href="https://www.youtube.com/watch?v=CAslTOIJXjY" data-yt="CAslTOIJXjY"
+                  onclick="return playVideo(event,this)">
+                  <div class="video-thumb"><img src="https://img.youtube.com/vi/CAslTOIJXjY/hqdefault.jpg" alt=""
+                      loading="lazy"></div>
+                  <div class="video-info">
+                    <div class="video-title">Exame de Consciência para Confissão — Parte 1</div>
+                    <div class="video-channel">Padre Leonardo</div>
+                  </div>
+                </a>
+                <a class="video-card" href="https://www.youtube.com/watch?v=IiVEudMHKYI" data-yt="IiVEudMHKYI"
+                  onclick="return playVideo(event,this)">
+                  <div class="video-thumb"><img src="https://img.youtube.com/vi/IiVEudMHKYI/hqdefault.jpg" alt=""
+                      loading="lazy"></div>
+                  <div class="video-info">
+                    <div class="video-title">Como se confessar na prática? — O Guia da Confissão, ep. 5</div>
+                    <div class="video-channel">Padre Felipe Konzen</div>
+                  </div>
+                </a>
+              </div>
+              <a class="video-more"
+                href="https://www.youtube.com/results?search_query=como+se+confessar+padre+exame+de+consci%C3%AAncia"
+                target="_blank" rel="noopener">Ver mais vídeos sobre confissão no YouTube →</a>
+            </div>
+          </div>
+        </section>
       </section>
 
       <!-- Etapas selecionadas do exame são inseridas aqui pelo JavaScript -->
@@ -1045,14 +1012,18 @@
         <h2>🙏 Sua preparação está pronta</h2>
         <p class="lead">Seu roteiro já está organizado. Agora escolha como deseja levá-lo para a Confissão.</p>
 
-        <div class="final-feedback-actions no-print">
-          <button class="btn primary" type="button" id="open-confession-modal">
-            ✝ Registrar minha Confissão
-          </button>
-
-          <button class="btn" type="button" id="open-review-modal">
-            ★ Avaliar o Confiteri
-          </button>
+        <div class="final-feedback no-print">
+          <p class="helper-copy">
+            Essas ações são opcionais e não são vinculadas ao conteúdo do seu exame de consciência.
+          </p>
+          <div class="final-feedback-actions">
+            <button class="btn primary" type="button" id="open-confession-modal">
+              ✝ Registrar minha Confissão
+            </button>
+            <button class="btn" type="button" id="open-review-modal">
+              ★ Avaliar o Confiteri
+            </button>
+          </div>
         </div>
 
         <div class="confession-choice-grid no-print">
@@ -1227,10 +1198,11 @@
             <input type="checkbox" id="consent-privacy" onchange="updateConsentButton()">
 
             <span>
-              Li e estou de acordo com as informações sobre
-              <button type="button" class="consent-link" onclick="openPrivacyFromConsent(event)">
-                Privacidade
-              </button>.
+            Li e concordo com a
+            <a href="privacidade.html" target="_blank" rel="noopener noreferrer" class="consent-inline-link">
+              Política de Privacidade
+            </a>
+             do Confiteri.
             </span>
           </label>
 
@@ -1285,149 +1257,43 @@
         </div>
 
         <div class="footer-modal-content">
-
           <p>
-            O <strong>Confiteri</strong> foi desenvolvido com prioridade à privacidade,
-            especialmente por lidar com informações pessoais utilizadas durante o exame
-            de consciência.
-          </p>
-
-          <h3>Respostas do exame de consciência</h3>
-
-          <p>
-            As respostas, dúvidas, frequências, observações pessoais, itens selecionados
-            e o roteiro preparado para a Confissão são processados no próprio navegador.
+            O <strong>Confiteri</strong> é uma ferramenta gratuita criada para auxiliar na preparação pessoal para o
+            <strong>Sacramento da Reconciliação</strong>.
           </p>
 
           <p>
-            Essas informações <strong>não são enviadas nem armazenadas no banco de dados
-              do Confiteri</strong>.
+            A proposta é ajudar cada pessoa a examinar sua consciência com calma, organizar aquilo que deseja confessar
+            e chegar ao Sacramento mais preparada.
           </p>
 
-          <h3>Armazenamento no dispositivo</h3>
-
-          <p>
-            O andamento do exame utiliza recursos de armazenamento do próprio navegador,
-            como o <code>sessionStorage</code>, para manter a preparação durante a sessão
-            atual.
-          </p>
-
-          <p>
-            Algumas preferências técnicas, como o tema visual e controles destinados a
-            evitar registros repetidos, podem utilizar armazenamento local do navegador.
-          </p>
-
-          <h3>Estatísticas gerais de uso</h3>
-
-          <p>
-            Para compreender o alcance e melhorar a plataforma, o Confiteri registra
-            estatísticas gerais de utilização.
-          </p>
-
-          <p>
-            Essas estatísticas podem incluir:
-          </p>
-
+          <h3>Como o Confiteri ajuda?</h3>
           <ul>
-            <li>data da visita;</li>
-            <li>país aproximado de acesso;</li>
-            <li>
-              origem da visita, como mecanismo de busca, rede social, link compartilhado
-              ou acesso direto;
-            </li>
-            <li>quantidade total de visitas.</li>
+            <li>exame de consciência baseado nos Dez Mandamentos, Pecados Capitais e Mandamentos da Igreja;</li>
+            <li>explicações catequéticas opcionais;</li>
+            <li>revisão específica das dúvidas;</li>
+            <li>preparação personalizada do roteiro;</li>
+            <li>Modo Confissão opcional;</li>
+            <li>geração de PDF, impressão e TXT.</li>
           </ul>
 
+          <h3>Para quem foi pensado?</h3>
           <p>
-            Essas informações são utilizadas de forma estatística e
-            <strong>não são associadas às respostas do exame de consciência</strong>.
+            Tanto para quem já está acostumado a se confessar quanto para quem fará sua primeira Confissão, está há
+            muito tempo sem receber o Sacramento ou deseja aprofundar sua preparação.
           </p>
-
-          <h3>Registro voluntário de Confissão</h3>
-
-          <p>
-            Depois de realizar o Sacramento da Reconciliação, o usuário pode optar por
-            registrar anonimamente que realizou sua Confissão com auxílio do Confiteri.
-          </p>
-
-          <p>
-            Esse registro serve apenas para acrescentar uma unidade ao contador geral de
-            Confissões registradas. O Confiteri não recebe informações sobre o conteúdo
-            da Confissão, os pecados confessados ou o sacerdote procurado.
-          </p>
-
-          <h3>Avaliações e comentários</h3>
-
-          <p>
-            O usuário pode, voluntariamente, avaliar sua experiência com o Confiteri.
-            A nota é enviada para a plataforma, enquanto o nome e o comentário são
-            opcionais.
-          </p>
-
-          <p>
-            Caso seja enviado um comentário, o usuário pode escolher separadamente se
-            autoriza a publicação do comentário e se autoriza a exibição do seu nome.
-          </p>
-
-          <p>
-            Mesmo quando houver autorização, os depoimentos podem passar por moderação
-            antes de serem publicados.
-          </p>
-
-          <p>
-            As avaliações e comentários
-            <strong>não são vinculados ao conteúdo do exame de consciência</strong>.
-          </p>
-
-          <h3>O que o Confiteri não armazena</h3>
-
-          <ul>
-            <li>pecados ou situações marcadas durante o exame;</li>
-            <li>respostas “Sim”, “Não” ou “Tenho dúvida”;</li>
-            <li>frequências informadas para os itens;</li>
-            <li>observações pessoais do exame;</li>
-            <li>anotação geral da Confissão;</li>
-            <li>roteiro preparado para o sacerdote.</li>
-          </ul>
-
-          <h3>Proteções adicionais</h3>
-
-          <ul>
-            <li>proteção da tela após período de inatividade;</li>
-            <li>aviso antes da limpeza automática da sessão;</li>
-            <li>opção para limpar manualmente os dados da preparação;</li>
-            <li>
-              encerramento do Modo Confissão com possibilidade de apagar os dados da
-              sessão;
-            </li>
-            <li>
-              separação entre os dados locais do exame e as estatísticas gerais da
-              plataforma.
-            </li>
-          </ul>
 
           <div class="footer-info-box">
-            <strong>🔒 Em resumo</strong>
-
+            <strong>✝️ Um auxílio, não um substituto</strong>
             <p>
-              O conteúdo da sua preparação para a Confissão permanece no seu dispositivo.
-              O Confiteri recebe apenas estatísticas gerais de utilização e informações
-              que você decidir enviar voluntariamente, como a confirmação de Confissão e
-              sua avaliação da plataforma.
+              O Confiteri não substitui a Confissão sacramental, o discernimento moral nem a orientação do sacerdote.
             </p>
           </div>
 
-          <div class="footer-info-box">
-            <strong>Conteúdos externos</strong>
-
-            <p>
-              Recursos como vídeos, músicas, fontes ou outros serviços externos podem
-              realizar suas próprias requisições de rede. Isso não significa que as
-              respostas do seu exame de consciência sejam compartilhadas com esses
-              serviços.
-            </p>
-          </div>
-
+          <p class="helper-copy">
+            <strong>Simples para quem já sabe. Explicativo para quem precisa. Profundo para quem quiser se
+              aprofundar.</strong>
+          </p>
         </div>
 
       </div>
@@ -1529,6 +1395,30 @@
           <p>
             A preferência de tema pode ser armazenada localmente para preservar
             apenas a escolha visual do usuário.
+          </p>
+
+          <h3>Estatísticas gerais</h3>
+
+          <p>
+            O Confiteri pode registrar estatísticas gerais de utilização, como quantidade de visitas, país aproximado
+            de acesso e origem da visita.
+          </p>
+
+          <p>
+            Essas informações são tratadas separadamente e
+            <strong>não são vinculadas às respostas do exame de consciência</strong>.
+          </p>
+
+          <h3>Avaliações e comentários</h3>
+
+          <p>
+            As avaliações são enviadas voluntariamente. Nome e comentário são opcionais. Comentários só podem ser
+            publicados quando houver autorização do usuário e podem passar por moderação antes de aparecerem
+            publicamente.
+          </p>
+
+          <p>
+            As avaliações <strong>não são vinculadas às respostas, observações ou itens do exame</strong>.
           </p>
 
           <h3>Proteções adicionais</h3>
@@ -1684,146 +1574,221 @@
       <span id="mini-track-title" hidden></span>
 
     </div>
+  </div>
 
-    <div class="feedback-modal no-print" id="confession-modal" hidden role="dialog" aria-modal="true"
-      aria-labelledby="confession-modal-title">
+  <!-- ================= MODAIS DE FEEDBACK ================= -->
 
-      <div class="feedback-modal-backdrop" data-close-feedback-modal></div>
+  <div class="feedback-modal no-print" id="confession-modal" hidden role="dialog" aria-modal="true"
+    aria-labelledby="confession-modal-title">
 
-      <div class="feedback-modal-card">
+    <div class="feedback-modal-backdrop" data-close-feedback-modal></div>
 
-        <button class="feedback-modal-close" type="button" data-close-feedback-modal aria-label="Fechar">
-          ✕
-        </button>
+    <div class="feedback-modal-card">
 
-        <div class="feedback-modal-icon">✝️</div>
+      <button class="feedback-modal-close" type="button" data-close-feedback-modal aria-label="Fechar">
+        ✕
+      </button>
 
-        <h2 id="confession-modal-title">
-          Já realizou sua Confissão?
-        </h2>
+      <div class="feedback-modal-icon">✝️</div>
 
+      <h2 id="confession-modal-title">
+        Já realizou sua Confissão?
+      </h2>
+
+      <p>
+        Se desejar, registre anonimamente mais um fruto do Confiteri.
+      </p>
+
+      <button class="btn primary" id="btn-confession-completed" type="button">
+        ✝ Sim, já me confessei
+      </button>
+
+      <p id="confession-message" class="helper-copy" aria-live="polite">
+      </p>
+
+      <p class="feedback-modal-privacy">
+        🔒 Esta confirmação é anônima e não é vinculada às respostas
+        do seu exame de consciência.
+      </p>
+
+    </div>
+  </div>
+
+  <div class="feedback-modal no-print" id="review-modal" hidden role="dialog" aria-modal="true"
+    aria-labelledby="review-modal-title">
+
+    <div class="feedback-modal-backdrop" data-close-feedback-modal></div>
+
+    <div class="feedback-modal-card feedback-modal-card-wide">
+
+      <button class="feedback-modal-close" type="button" data-close-feedback-modal aria-label="Fechar">
+        ✕
+      </button>
+
+      <div class="feedback-modal-icon">💬</div>
+
+      <h2 id="review-modal-title">
+        Como foi sua experiência com o Confiteri?
+      </h2>
+
+      <p>
+        Sua avaliação ajuda a melhorar a plataforma.
+      </p>
+
+      <div class="review-field">
+        <label for="review-rating">
+          <strong>Sua avaliação</strong>
+        </label>
+
+        <select id="review-rating" class="review-select">
+          <option value="">Selecione uma nota</option>
+          <option value="5">★★★★★ — Excelente</option>
+          <option value="4">★★★★☆ — Muito bom</option>
+          <option value="3">★★★☆☆ — Bom</option>
+          <option value="2">★★☆☆☆ — Regular</option>
+          <option value="1">★☆☆☆☆ — Ruim</option>
+        </select>
+      </div>
+
+      <div class="review-field">
+        <label for="review-name">
+          <strong>Nome</strong>
+          <span class="optional-label">(opcional)</span>
+        </label>
+
+        <input type="text" id="review-name" maxlength="80" placeholder="Como gostaria de ser identificado">
+      </div>
+
+      <div class="review-field">
+        <label for="review-comment">
+          <strong>Comentário</strong>
+          <span class="optional-label">(opcional)</span>
+        </label>
+
+        <textarea id="review-comment" maxlength="500" rows="4"
+          placeholder="Conte-nos como foi sua experiência com o Confiteri..."></textarea>
+      </div>
+
+      <div class="review-permissions">
+        <label>
+          <input type="checkbox" id="review-publish-comment">
+          Autorizo a publicação do meu comentário como depoimento.
+        </label>
+
+        <label>
+          <input type="checkbox" id="review-publish-name">
+          Autorizo também a publicação do meu nome.
+        </label>
+      </div>
+
+      <button class="btn primary" id="btn-submit-review" type="button">
+        Enviar avaliação
+      </button>
+
+      <p id="review-message" class="helper-copy" aria-live="polite">
+      </p>
+
+      <p class="feedback-modal-privacy">
+        🔒 Sua avaliação não é vinculada às respostas,
+        observações ou itens do seu exame de consciência.
+      </p>
+
+    </div>
+  </div>
+
+
+  <!-- ================= AVALIAÇÕES PUBLICADAS ================= -->
+
+  <div class="feedback-modal testimonials-modal no-print" id="testimonials-modal" hidden role="dialog" aria-modal="true"
+    aria-labelledby="testimonials-modal-title">
+    <div class="feedback-modal-backdrop" data-close-testimonials-modal></div>
+
+    <div class="feedback-modal-card feedback-modal-card-wide">
+      <button class="feedback-modal-close" type="button" data-close-testimonials-modal
+        aria-label="Fechar avaliações">✕</button>
+
+      <div class="testimonials-head">
+        <span class="testimonials-kicker">★ Experiências com o Confiteri</span>
+        <h2 id="testimonials-modal-title">O que dizem sobre o Confiteri</h2>
+        <p>Avaliações e comentários enviados voluntariamente por pessoas que utilizaram ou testaram a plataforma.</p>
+      </div>
+
+      <div class="testimonials-summary">
+        <strong id="testimonials-average">—</strong>
+        <div>
+          <div class="testimonials-stars" aria-label="Avaliação média">★★★★★</div>
+          <span id="testimonials-total">Carregando avaliações...</span>
+        </div>
+      </div>
+
+      <div class="testimonials-list" id="testimonials-list" aria-live="polite">
+        <div class="empty-state">Carregando avaliações...</div>
+      </div>
+
+      <div class="testimonials-footer">
         <p>
-          Se desejar, registre anonimamente mais um fruto do Confiteri.
+          🔒 Somente comentários autorizados pelo autor são exibidos.
+          O conteúdo está sujeito a moderação. <span class="testimonial-bible-ref">(cf. Ef 4,29)</span>
         </p>
-
-        <button class="btn primary" id="btn-confession-completed" type="button">
-          ✝ Sim, já me confessei
-        </button>
-
-        <p id="confession-message" class="helper-copy" aria-live="polite">
-        </p>
-
-        <p class="feedback-modal-privacy">
-          🔒 Esta confirmação é anônima e não é vinculada às respostas
-          do seu exame de consciência.
-        </p>
-
+        <button class="btn" type="button" id="testimonials-review-button">★ Também quero avaliar</button>
       </div>
     </div>
+  </div>
 
-    <div class="feedback-modal no-print" id="review-modal" hidden role="dialog" aria-modal="true"
-      aria-labelledby="review-modal-title">
+  <script>
+    // Busca rápida na Central de Ajuda
+    const helpSearch = document.getElementById("help-search");
 
-      <div class="feedback-modal-backdrop" data-close-feedback-modal></div>
+    helpSearch?.addEventListener("input", () => {
+      const term = helpSearch.value.trim().toLocaleLowerCase("pt-BR");
 
-      <div class="feedback-modal-card feedback-modal-card-wide">
-
-        <button class="feedback-modal-close" type="button" data-close-feedback-modal aria-label="Fechar">
-          ✕
-        </button>
-
-        <div class="feedback-modal-icon">💬</div>
-
-        <h2 id="review-modal-title">
-          Como foi sua experiência com o Confiteri?
-        </h2>
-
-        <p>
-          Sua avaliação ajuda a melhorar a plataforma.
-        </p>
-
-        <div class="review-field">
-          <label for="review-rating">
-            <strong>Sua avaliação</strong>
-          </label>
-
-          <select id="review-rating" class="review-select">
-            <option value="">Selecione uma nota</option>
-            <option value="5">★★★★★ — Excelente</option>
-            <option value="4">★★★★☆ — Muito bom</option>
-            <option value="3">★★★☆☆ — Bom</option>
-            <option value="2">★★☆☆☆ — Regular</option>
-            <option value="1">★☆☆☆☆ — Ruim</option>
-          </select>
-        </div>
-
-        <div class="review-field">
-          <label for="review-name">
-            <strong>Nome</strong>
-            <span class="optional-label">(opcional)</span>
-          </label>
-
-          <input type="text" id="review-name" maxlength="80" placeholder="Como gostaria de ser identificado">
-        </div>
-
-        <div class="review-field">
-          <label for="review-comment">
-            <strong>Comentário</strong>
-            <span class="optional-label">(opcional)</span>
-          </label>
-
-          <textarea id="review-comment" maxlength="500" rows="4"
-            placeholder="Conte-nos como foi sua experiência com o Confiteri..."></textarea>
-        </div>
-
-        <div class="review-permissions">
-          <label>
-            <input type="checkbox" id="review-publish-comment">
-            Autorizo a publicação do meu comentário como depoimento.
-          </label>
-
-          <label>
-            <input type="checkbox" id="review-publish-name">
-            Autorizo também a publicação do meu nome.
-          </label>
-        </div>
-
-        <button class="btn primary" id="btn-submit-review" type="button">
-          Enviar avaliação
-        </button>
-
-        <p id="review-message" class="helper-copy" aria-live="polite">
-        </p>
-
-        <p class="feedback-modal-privacy">
-          🔒 Sua avaliação não é vinculada às respostas,
-          observações ou itens do seu exame de consciência.
-        </p>
-
-      </div>
-    </div>
-
-    <script>
-      const helpSearch = document.getElementById("help-search");
-
-      helpSearch?.addEventListener("input", () => {
-        const term = helpSearch.value.trim().toLocaleLowerCase("pt-BR");
-
-        document.querySelectorAll(".help-accordion-stack .accordion").forEach((item) => {
-          const question = item.querySelector(".accordion-trigger span:first-child");
-          const text = question?.textContent.toLocaleLowerCase("pt-BR") || "";
-          item.hidden = Boolean(term) && !text.includes(term);
-        });
+      document.querySelectorAll(".help-accordion-stack .accordion").forEach((item) => {
+        const question = item.querySelector(".accordion-trigger span:first-child");
+        const text = question?.textContent.toLocaleLowerCase("pt-BR") || "";
+        item.hidden = Boolean(term) && !text.includes(term);
       });
-    </script>
+    });
+
+    // Modal público de avaliações
+    const testimonialsModal = document.getElementById("testimonials-modal");
+    const testimonialsOpeners = [
+      document.getElementById("open-testimonials-modal"),
+      document.getElementById("open-testimonials-button")
+    ].filter(Boolean);
+
+    function openTestimonialsModal() {
+      if (!testimonialsModal) return;
+      testimonialsModal.hidden = false;
+      document.body.classList.add("feedback-modal-open");
+    }
+
+    function closeTestimonialsModal() {
+      if (!testimonialsModal) return;
+      testimonialsModal.hidden = true;
+      document.body.classList.remove("feedback-modal-open");
+    }
+
+    testimonialsOpeners.forEach((button) => button.addEventListener("click", openTestimonialsModal));
+    document.querySelectorAll("[data-close-testimonials-modal]").forEach((button) =>
+      button.addEventListener("click", closeTestimonialsModal)
+    );
+
+    document.getElementById("testimonials-review-button")?.addEventListener("click", () => {
+      closeTestimonialsModal();
+      document.getElementById("open-review-modal")?.click();
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && testimonialsModal && !testimonialsModal.hidden) {
+        closeTestimonialsModal();
+      }
+    });
+  </script>
 
 
 
-
-
-
-    <script src="assets/js/app.js" defer></script>
-    <script src="assets/js/metrics.js" defer></script>
+  <script src="assets/js/app.js" defer></script>
+  <script src="assets/js/metrics.js" defer></script>
 </body>
 
 </html>

@@ -2573,3 +2573,546 @@ body.consent-open {
   }
 
 }
+
+
+/* ============================================================
+   BOTÃO — POR QUE DEVO ME CONFESSAR?
+   Integrado à identidade visual do Confiteri
+   ============================================================ */
+
+.btn-confession-info {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  min-height: 44px;
+ padding: 7px 14px;
+max-width: 260px;
+
+  border: 1px solid rgba(181, 67, 96, 0.7);
+  border-radius: 11px;
+
+  background: rgba(161, 49, 78, 0.12);
+  color: #f4e8e4;
+
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+
+  box-shadow: none;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.btn-confession-info:hover {
+  background: rgba(181, 67, 96, 0.22);
+  border-color: rgba(205, 91, 119, 0.9);
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 5px 14px rgba(0, 0, 0, 0.14);
+}
+
+.btn-confession-info:active {
+  transform: translateY(0);
+}
+
+.btn-confession-info:focus-visible {
+  outline: 2px solid rgba(205, 91, 119, 0.85);
+  outline-offset: 3px;
+}
+
+
+/* Ícone */
+
+.btn-confession-icon {
+  display: grid;
+  place-items: center;
+
+  flex: 0 0 auto;
+
+  width: 28px;
+  height: 28px;
+  font-size: 15px;
+
+  border-radius: 8px;
+
+  background: #a93655;
+  color: #ffffff;
+
+  font-weight: 700;
+
+  box-shadow: none;
+}
+
+
+/* Texto */
+
+.btn-confession-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  gap: 1px;
+
+  line-height: 1.2;
+}
+
+.btn-confession-text strong {
+  color: #f7eeee;
+
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.btn-confession-text small {
+  color: #d1c2bd;
+  font-size: 10.5px;
+  font-weight: 500;
+}
+
+
+/* ============================================================
+   TEMA CLARO
+   ============================================================ */
+
+[data-theme="light"] .btn-confession-info {
+  background: rgba(161, 49, 78, 0.06);
+
+  border-color: rgba(161, 49, 78, 0.35);
+
+  color: #69263a;
+}
+
+[data-theme="light"] .btn-confession-info:hover {
+  background: rgba(161, 49, 78, 0.1);
+
+  border-color: rgba(161, 49, 78, 0.55);
+}
+
+[data-theme="light"] .btn-confession-text strong {
+  color: #69263a;
+}
+
+[data-theme="light"] .btn-confession-text small {
+  color: #78635e;
+}
+
+
+/* ============================================================
+   ÁREA DOS BOTÕES
+   ============================================================ */
+
+.intro-actions {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+
+  width: 100%;
+  margin-top: 14px;
+}
+
+/* Mantém os dois botões visualmente proporcionais */
+
+.intro-actions > .btn {
+  min-height: 44px;
+}
+
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+
+@media (max-width: 640px) {
+
+  .intro-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+
+    width: 100%;
+  }
+
+  .intro-actions > .btn,
+  .btn-confession-info {
+    width: 100%;
+    max-width: none;
+  }
+
+  .btn-confession-info {
+    width: 100%;
+    max-width: none;
+    justify-content: flex-start;
+  }
+
+}
+
+/* ============================================================
+   MODAL CATEQUÉTICO — POR QUE DEVO ME CONFESSAR?
+   ============================================================ */
+
+#confession-info-modal[hidden] {
+  display: none !important;
+}
+
+#confession-info-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 24px;
+
+  overflow: hidden;
+}
+
+
+/* Fundo escurecido */
+
+#confession-info-modal .confession-modal-backdrop {
+  position: absolute;
+  inset: 0;
+
+  background: rgba(8, 5, 4, 0.78);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+
+/* Caixa principal */
+
+#confession-info-modal .confession-modal-card {
+  position: relative;
+  z-index: 1;
+
+  width: min(760px, 100%);
+  max-height: calc(100vh - 48px);
+
+  overflow-y: auto;
+  overscroll-behavior: contain;
+
+  padding: 0;
+
+  border: 1px solid rgba(189, 87, 111, 0.28);
+  border-radius: 20px;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(38, 27, 24, 0.98),
+      rgba(27, 20, 18, 0.99)
+    );
+
+  color: #f2e9e5;
+
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.55),
+    0 0 0 1px rgba(255, 255, 255, 0.02);
+}
+
+
+/* Conteúdo interno */
+
+#confession-info-modal .confession-modal-content {
+  padding: 34px 36px 36px;
+}
+
+
+/* Botão fechar */
+
+#confession-info-modal .confession-modal-close {
+  position: sticky;
+  top: 14px;
+
+  float: right;
+
+  z-index: 10;
+
+  width: 38px;
+  height: 38px;
+
+  margin: 14px 14px 0 0;
+
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.05);
+  color: #d8c8c3;
+
+  font-size: 24px;
+  line-height: 1;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+#confession-info-modal .confession-modal-close:hover {
+  background: rgba(181, 67, 96, 0.18);
+  color: #ffffff;
+
+  transform: scale(1.04);
+}
+
+
+/* Pequeno título superior */
+
+#confession-info-modal .confession-modal-eyebrow {
+  display: inline-block;
+
+  margin-bottom: 8px;
+
+  color: #c85f78;
+
+  font-size: 12px;
+  font-weight: 800;
+
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+
+/* Título principal */
+
+#confession-info-modal h2 {
+  margin: 0 48px 16px 0;
+
+  color: #f6efeb;
+
+  font-size: clamp(26px, 4vw, 34px);
+  line-height: 1.15;
+}
+
+
+/* Introdução */
+
+#confession-info-modal .confession-modal-lead {
+  margin-bottom: 24px;
+
+  color: #dbcfc9;
+
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+
+/* Seções */
+
+#confession-info-modal section {
+  margin-top: 28px;
+}
+
+#confession-info-modal section h3 {
+  margin: 0 0 10px;
+
+  color: #f1ded7;
+
+  font-size: 18px;
+  line-height: 1.3;
+}
+
+#confession-info-modal p {
+  margin: 10px 0;
+
+  color: #cec0ba;
+
+  font-size: 14.5px;
+  line-height: 1.72;
+}
+
+
+/* Destaques */
+
+#confession-info-modal strong {
+  color: #f3e8e3;
+}
+
+
+/* Citação bíblica */
+
+#confession-info-modal blockquote {
+  margin: 18px 0;
+  padding: 18px 20px;
+
+  border-left: 3px solid #b54360;
+  border-radius: 0 12px 12px 0;
+
+  background: rgba(181, 67, 96, 0.08);
+
+  color: #eee3de;
+
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 16px;
+  font-style: italic;
+
+  line-height: 1.6;
+}
+
+#confession-info-modal blockquote cite {
+  display: block;
+
+  margin-top: 10px;
+
+  color: #c87a8d;
+
+  font-family: inherit;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 700;
+}
+
+
+/* Resumo */
+
+#confession-info-modal .confession-modal-summary {
+  margin-top: 30px;
+  padding: 18px 20px;
+
+  border: 1px solid rgba(181, 67, 96, 0.24);
+  border-radius: 14px;
+
+  background: rgba(181, 67, 96, 0.08);
+
+  color: #d8cbc6;
+
+  line-height: 1.65;
+}
+
+
+/* Fontes */
+
+#confession-info-modal .confession-modal-sources {
+  margin-top: 28px;
+  padding-top: 22px;
+
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+#confession-info-modal .confession-modal-sources h3 {
+  color: #d59aae;
+}
+
+#confession-info-modal .confession-modal-sources p {
+  color: #aa9b96;
+
+  font-size: 13px;
+}
+
+
+/* Ações */
+
+#confession-info-modal .confession-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+
+  margin-top: 28px;
+}
+
+
+/* Impede rolagem da página atrás */
+
+body.confession-info-modal-open {
+  overflow: hidden;
+}
+
+
+/* ============================================================
+   TEMA CLARO
+   ============================================================ */
+
+[data-theme="light"]
+#confession-info-modal
+.confession-modal-card {
+  border-color: rgba(151, 55, 78, 0.2);
+
+  background: #fffaf7;
+
+  color: #342625;
+
+  box-shadow:
+    0 30px 80px rgba(71, 43, 36, 0.25);
+}
+
+[data-theme="light"]
+#confession-info-modal h2 {
+  color: #352321;
+}
+
+[data-theme="light"]
+#confession-info-modal p {
+  color: #63514c;
+}
+
+[data-theme="light"]
+#confession-info-modal strong {
+  color: #392625;
+}
+
+[data-theme="light"]
+#confession-info-modal section h3 {
+  color: #672d3e;
+}
+
+[data-theme="light"]
+#confession-info-modal blockquote {
+  background: rgba(161, 49, 78, 0.06);
+
+  color: #4e3732;
+}
+
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+
+@media (max-width: 640px) {
+
+  #confession-info-modal {
+    padding: 10px;
+    align-items: flex-end;
+  }
+
+  #confession-info-modal .confession-modal-card {
+    width: 100%;
+    max-height: 92vh;
+
+    border-radius: 18px 18px 12px 12px;
+  }
+
+  #confession-info-modal .confession-modal-content {
+    padding: 24px 20px 28px;
+  }
+
+  #confession-info-modal h2 {
+    margin-right: 34px;
+
+    font-size: 25px;
+  }
+
+  #confession-info-modal .confession-modal-lead {
+    font-size: 15px;
+  }
+
+  #confession-info-modal section h3 {
+    font-size: 17px;
+  }
+
+  #confession-info-modal p {
+    font-size: 14px;
+  }
+
+}

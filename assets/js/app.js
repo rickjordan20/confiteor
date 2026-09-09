@@ -1553,6 +1553,7 @@ async function init() {
   initMeditationPlayer();
   initFooterModals();
   initModalKeyboard();
+  initConfessionInfoModal();
 
   // Dados e estado da sessão
   loadQuestionRelations();
@@ -1570,6 +1571,58 @@ async function init() {
     notes.value = sessionStorage.getItem(NOTES_KEY) || '';
     notes.dataset.loaded = '1';
   }
+}
+
+/* ============================================================
+   MODAL CATEQUÉTICO — POR QUE DEVO ME CONFESSAR?
+   Mantido separado dos demais modais do Confiteri para evitar
+   conflito com o modo Confissão, consentimento e modais do rodapé.
+   ============================================================ */
+
+function initConfessionInfoModal() {
+  const modal = document.getElementById('confession-info-modal');
+  const openButton = document.getElementById('open-confession-info-modal');
+
+  if (!modal || !openButton) {
+    return;
+  }
+
+  function openModal() {
+    modal.hidden = false;
+    document.body.classList.add('confession-info-modal-open');
+
+    const closeButton = modal.querySelector('[data-close-confession-info]');
+
+    requestAnimationFrame(() => {
+      closeButton?.focus();
+    });
+  }
+
+  function closeModal() {
+    modal.hidden = true;
+    document.body.classList.remove('confession-info-modal-open');
+
+    openButton.focus();
+  }
+
+  openButton.addEventListener('click', event => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    openModal();
+  });
+
+  modal
+    .querySelectorAll('[data-close-confession-info]')
+    .forEach(button => {
+      button.addEventListener('click', closeModal);
+    });
+
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && !modal.hidden) {
+      closeModal();
+    }
+  });
 }
 
 document.addEventListener('DOMContentLoaded', init);

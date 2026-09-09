@@ -852,6 +852,8 @@
           </div>
           <p id="picker-summary" style="color:var(--muted); font-size:13px; margin-top:10px;"></p>
 
+
+
           <div class="last-confession-card">
             <div class="last-confession-head">
               <strong>🕊️ Quando foi sua última Confissão?</strong>
@@ -879,6 +881,89 @@
           <div class="nav-buttons">
             <span></span>
             <button class="btn primary" id="btn-start" onclick="startExam()">Iniciar o exame →</button>
+          </div>
+
+          
+      <!-- ==========================================
+       MATERIAL PARA CONSULTA
+       ========================================== -->
+
+          <div class="question-base-download no-print">
+
+            <div class="question-base-download-head">
+
+              <div class="question-base-download-icon" aria-hidden="true">
+                📚
+              </div>
+
+              <div>
+                <span class="question-base-download-kicker">
+                  Material para consulta
+                </span>
+
+                <h4>
+                  Prefere consultar o exame fora da plataforma?
+                </h4>
+
+                <p>
+                  Baixe a versão atual da base pública do Confiteri
+                  diretamente em PDF.
+                </p>
+              </div>
+
+            </div>
+
+
+            <div class="question-base-download-actions">
+
+              <button type="button" class="question-base-option" onclick="downloadQuestionsPdf('questions')">
+                <span class="question-base-option-icon" aria-hidden="true">
+                  📄
+                </span>
+
+                <span class="question-base-option-copy">
+                  <strong>Somente perguntas</strong>
+                  <small>Para leitura e reflexão livre</small>
+                </span>
+
+                <span class="question-base-option-arrow" aria-hidden="true">
+                  ↓
+                </span>
+              </button>
+
+
+              <button type="button" class="question-base-option question-base-option-featured"
+                onclick="downloadQuestionsPdf('with-formulations')">
+                <span class="question-base-option-icon" aria-hidden="true">
+                  ✝️
+                </span>
+
+                <span class="question-base-option-copy">
+                  <strong>Perguntas + formulações</strong>
+                  <small>Inclui sugestões para apresentar na Confissão</small>
+                </span>
+
+                <span class="question-base-option-arrow" aria-hidden="true">
+                  ↓
+                </span>
+              </button>
+
+            </div>
+
+
+            <div class="question-base-download-note">
+
+              <span aria-hidden="true">✨</span>
+
+              <p>
+                Quer uma preparação mais completa?
+                Continue no exame interativo para revisar dúvidas,
+                adicionar frequência e observações e usar o
+                <strong>Modo Confissão</strong>.
+              </p>
+
+            </div>
+
           </div>
 
           <div class="accordion video-accordion">
@@ -1198,11 +1283,11 @@
             <input type="checkbox" id="consent-privacy" onchange="updateConsentButton()">
 
             <span>
-            Li e concordo com a
-            <a href="privacidade.html" target="_blank" rel="noopener noreferrer" class="consent-inline-link">
-              Política de Privacidade
-            </a>
-             do Confiteri.
+              Li e concordo com a
+              <a href="privacidade.html" target="_blank" rel="noopener noreferrer" class="consent-inline-link">
+                Política de Privacidade
+              </a>
+              do Confiteri.
             </span>
           </label>
 
@@ -1786,7 +1871,7 @@
   </script>
 
 
-
+  <script src="assets/js/questions-pdf.js" defer></script>
   <script src="assets/js/app.js" defer></script>
   <script src="assets/js/metrics.js" defer></script>
 </body>
